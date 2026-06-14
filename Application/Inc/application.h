@@ -24,6 +24,8 @@ typedef struct key_bullet_mapping{
 extern key_bullet_t Keys[KEY_NUMBER];
 extern bool Keys_pressed[KEY_NUMBER];
 extern volatile uint32_t ms_counter;
+extern volatile bool is_small_bullet;
+extern volatile int key_need_handle;
 
 typedef struct __attribute__((packed)) {
     float val[5];
@@ -73,5 +75,12 @@ void init_packet();
 void loop_report();
 void loop_scan_keys();
 void wait_ms(int time_ms);
+void mouse_control(uint16_t x, uint16_t y, bool click);
+
+// following function each they will send packets to referee system
+void call_buy_UI();
+void move_click_mouse(int key);
+void click_buy_bullets();
+
 
 #endif

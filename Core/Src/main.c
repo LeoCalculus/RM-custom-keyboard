@@ -101,6 +101,7 @@ int main(void)
   ws2812_refresh();
   init_keys();
   init_vofa();
+  init_packet();
   HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END 2 */
 
@@ -109,6 +110,15 @@ int main(void)
   while (1)
   {
     loop_scan_keys();
+    if (key_need_handle >= 0){ // enter fsm logic for buying bulllets:
+      // press I/O open menu
+      call_buy_UI(); // also need release the key, can add function here
+      // according to index find the position to buy
+      move_click_mouse(key_need_handle); // also need to unclick after this click can add functions here
+      // also need to click OK:
+      click_buy_bullets(); // also need unclick, can add functions here
+      key_need_handle = -1;
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
