@@ -1,0 +1,1009 @@
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"ws2812.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "./Application/Src/ws2812.c"
+  18              		.section	.text.ws2812_init,"ax",%progbits
+  19              		.align	1
+  20              		.global	ws2812_init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	ws2812_init:
+  26              	.LVL0:
+  27              	.LFB65:
+   1:./Application/Src/ws2812.c **** #include <ws2812.h>
+   2:./Application/Src/ws2812.c **** 
+   3:./Application/Src/ws2812.c **** #define WS2812_SPI &hspi2
+   4:./Application/Src/ws2812.c **** 
+   5:./Application/Src/ws2812.c **** WS_data ws2812_spibuf[WS_RESET_PERIODS + LED_NUMS + WS_RESET_PERIODS];
+   6:./Application/Src/ws2812.c **** uint8_t RGB_waveform[RGB_WAVELENGTH];
+   7:./Application/Src/ws2812.c **** 
+   8:./Application/Src/ws2812.c **** /**
+   9:./Application/Src/ws2812.c ****  * @brief Initialize ws2812 data, calculate RGB waveform, etc.
+  10:./Application/Src/ws2812.c ****  * 
+  11:./Application/Src/ws2812.c ****  * @param wave_brightness Brightness of RGB wave, 0~1
+  12:./Application/Src/ws2812.c ****  */
+  13:./Application/Src/ws2812.c **** void ws2812_init(float wave_brightness){
+  28              		.loc 1 13 40 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 13 40 is_stmt 0 view .LVU1
+  33 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 24
+  36              		.cfi_offset 4, -24
+  37              		.cfi_offset 5, -20
+  38              		.cfi_offset 6, -16
+  39              		.cfi_offset 7, -12
+  40              		.cfi_offset 8, -8
+  41              		.cfi_offset 14, -4
+  42 0004 8046     		mov	r8, r0
+  14:./Application/Src/ws2812.c ****     for(int i=0;i<RGB_WAVELENGTH;i++){
+  43              		.loc 1 14 5 is_stmt 1 view .LVU2
+  44              	.LBB2:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 2
+
+
+  45              		.loc 1 14 9 view .LVU3
+  46              	.LVL1:
+  47              		.loc 1 14 13 is_stmt 0 view .LVU4
+  48 0006 0024     		movs	r4, #0
+  49              		.loc 1 14 5 view .LVU5
+  50 0008 32E0     		b	.L2
+  51              	.LVL2:
+  52              	.L3:
+  53              	.LBB3:
+  15:./Application/Src/ws2812.c ****         float omega=((float)i)/RGB_WAVELENGTH*2*3.1415926;
+  54              		.loc 1 15 9 is_stmt 1 view .LVU6
+  55              		.loc 1 15 22 is_stmt 0 view .LVU7
+  56 000a 2046     		mov	r0, r4
+  57 000c FFF7FEFF 		bl	__aeabi_i2f
+  58              	.LVL3:
+  59              		.loc 1 15 31 view .LVU8
+  60 0010 1B49     		ldr	r1, .L5+8
+  61 0012 FFF7FEFF 		bl	__aeabi_fdiv
+  62              	.LVL4:
+  63 0016 0146     		mov	r1, r0
+  64              		.loc 1 15 46 view .LVU9
+  65 0018 FFF7FEFF 		bl	__aeabi_fadd
+  66              	.LVL5:
+  67 001c FFF7FEFF 		bl	__aeabi_f2d
+  68              	.LVL6:
+  69              		.loc 1 15 48 view .LVU10
+  70 0020 15A3     		adr	r3, .L5
+  71 0022 D3E90023 		ldrd	r2, [r3]
+  72 0026 FFF7FEFF 		bl	__aeabi_dmul
+  73              	.LVL7:
+  74              		.loc 1 15 15 view .LVU11
+  75 002a FFF7FEFF 		bl	__aeabi_d2f
+  76              	.LVL8:
+  77 002e 0546     		mov	r5, r0
+  78              	.LVL9:
+  16:./Application/Src/ws2812.c ****         RGB_waveform[i]=(uint8_t)(255.0f*wave_brightness*(0.5+cosf(omega)/2));
+  79              		.loc 1 16 9 is_stmt 1 view .LVU12
+  80              		.loc 1 16 41 is_stmt 0 view .LVU13
+  81 0030 1449     		ldr	r1, .L5+12
+  82 0032 4046     		mov	r0, r8
+  83              	.LVL10:
+  84              		.loc 1 16 41 view .LVU14
+  85 0034 FFF7FEFF 		bl	__aeabi_fmul
+  86              	.LVL11:
+  87 0038 FFF7FEFF 		bl	__aeabi_f2d
+  88              	.LVL12:
+  89 003c 0646     		mov	r6, r0
+  90 003e 0F46     		mov	r7, r1
+  91              		.loc 1 16 63 view .LVU15
+  92 0040 2846     		mov	r0, r5
+  93 0042 FFF7FEFF 		bl	cosf
+  94              	.LVL13:
+  95              		.loc 1 16 74 discriminator 1 view .LVU16
+  96 0046 4FF07C51 		mov	r1, #1056964608
+  97 004a FFF7FEFF 		bl	__aeabi_fmul
+  98              	.LVL14:
+  99 004e FFF7FEFF 		bl	__aeabi_f2d
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 3
+
+
+ 100              	.LVL15:
+ 101              		.loc 1 16 62 discriminator 1 view .LVU17
+ 102 0052 0022     		movs	r2, #0
+ 103 0054 0C4B     		ldr	r3, .L5+16
+ 104 0056 FFF7FEFF 		bl	__aeabi_dadd
+ 105              	.LVL16:
+ 106 005a 0246     		mov	r2, r0
+ 107 005c 0B46     		mov	r3, r1
+ 108              		.loc 1 16 57 discriminator 1 view .LVU18
+ 109 005e 3046     		mov	r0, r6
+ 110 0060 3946     		mov	r1, r7
+ 111 0062 FFF7FEFF 		bl	__aeabi_dmul
+ 112              	.LVL17:
+ 113              		.loc 1 16 25 discriminator 1 view .LVU19
+ 114 0066 FFF7FEFF 		bl	__aeabi_d2uiz
+ 115              	.LVL18:
+ 116              		.loc 1 16 24 discriminator 1 view .LVU20
+ 117 006a 084B     		ldr	r3, .L5+20
+ 118 006c 1855     		strb	r0, [r3, r4]
+ 119              	.LBE3:
+  14:./Application/Src/ws2812.c ****     for(int i=0;i<RGB_WAVELENGTH;i++){
+ 120              		.loc 1 14 35 is_stmt 1 discriminator 3 view .LVU21
+ 121 006e 0134     		adds	r4, r4, #1
+ 122              	.LVL19:
+ 123              	.L2:
+  14:./Application/Src/ws2812.c ****     for(int i=0;i<RGB_WAVELENGTH;i++){
+ 124              		.loc 1 14 18 discriminator 1 view .LVU22
+ 125 0070 9F2C     		cmp	r4, #159
+ 126 0072 CADD     		ble	.L3
+ 127              	.LBE2:
+  17:./Application/Src/ws2812.c ****     }
+  18:./Application/Src/ws2812.c **** }
+ 128              		.loc 1 18 1 is_stmt 0 view .LVU23
+ 129 0074 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 130              	.LVL20:
+ 131              	.L6:
+ 132              		.loc 1 18 1 view .LVU24
+ 133              		.align	3
+ 134              	.L5:
+ 135 0078 4AD8124D 		.word	1293080650
+ 136 007c FB210940 		.word	1074340347
+ 137 0080 00002043 		.word	1126170624
+ 138 0084 00007F43 		.word	1132396544
+ 139 0088 0000E03F 		.word	1071644672
+ 140 008c 00000000 		.word	RGB_waveform
+ 141              		.cfi_endproc
+ 142              	.LFE65:
+ 144              		.section	.text.ws2812_refresh,"ax",%progbits
+ 145              		.align	1
+ 146              		.global	ws2812_refresh
+ 147              		.syntax unified
+ 148              		.thumb
+ 149              		.thumb_func
+ 151              	ws2812_refresh:
+ 152              	.LFB66:
+  19:./Application/Src/ws2812.c **** 
+  20:./Application/Src/ws2812.c **** /**
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 4
+
+
+  21:./Application/Src/ws2812.c ****  * @brief Update colour to LED strip
+  22:./Application/Src/ws2812.c ****  * 
+  23:./Application/Src/ws2812.c ****  */
+  24:./Application/Src/ws2812.c **** void ws2812_refresh(void){
+ 153              		.loc 1 24 26 is_stmt 1 view -0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157 0000 08B5     		push	{r3, lr}
+ 158              	.LCFI1:
+ 159              		.cfi_def_cfa_offset 8
+ 160              		.cfi_offset 3, -8
+ 161              		.cfi_offset 14, -4
+  25:./Application/Src/ws2812.c ****     //ws2812_pure(5,20,10);
+  26:./Application/Src/ws2812.c ****     if (HAL_SPI_GetState(WS2812_SPI) == HAL_SPI_STATE_READY) {
+ 162              		.loc 1 26 5 view .LVU26
+ 163              		.loc 1 26 9 is_stmt 0 view .LVU27
+ 164 0002 0648     		ldr	r0, .L11
+ 165 0004 FFF7FEFF 		bl	HAL_SPI_GetState
+ 166              	.LVL21:
+ 167              		.loc 1 26 8 discriminator 1 view .LVU28
+ 168 0008 0128     		cmp	r0, #1
+ 169 000a 00D0     		beq	.L10
+ 170              	.L7:
+  27:./Application/Src/ws2812.c ****         HAL_SPI_Transmit_DMA(WS2812_SPI,(uint8_t *)ws2812_spibuf, sizeof(ws2812_spibuf));
+  28:./Application/Src/ws2812.c ****     }
+  29:./Application/Src/ws2812.c ****     
+  30:./Application/Src/ws2812.c ****     return;
+  31:./Application/Src/ws2812.c **** }
+ 171              		.loc 1 31 1 view .LVU29
+ 172 000c 08BD     		pop	{r3, pc}
+ 173              	.L10:
+  27:./Application/Src/ws2812.c ****         HAL_SPI_Transmit_DMA(WS2812_SPI,(uint8_t *)ws2812_spibuf, sizeof(ws2812_spibuf));
+ 174              		.loc 1 27 9 is_stmt 1 view .LVU30
+ 175 000e 9C22     		movs	r2, #156
+ 176 0010 0349     		ldr	r1, .L11+4
+ 177 0012 0248     		ldr	r0, .L11
+ 178 0014 FFF7FEFF 		bl	HAL_SPI_Transmit_DMA
+ 179              	.LVL22:
+  30:./Application/Src/ws2812.c **** }
+ 180              		.loc 1 30 5 view .LVU31
+ 181 0018 F8E7     		b	.L7
+ 182              	.L12:
+ 183 001a 00BF     		.align	2
+ 184              	.L11:
+ 185 001c 00000000 		.word	hspi2
+ 186 0020 00000000 		.word	ws2812_spibuf
+ 187              		.cfi_endproc
+ 188              	.LFE66:
+ 190              		.section	.text.ws2812_resetbuf,"ax",%progbits
+ 191              		.align	1
+ 192              		.global	ws2812_resetbuf
+ 193              		.syntax unified
+ 194              		.thumb
+ 195              		.thumb_func
+ 197              	ws2812_resetbuf:
+ 198              	.LFB67:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 5
+
+
+  32:./Application/Src/ws2812.c **** 
+  33:./Application/Src/ws2812.c **** /**
+  34:./Application/Src/ws2812.c ****  * @brief Reset LEDs to all black
+  35:./Application/Src/ws2812.c ****  * 
+  36:./Application/Src/ws2812.c ****  */
+  37:./Application/Src/ws2812.c **** void ws2812_resetbuf(void){
+ 199              		.loc 1 37 27 view -0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203 0000 08B5     		push	{r3, lr}
+ 204              	.LCFI2:
+ 205              		.cfi_def_cfa_offset 8
+ 206              		.cfi_offset 3, -8
+ 207              		.cfi_offset 14, -4
+  38:./Application/Src/ws2812.c ****     memset(ws2812_spibuf,0,sizeof(ws2812_spibuf));
+ 208              		.loc 1 38 5 view .LVU33
+ 209 0002 9C22     		movs	r2, #156
+ 210 0004 0021     		movs	r1, #0
+ 211 0006 0248     		ldr	r0, .L15
+ 212 0008 FFF7FEFF 		bl	memset
+ 213              	.LVL23:
+  39:./Application/Src/ws2812.c **** }
+ 214              		.loc 1 39 1 is_stmt 0 view .LVU34
+ 215 000c 08BD     		pop	{r3, pc}
+ 216              	.L16:
+ 217 000e 00BF     		.align	2
+ 218              	.L15:
+ 219 0010 00000000 		.word	ws2812_spibuf
+ 220              		.cfi_endproc
+ 221              	.LFE67:
+ 223              		.section	.text.ws2812_getData,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	ws2812_getData
+ 226              		.syntax unified
+ 227              		.thumb
+ 228              		.thumb_func
+ 230              	ws2812_getData:
+ 231              	.LVL24:
+ 232              	.LFB68:
+  40:./Application/Src/ws2812.c **** 
+  41:./Application/Src/ws2812.c **** /**
+  42:./Application/Src/ws2812.c ****  * @brief Generate SPI data for a given RGB value.
+  43:./Application/Src/ws2812.c ****  * 
+  44:./Application/Src/ws2812.c ****  * @param setr Red
+  45:./Application/Src/ws2812.c ****  * @param setg Green
+  46:./Application/Src/ws2812.c ****  * @param setb Blue
+  47:./Application/Src/ws2812.c ****  * @return WS_data 
+  48:./Application/Src/ws2812.c ****  */
+  49:./Application/Src/ws2812.c **** WS_data ws2812_getData(uint8_t setr, uint8_t setg, uint8_t setb){
+ 233              		.loc 1 49 65 is_stmt 1 view -0
+ 234              		.cfi_startproc
+ 235              		@ args = 0, pretend = 0, frame = 16
+ 236              		@ frame_needed = 0, uses_anonymous_args = 0
+ 237              		.loc 1 49 65 is_stmt 0 view .LVU36
+ 238 0000 30B5     		push	{r4, r5, lr}
+ 239              	.LCFI3:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 6
+
+
+ 240              		.cfi_def_cfa_offset 12
+ 241              		.cfi_offset 4, -12
+ 242              		.cfi_offset 5, -8
+ 243              		.cfi_offset 14, -4
+ 244 0002 85B0     		sub	sp, sp, #20
+ 245              	.LCFI4:
+ 246              		.cfi_def_cfa_offset 32
+ 247 0004 0446     		mov	r4, r0
+  50:./Application/Src/ws2812.c ****     WS_data data;
+ 248              		.loc 1 50 5 is_stmt 1 view .LVU37
+  51:./Application/Src/ws2812.c ****     for(int j=0;j<4;j++){
+ 249              		.loc 1 51 5 view .LVU38
+ 250              	.LBB4:
+ 251              		.loc 1 51 9 view .LVU39
+ 252              	.LVL25:
+ 253              		.loc 1 51 13 is_stmt 0 view .LVU40
+ 254 0006 4FF0000C 		mov	ip, #0
+ 255              		.loc 1 51 5 view .LVU41
+ 256 000a 18E0     		b	.L18
+ 257              	.LVL26:
+ 258              	.L34:
+  52:./Application/Src/ws2812.c ****         data.r[j] = (setr & 0x80 ? WS_1 : WS_0) << 4;
+ 259              		.loc 1 52 19 discriminator 1 view .LVU42
+ 260 000c 4FF0E00E 		mov	lr, #224
+ 261 0010 1DE0     		b	.L19
+ 262              	.L27:
+  53:./Application/Src/ws2812.c ****         data.r[j] |= (setr & 0x40 ? WS_1 : WS_0) ;
+ 263              		.loc 1 53 19 discriminator 2 view .LVU43
+ 264 0012 0820     		movs	r0, #8
+ 265 0014 24E0     		b	.L20
+ 266              	.L35:
+  54:./Application/Src/ws2812.c ****         setr <<= 2;
+  55:./Application/Src/ws2812.c **** 
+  56:./Application/Src/ws2812.c ****         data.g[j] = (setg & 0x80 ? WS_1 : WS_0) << 4;
+ 267              		.loc 1 56 19 discriminator 1 view .LVU44
+ 268 0016 4FF0E00E 		mov	lr, #224
+ 269 001a 2FE0     		b	.L21
+ 270              	.L29:
+  57:./Application/Src/ws2812.c ****         data.g[j] |= (setg & 0x40 ? WS_1 : WS_0) ;
+ 271              		.loc 1 57 19 discriminator 2 view .LVU45
+ 272 001c 0820     		movs	r0, #8
+ 273 001e 36E0     		b	.L22
+ 274              	.L36:
+  58:./Application/Src/ws2812.c ****         setg <<= 2;
+  59:./Application/Src/ws2812.c **** 
+  60:./Application/Src/ws2812.c ****         data.b[j] = (setb & 0x80 ? WS_1 : WS_0) << 4;
+ 275              		.loc 1 60 19 discriminator 1 view .LVU46
+ 276 0020 4FF0E00E 		mov	lr, #224
+ 277 0024 41E0     		b	.L23
+ 278              	.L31:
+  61:./Application/Src/ws2812.c ****         data.b[j] |= (setb & 0x40 ? WS_1 : WS_0) ;
+ 279              		.loc 1 61 19 discriminator 2 view .LVU47
+ 280 0026 0825     		movs	r5, #8
+ 281              	.L24:
+ 282              		.loc 1 61 19 discriminator 4 view .LVU48
+ 283 0028 0CF11000 		add	r0, ip, #16
+ 284 002c 6844     		add	r0, sp, r0
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 7
+
+
+ 285 002e 4EEA050E 		orr	lr, lr, r5
+ 286 0032 00F804EC 		strb	lr, [r0, #-4]
+  62:./Application/Src/ws2812.c ****         setb <<= 2;
+ 287              		.loc 1 62 9 is_stmt 1 view .LVU49
+ 288              		.loc 1 62 14 is_stmt 0 view .LVU50
+ 289 0036 9B00     		lsls	r3, r3, #2
+ 290              	.LVL27:
+ 291              		.loc 1 62 14 view .LVU51
+ 292 0038 DBB2     		uxtb	r3, r3
+ 293              	.LVL28:
+  51:./Application/Src/ws2812.c ****         data.r[j] = (setr & 0x80 ? WS_1 : WS_0) << 4;
+ 294              		.loc 1 51 22 is_stmt 1 discriminator 2 view .LVU52
+ 295 003a 0CF1010C 		add	ip, ip, #1
+ 296              	.LVL29:
+ 297              	.L18:
+  51:./Application/Src/ws2812.c ****         data.r[j] = (setr & 0x80 ? WS_1 : WS_0) << 4;
+ 298              		.loc 1 51 18 discriminator 1 view .LVU53
+ 299 003e BCF1030F 		cmp	ip, #3
+ 300 0042 3CDC     		bgt	.L33
+  52:./Application/Src/ws2812.c ****         data.r[j] |= (setr & 0x40 ? WS_1 : WS_0) ;
+ 301              		.loc 1 52 9 view .LVU54
+  52:./Application/Src/ws2812.c ****         data.r[j] |= (setr & 0x40 ? WS_1 : WS_0) ;
+ 302              		.loc 1 52 19 is_stmt 0 view .LVU55
+ 303 0044 11F0800F 		tst	r1, #128
+ 304 0048 E0D1     		bne	.L34
+  52:./Application/Src/ws2812.c ****         data.r[j] |= (setr & 0x40 ? WS_1 : WS_0) ;
+ 305              		.loc 1 52 19 discriminator 2 view .LVU56
+ 306 004a 4FF0800E 		mov	lr, #128
+ 307              	.L19:
+  52:./Application/Src/ws2812.c ****         data.r[j] |= (setr & 0x40 ? WS_1 : WS_0) ;
+ 308              		.loc 1 52 19 discriminator 4 view .LVU57
+ 309 004e 0CF11000 		add	r0, ip, #16
+ 310 0052 6844     		add	r0, sp, r0
+ 311 0054 00F808EC 		strb	lr, [r0, #-8]
+  53:./Application/Src/ws2812.c ****         setr <<= 2;
+ 312              		.loc 1 53 9 is_stmt 1 view .LVU58
+  53:./Application/Src/ws2812.c ****         setr <<= 2;
+ 313              		.loc 1 53 19 is_stmt 0 view .LVU59
+ 314 0058 11F0400F 		tst	r1, #64
+ 315 005c D9D0     		beq	.L27
+  53:./Application/Src/ws2812.c ****         setr <<= 2;
+ 316              		.loc 1 53 19 discriminator 1 view .LVU60
+ 317 005e 0E20     		movs	r0, #14
+ 318              	.L20:
+  53:./Application/Src/ws2812.c ****         setr <<= 2;
+ 319              		.loc 1 53 19 discriminator 4 view .LVU61
+ 320 0060 4EEA000E 		orr	lr, lr, r0
+ 321 0064 0CF11000 		add	r0, ip, #16
+ 322 0068 6844     		add	r0, sp, r0
+ 323 006a 00F808EC 		strb	lr, [r0, #-8]
+  54:./Application/Src/ws2812.c **** 
+ 324              		.loc 1 54 9 is_stmt 1 view .LVU62
+  54:./Application/Src/ws2812.c **** 
+ 325              		.loc 1 54 14 is_stmt 0 view .LVU63
+ 326 006e 8900     		lsls	r1, r1, #2
+ 327              	.LVL30:
+  54:./Application/Src/ws2812.c **** 
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 8
+
+
+ 328              		.loc 1 54 14 view .LVU64
+ 329 0070 C9B2     		uxtb	r1, r1
+ 330              	.LVL31:
+  56:./Application/Src/ws2812.c ****         data.g[j] |= (setg & 0x40 ? WS_1 : WS_0) ;
+ 331              		.loc 1 56 9 is_stmt 1 view .LVU65
+  56:./Application/Src/ws2812.c ****         data.g[j] |= (setg & 0x40 ? WS_1 : WS_0) ;
+ 332              		.loc 1 56 19 is_stmt 0 view .LVU66
+ 333 0072 12F0800F 		tst	r2, #128
+ 334 0076 CED1     		bne	.L35
+  56:./Application/Src/ws2812.c ****         data.g[j] |= (setg & 0x40 ? WS_1 : WS_0) ;
+ 335              		.loc 1 56 19 discriminator 2 view .LVU67
+ 336 0078 4FF0800E 		mov	lr, #128
+ 337              	.L21:
+  56:./Application/Src/ws2812.c ****         data.g[j] |= (setg & 0x40 ? WS_1 : WS_0) ;
+ 338              		.loc 1 56 19 discriminator 4 view .LVU68
+ 339 007c 0CF11000 		add	r0, ip, #16
+ 340 0080 6844     		add	r0, sp, r0
+ 341 0082 00F80CEC 		strb	lr, [r0, #-12]
+  57:./Application/Src/ws2812.c ****         setg <<= 2;
+ 342              		.loc 1 57 9 is_stmt 1 view .LVU69
+  57:./Application/Src/ws2812.c ****         setg <<= 2;
+ 343              		.loc 1 57 19 is_stmt 0 view .LVU70
+ 344 0086 12F0400F 		tst	r2, #64
+ 345 008a C7D0     		beq	.L29
+  57:./Application/Src/ws2812.c ****         setg <<= 2;
+ 346              		.loc 1 57 19 discriminator 1 view .LVU71
+ 347 008c 0E20     		movs	r0, #14
+ 348              	.L22:
+  57:./Application/Src/ws2812.c ****         setg <<= 2;
+ 349              		.loc 1 57 19 discriminator 4 view .LVU72
+ 350 008e 4EEA000E 		orr	lr, lr, r0
+ 351 0092 0CF11000 		add	r0, ip, #16
+ 352 0096 6844     		add	r0, sp, r0
+ 353 0098 00F80CEC 		strb	lr, [r0, #-12]
+  58:./Application/Src/ws2812.c **** 
+ 354              		.loc 1 58 9 is_stmt 1 view .LVU73
+  58:./Application/Src/ws2812.c **** 
+ 355              		.loc 1 58 14 is_stmt 0 view .LVU74
+ 356 009c 9200     		lsls	r2, r2, #2
+ 357              	.LVL32:
+  58:./Application/Src/ws2812.c **** 
+ 358              		.loc 1 58 14 view .LVU75
+ 359 009e D2B2     		uxtb	r2, r2
+ 360              	.LVL33:
+  60:./Application/Src/ws2812.c ****         data.b[j] |= (setb & 0x40 ? WS_1 : WS_0) ;
+ 361              		.loc 1 60 9 is_stmt 1 view .LVU76
+  60:./Application/Src/ws2812.c ****         data.b[j] |= (setb & 0x40 ? WS_1 : WS_0) ;
+ 362              		.loc 1 60 19 is_stmt 0 view .LVU77
+ 363 00a0 13F0800F 		tst	r3, #128
+ 364 00a4 BCD1     		bne	.L36
+  60:./Application/Src/ws2812.c ****         data.b[j] |= (setb & 0x40 ? WS_1 : WS_0) ;
+ 365              		.loc 1 60 19 discriminator 2 view .LVU78
+ 366 00a6 4FF0800E 		mov	lr, #128
+ 367              	.L23:
+  60:./Application/Src/ws2812.c ****         data.b[j] |= (setb & 0x40 ? WS_1 : WS_0) ;
+ 368              		.loc 1 60 19 discriminator 4 view .LVU79
+ 369 00aa 0CF11000 		add	r0, ip, #16
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 9
+
+
+ 370 00ae 6844     		add	r0, sp, r0
+ 371 00b0 00F804EC 		strb	lr, [r0, #-4]
+  61:./Application/Src/ws2812.c ****         setb <<= 2;
+ 372              		.loc 1 61 9 is_stmt 1 view .LVU80
+  61:./Application/Src/ws2812.c ****         setb <<= 2;
+ 373              		.loc 1 61 19 is_stmt 0 view .LVU81
+ 374 00b4 13F0400F 		tst	r3, #64
+ 375 00b8 B5D0     		beq	.L31
+  61:./Application/Src/ws2812.c ****         setb <<= 2;
+ 376              		.loc 1 61 19 discriminator 1 view .LVU82
+ 377 00ba 0E25     		movs	r5, #14
+ 378 00bc B4E7     		b	.L24
+ 379              	.L33:
+  61:./Application/Src/ws2812.c ****         setb <<= 2;
+ 380              		.loc 1 61 19 discriminator 1 view .LVU83
+ 381              	.LBE4:
+  63:./Application/Src/ws2812.c ****     }
+  64:./Application/Src/ws2812.c ****     return data;
+ 382              		.loc 1 64 5 is_stmt 1 view .LVU84
+ 383              		.loc 1 64 12 is_stmt 0 view .LVU85
+ 384 00be 01AB     		add	r3, sp, #4
+ 385              	.LVL34:
+ 386              		.loc 1 64 12 view .LVU86
+ 387 00c0 07CB     		ldmia	r3!, {r0, r1, r2}
+ 388              	.LVL35:
+ 389              		.loc 1 64 12 view .LVU87
+ 390 00c2 2060     		str	r0, [r4]	@ unaligned
+ 391 00c4 6160     		str	r1, [r4, #4]	@ unaligned
+ 392 00c6 A260     		str	r2, [r4, #8]	@ unaligned
+  65:./Application/Src/ws2812.c **** }
+ 393              		.loc 1 65 1 view .LVU88
+ 394 00c8 2046     		mov	r0, r4
+ 395 00ca 05B0     		add	sp, sp, #20
+ 396              	.LCFI5:
+ 397              		.cfi_def_cfa_offset 12
+ 398              		@ sp needed
+ 399 00cc 30BD     		pop	{r4, r5, pc}
+ 400              		.loc 1 65 1 view .LVU89
+ 401              		.cfi_endproc
+ 402              	.LFE68:
+ 404              		.section	.text.ws2812_pure,"ax",%progbits
+ 405              		.align	1
+ 406              		.global	ws2812_pure
+ 407              		.syntax unified
+ 408              		.thumb
+ 409              		.thumb_func
+ 411              	ws2812_pure:
+ 412              	.LVL36:
+ 413              	.LFB69:
+  66:./Application/Src/ws2812.c **** 
+  67:./Application/Src/ws2812.c **** /**
+  68:./Application/Src/ws2812.c ****  * @brief Display pure colour on LEDs
+  69:./Application/Src/ws2812.c ****  * 
+  70:./Application/Src/ws2812.c ****  * @param r red
+  71:./Application/Src/ws2812.c ****  * @param g green
+  72:./Application/Src/ws2812.c ****  * @param b blue
+  73:./Application/Src/ws2812.c ****  */
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 10
+
+
+  74:./Application/Src/ws2812.c **** void ws2812_pure(uint8_t r, uint8_t g, uint8_t b){
+ 414              		.loc 1 74 50 is_stmt 1 view -0
+ 415              		.cfi_startproc
+ 416              		@ args = 0, pretend = 0, frame = 16
+ 417              		@ frame_needed = 0, uses_anonymous_args = 0
+ 418              		.loc 1 74 50 is_stmt 0 view .LVU91
+ 419 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 420              	.LCFI6:
+ 421              		.cfi_def_cfa_offset 28
+ 422              		.cfi_offset 4, -28
+ 423              		.cfi_offset 5, -24
+ 424              		.cfi_offset 6, -20
+ 425              		.cfi_offset 7, -16
+ 426              		.cfi_offset 8, -12
+ 427              		.cfi_offset 9, -8
+ 428              		.cfi_offset 14, -4
+ 429 0004 85B0     		sub	sp, sp, #20
+ 430              	.LCFI7:
+ 431              		.cfi_def_cfa_offset 48
+ 432 0006 8046     		mov	r8, r0
+ 433 0008 0F46     		mov	r7, r1
+ 434 000a 1646     		mov	r6, r2
+  75:./Application/Src/ws2812.c ****     ws2812_resetbuf();
+ 435              		.loc 1 75 5 is_stmt 1 view .LVU92
+ 436 000c FFF7FEFF 		bl	ws2812_resetbuf
+ 437              	.LVL37:
+  76:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 438              		.loc 1 76 5 view .LVU93
+ 439              	.LBB5:
+ 440              		.loc 1 76 9 view .LVU94
+ 441              		.loc 1 76 13 is_stmt 0 view .LVU95
+ 442 0010 0025     		movs	r5, #0
+ 443              		.loc 1 76 5 view .LVU96
+ 444 0012 12E0     		b	.L38
+ 445              	.LVL38:
+ 446              	.L39:
+  77:./Application/Src/ws2812.c ****         ws2812_spibuf[WS_RESET_PERIODS + i]=ws2812_getData(r,g,b);
+ 447              		.loc 1 77 9 is_stmt 1 view .LVU97
+ 448              		.loc 1 77 40 is_stmt 0 view .LVU98
+ 449 0014 6C1D     		adds	r4, r5, #5
+ 450              		.loc 1 77 45 view .LVU99
+ 451 0016 04EB4403 		add	r3, r4, r4, lsl #1
+ 452 001a 0A4C     		ldr	r4, .L41
+ 453 001c 04EB8304 		add	r4, r4, r3, lsl #2
+ 454 0020 3346     		mov	r3, r6
+ 455 0022 3A46     		mov	r2, r7
+ 456 0024 4146     		mov	r1, r8
+ 457 0026 6846     		mov	r0, sp
+ 458 0028 FFF7FEFF 		bl	ws2812_getData
+ 459              	.LVL39:
+ 460 002c A446     		mov	ip, r4
+ 461 002e 0098     		ldr	r0, [sp]	@ unaligned
+ 462 0030 0199     		ldr	r1, [sp, #4]	@ unaligned
+ 463 0032 029A     		ldr	r2, [sp, #8]	@ unaligned
+ 464 0034 ACE80700 		stmia	ip!, {r0, r1, r2}
+  76:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 465              		.loc 1 76 29 is_stmt 1 discriminator 3 view .LVU100
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 11
+
+
+ 466 0038 0135     		adds	r5, r5, #1
+ 467              	.LVL40:
+ 468              	.L38:
+  76:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 469              		.loc 1 76 18 discriminator 1 view .LVU101
+ 470 003a 022D     		cmp	r5, #2
+ 471 003c EADD     		ble	.L39
+ 472              	.LBE5:
+  78:./Application/Src/ws2812.c ****     }
+  79:./Application/Src/ws2812.c **** }
+ 473              		.loc 1 79 1 is_stmt 0 view .LVU102
+ 474 003e 05B0     		add	sp, sp, #20
+ 475              	.LCFI8:
+ 476              		.cfi_def_cfa_offset 28
+ 477              		@ sp needed
+ 478 0040 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 479              	.LVL41:
+ 480              	.L42:
+ 481              		.loc 1 79 1 view .LVU103
+ 482              		.align	2
+ 483              	.L41:
+ 484 0044 00000000 		.word	ws2812_spibuf
+ 485              		.cfi_endproc
+ 486              	.LFE69:
+ 488              		.section	.text.ws2812_rgbwave,"ax",%progbits
+ 489              		.align	1
+ 490              		.global	ws2812_rgbwave
+ 491              		.syntax unified
+ 492              		.thumb
+ 493              		.thumb_func
+ 495              	ws2812_rgbwave:
+ 496              	.LVL42:
+ 497              	.LFB70:
+  80:./Application/Src/ws2812.c **** 
+  81:./Application/Src/ws2812.c **** /**
+  82:./Application/Src/ws2812.c ****  * @brief Generate a RGB "wave" to ws2812 buffer
+  83:./Application/Src/ws2812.c ****  * 
+  84:./Application/Src/ws2812.c ****  * @param phase phase of "wave". Unit: nums of LED
+  85:./Application/Src/ws2812.c ****  */
+  86:./Application/Src/ws2812.c **** void ws2812_rgbwave(int phase){
+ 498              		.loc 1 86 31 is_stmt 1 view -0
+ 499              		.cfi_startproc
+ 500              		@ args = 0, pretend = 0, frame = 16
+ 501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 502              		.loc 1 86 31 is_stmt 0 view .LVU105
+ 503 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 504              	.LCFI9:
+ 505              		.cfi_def_cfa_offset 20
+ 506              		.cfi_offset 4, -20
+ 507              		.cfi_offset 5, -16
+ 508              		.cfi_offset 6, -12
+ 509              		.cfi_offset 7, -8
+ 510              		.cfi_offset 14, -4
+ 511 0002 85B0     		sub	sp, sp, #20
+ 512              	.LCFI10:
+ 513              		.cfi_def_cfa_offset 40
+ 514 0004 0646     		mov	r6, r0
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 12
+
+
+  87:./Application/Src/ws2812.c ****     ws2812_resetbuf();
+ 515              		.loc 1 87 5 is_stmt 1 view .LVU106
+ 516 0006 FFF7FEFF 		bl	ws2812_resetbuf
+ 517              	.LVL43:
+  88:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 518              		.loc 1 88 5 view .LVU107
+ 519              	.LBB6:
+ 520              		.loc 1 88 9 view .LVU108
+ 521              		.loc 1 88 13 is_stmt 0 view .LVU109
+ 522 000a 0025     		movs	r5, #0
+ 523              		.loc 1 88 5 view .LVU110
+ 524 000c 36E0     		b	.L44
+ 525              	.LVL44:
+ 526              	.L45:
+ 527              	.LBB7:
+  89:./Application/Src/ws2812.c ****         uint8_t r = RGB_waveform[(i+phase)%RGB_WAVELENGTH];
+ 528              		.loc 1 89 9 is_stmt 1 view .LVU111
+ 529              		.loc 1 89 36 is_stmt 0 view .LVU112
+ 530 000e AB19     		adds	r3, r5, r6
+ 531              		.loc 1 89 43 view .LVU113
+ 532 0010 1C48     		ldr	r0, .L47
+ 533 0012 80FB0312 		smull	r1, r2, r0, r3
+ 534 0016 D917     		asrs	r1, r3, #31
+ 535 0018 C1EBA211 		rsb	r1, r1, r2, asr #6
+ 536 001c 01EB8101 		add	r1, r1, r1, lsl #2
+ 537 0020 A3EB4111 		sub	r1, r3, r1, lsl #5
+ 538              		.loc 1 89 17 view .LVU114
+ 539 0024 DFF860C0 		ldr	ip, .L47+4
+ 540              	.LVL45:
+  90:./Application/Src/ws2812.c ****         uint8_t g = RGB_waveform[(i+phase+RGB_WAVELENGTH/3)%RGB_WAVELENGTH];
+ 541              		.loc 1 90 9 is_stmt 1 view .LVU115
+ 542              		.loc 1 90 42 is_stmt 0 view .LVU116
+ 543 0028 03F13504 		add	r4, r3, #53
+ 544              		.loc 1 90 60 view .LVU117
+ 545 002c 80FB0427 		smull	r2, r7, r0, r4
+ 546 0030 E217     		asrs	r2, r4, #31
+ 547 0032 C2EBA712 		rsb	r2, r2, r7, asr #6
+ 548 0036 02EB8202 		add	r2, r2, r2, lsl #2
+ 549 003a A4EB4212 		sub	r2, r4, r2, lsl #5
+ 550              	.LVL46:
+  91:./Application/Src/ws2812.c ****         uint8_t b = RGB_waveform[(i+phase+RGB_WAVELENGTH*2/3)%RGB_WAVELENGTH];
+ 551              		.loc 1 91 9 is_stmt 1 view .LVU118
+ 552              		.loc 1 91 42 is_stmt 0 view .LVU119
+ 553 003e 6A33     		adds	r3, r3, #106
+ 554              		.loc 1 91 62 view .LVU120
+ 555 0040 80FB0304 		smull	r0, r4, r0, r3
+ 556 0044 D817     		asrs	r0, r3, #31
+ 557 0046 C0EBA410 		rsb	r0, r0, r4, asr #6
+ 558 004a 00EB8000 		add	r0, r0, r0, lsl #2
+ 559 004e A3EB4010 		sub	r0, r3, r0, lsl #5
+ 560              	.LVL47:
+  92:./Application/Src/ws2812.c ****         ws2812_spibuf[WS_RESET_PERIODS + i] = ws2812_getData(r,g,b);
+ 561              		.loc 1 92 9 is_stmt 1 view .LVU121
+ 562              		.loc 1 92 40 is_stmt 0 view .LVU122
+ 563 0052 6B1D     		adds	r3, r5, #5
+ 564              		.loc 1 92 47 view .LVU123
+ 565 0054 03EB4304 		add	r4, r3, r3, lsl #1
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 13
+
+
+ 566 0058 0C4B     		ldr	r3, .L47+8
+ 567 005a 03EB8404 		add	r4, r3, r4, lsl #2
+ 568 005e 1CF80030 		ldrb	r3, [ip, r0]	@ zero_extendqisi2
+ 569 0062 1CF80220 		ldrb	r2, [ip, r2]	@ zero_extendqisi2
+ 570              	.LVL48:
+ 571              		.loc 1 92 47 view .LVU124
+ 572 0066 1CF80110 		ldrb	r1, [ip, r1]	@ zero_extendqisi2
+ 573              	.LVL49:
+ 574              		.loc 1 92 47 view .LVU125
+ 575 006a 6846     		mov	r0, sp
+ 576              	.LVL50:
+ 577              		.loc 1 92 47 view .LVU126
+ 578 006c FFF7FEFF 		bl	ws2812_getData
+ 579              	.LVL51:
+ 580              		.loc 1 92 47 view .LVU127
+ 581 0070 2346     		mov	r3, r4
+ 582 0072 0098     		ldr	r0, [sp]	@ unaligned
+ 583 0074 0199     		ldr	r1, [sp, #4]	@ unaligned
+ 584 0076 029A     		ldr	r2, [sp, #8]	@ unaligned
+ 585 0078 07C3     		stmia	r3!, {r0, r1, r2}
+ 586              	.LBE7:
+  88:./Application/Src/ws2812.c ****         uint8_t r = RGB_waveform[(i+phase)%RGB_WAVELENGTH];
+ 587              		.loc 1 88 29 is_stmt 1 discriminator 3 view .LVU128
+ 588 007a 0135     		adds	r5, r5, #1
+ 589              	.LVL52:
+ 590              	.L44:
+  88:./Application/Src/ws2812.c ****         uint8_t r = RGB_waveform[(i+phase)%RGB_WAVELENGTH];
+ 591              		.loc 1 88 18 discriminator 1 view .LVU129
+ 592 007c 022D     		cmp	r5, #2
+ 593 007e C6DD     		ble	.L45
+ 594              	.LBE6:
+  93:./Application/Src/ws2812.c ****     }
+  94:./Application/Src/ws2812.c **** }
+ 595              		.loc 1 94 1 is_stmt 0 view .LVU130
+ 596 0080 05B0     		add	sp, sp, #20
+ 597              	.LCFI11:
+ 598              		.cfi_def_cfa_offset 20
+ 599              		@ sp needed
+ 600 0082 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 601              	.LVL53:
+ 602              	.L48:
+ 603              		.loc 1 94 1 view .LVU131
+ 604              		.align	2
+ 605              	.L47:
+ 606 0084 67666666 		.word	1717986919
+ 607 0088 00000000 		.word	RGB_waveform
+ 608 008c 00000000 		.word	ws2812_spibuf
+ 609              		.cfi_endproc
+ 610              	.LFE70:
+ 612              		.section	.text.ws2812_rgbpwmwave,"ax",%progbits
+ 613              		.align	1
+ 614              		.global	ws2812_rgbpwmwave
+ 615              		.syntax unified
+ 616              		.thumb
+ 617              		.thumb_func
+ 619              	ws2812_rgbpwmwave:
+ 620              	.LVL54:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 14
+
+
+ 621              	.LFB71:
+  95:./Application/Src/ws2812.c **** 
+  96:./Application/Src/ws2812.c **** /**
+  97:./Application/Src/ws2812.c ****  * @brief Generate a RGB "PWM" wave.
+  98:./Application/Src/ws2812.c ****  * 
+  99:./Application/Src/ws2812.c ****  * @param phase phase of "wave". Unit: nums of LED
+ 100:./Application/Src/ws2812.c ****  * @param pulselength pulse length Unit: nums of LED
+ 101:./Application/Src/ws2812.c ****  * @param r red
+ 102:./Application/Src/ws2812.c ****  * @param g green
+ 103:./Application/Src/ws2812.c ****  * @param b blue
+ 104:./Application/Src/ws2812.c ****  */
+ 105:./Application/Src/ws2812.c **** void ws2812_rgbpwmwave(int phase, int pulselength, uint8_t r, uint8_t g, uint8_t b){
+ 622              		.loc 1 105 84 is_stmt 1 view -0
+ 623              		.cfi_startproc
+ 624              		@ args = 4, pretend = 0, frame = 24
+ 625              		@ frame_needed = 0, uses_anonymous_args = 0
+ 626              		.loc 1 105 84 is_stmt 0 view .LVU133
+ 627 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 628              	.LCFI12:
+ 629              		.cfi_def_cfa_offset 20
+ 630              		.cfi_offset 4, -20
+ 631              		.cfi_offset 5, -16
+ 632              		.cfi_offset 6, -12
+ 633              		.cfi_offset 7, -8
+ 634              		.cfi_offset 14, -4
+ 635 0002 87B0     		sub	sp, sp, #28
+ 636              	.LCFI13:
+ 637              		.cfi_def_cfa_offset 48
+ 638 0004 0546     		mov	r5, r0
+ 639 0006 0C46     		mov	r4, r1
+ 640 0008 1746     		mov	r7, r2
+ 641 000a 1E46     		mov	r6, r3
+ 106:./Application/Src/ws2812.c ****     ws2812_resetbuf();
+ 642              		.loc 1 106 5 is_stmt 1 view .LVU134
+ 643 000c FFF7FEFF 		bl	ws2812_resetbuf
+ 644              	.LVL55:
+ 107:./Application/Src/ws2812.c ****     WS_data pulsecolour=ws2812_getData(r,g,b);
+ 645              		.loc 1 107 5 view .LVU135
+ 646              		.loc 1 107 25 is_stmt 0 view .LVU136
+ 647 0010 9DF83030 		ldrb	r3, [sp, #48]	@ zero_extendqisi2
+ 648 0014 3246     		mov	r2, r6
+ 649 0016 3946     		mov	r1, r7
+ 650 0018 03A8     		add	r0, sp, #12
+ 651 001a FFF7FEFF 		bl	ws2812_getData
+ 652              	.LVL56:
+ 108:./Application/Src/ws2812.c ****     WS_data dark=ws2812_getData(0,0,0);
+ 653              		.loc 1 108 5 is_stmt 1 view .LVU137
+ 654              		.loc 1 108 18 is_stmt 0 view .LVU138
+ 655 001e 0023     		movs	r3, #0
+ 656 0020 1A46     		mov	r2, r3
+ 657 0022 1946     		mov	r1, r3
+ 658 0024 6846     		mov	r0, sp
+ 659 0026 FFF7FEFF 		bl	ws2812_getData
+ 660              	.LVL57:
+ 109:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 661              		.loc 1 109 5 is_stmt 1 view .LVU139
+ 662              	.LBB8:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 15
+
+
+ 663              		.loc 1 109 9 view .LVU140
+ 664              		.loc 1 109 13 is_stmt 0 view .LVU141
+ 665 002a 4FF0000C 		mov	ip, #0
+ 666              		.loc 1 109 5 view .LVU142
+ 667 002e 0CE0     		b	.L50
+ 668              	.LVL58:
+ 669              	.L51:
+ 110:./Application/Src/ws2812.c ****         if((i+phase)%RGBPWM_WAVELENGTH<pulselength){
+ 111:./Application/Src/ws2812.c ****             ws2812_spibuf[WS_RESET_PERIODS + i] = pulsecolour;
+ 112:./Application/Src/ws2812.c ****         }else{
+ 113:./Application/Src/ws2812.c ****             ws2812_spibuf[WS_RESET_PERIODS + i] = dark;
+ 670              		.loc 1 113 13 is_stmt 1 view .LVU143
+ 671              		.loc 1 113 44 is_stmt 0 view .LVU144
+ 672 0030 0CF10503 		add	r3, ip, #5
+ 673              		.loc 1 113 49 view .LVU145
+ 674 0034 03EB4302 		add	r2, r3, r3, lsl #1
+ 675 0038 144B     		ldr	r3, .L56
+ 676 003a 03EB8203 		add	r3, r3, r2, lsl #2
+ 677 003e 9DE80700 		ldm	sp, {r0, r1, r2}
+ 678 0042 83E80700 		stm	r3, {r0, r1, r2}
+ 679              	.L52:
+ 109:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 680              		.loc 1 109 29 is_stmt 1 discriminator 2 view .LVU146
+ 681 0046 0CF1010C 		add	ip, ip, #1
+ 682              	.LVL59:
+ 683              	.L50:
+ 109:./Application/Src/ws2812.c ****     for(int i=0;i<LED_NUMS;i++){
+ 684              		.loc 1 109 18 discriminator 1 view .LVU147
+ 685 004a BCF1020F 		cmp	ip, #2
+ 686 004e 1ADC     		bgt	.L55
+ 110:./Application/Src/ws2812.c ****         if((i+phase)%RGBPWM_WAVELENGTH<pulselength){
+ 687              		.loc 1 110 9 view .LVU148
+ 110:./Application/Src/ws2812.c ****         if((i+phase)%RGBPWM_WAVELENGTH<pulselength){
+ 688              		.loc 1 110 14 is_stmt 0 view .LVU149
+ 689 0050 0CEB0501 		add	r1, ip, r5
+ 110:./Application/Src/ws2812.c ****         if((i+phase)%RGBPWM_WAVELENGTH<pulselength){
+ 690              		.loc 1 110 21 view .LVU150
+ 691 0054 0E4A     		ldr	r2, .L56+4
+ 692 0056 82FB0132 		smull	r3, r2, r2, r1
+ 693 005a 0A44     		add	r2, r2, r1
+ 694 005c CB17     		asrs	r3, r1, #31
+ 695 005e C3EBE203 		rsb	r3, r3, r2, asr #3
+ 696 0062 C3EB0313 		rsb	r3, r3, r3, lsl #4
+ 697 0066 CB1A     		subs	r3, r1, r3
+ 110:./Application/Src/ws2812.c ****         if((i+phase)%RGBPWM_WAVELENGTH<pulselength){
+ 698              		.loc 1 110 11 view .LVU151
+ 699 0068 A342     		cmp	r3, r4
+ 700 006a E1DA     		bge	.L51
+ 111:./Application/Src/ws2812.c ****         }else{
+ 701              		.loc 1 111 13 is_stmt 1 view .LVU152
+ 111:./Application/Src/ws2812.c ****         }else{
+ 702              		.loc 1 111 44 is_stmt 0 view .LVU153
+ 703 006c 0CF10503 		add	r3, ip, #5
+ 111:./Application/Src/ws2812.c ****         }else{
+ 704              		.loc 1 111 49 view .LVU154
+ 705 0070 03EB4302 		add	r2, r3, r3, lsl #1
+ 706 0074 054B     		ldr	r3, .L56
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 16
+
+
+ 707 0076 03EB8203 		add	r3, r3, r2, lsl #2
+ 708 007a 06AA     		add	r2, sp, #24
+ 709 007c 12E90700 		ldmdb	r2, {r0, r1, r2}
+ 710 0080 83E80700 		stm	r3, {r0, r1, r2}
+ 711 0084 DFE7     		b	.L52
+ 712              	.L55:
+ 111:./Application/Src/ws2812.c ****         }else{
+ 713              		.loc 1 111 49 view .LVU155
+ 714              	.LBE8:
+ 114:./Application/Src/ws2812.c ****         }
+ 115:./Application/Src/ws2812.c ****     }
+ 116:./Application/Src/ws2812.c **** }
+ 715              		.loc 1 116 1 view .LVU156
+ 716 0086 07B0     		add	sp, sp, #28
+ 717              	.LCFI14:
+ 718              		.cfi_def_cfa_offset 20
+ 719              		@ sp needed
+ 720 0088 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 721              	.LVL60:
+ 722              	.L57:
+ 723              		.loc 1 116 1 view .LVU157
+ 724 008a 00BF     		.align	2
+ 725              	.L56:
+ 726 008c 00000000 		.word	ws2812_spibuf
+ 727 0090 89888888 		.word	-2004318071
+ 728              		.cfi_endproc
+ 729              	.LFE71:
+ 731              		.global	RGB_waveform
+ 732              		.section	.bss.RGB_waveform,"aw",%nobits
+ 733              		.align	2
+ 736              	RGB_waveform:
+ 737 0000 00000000 		.space	160
+ 737      00000000 
+ 737      00000000 
+ 737      00000000 
+ 737      00000000 
+ 738              		.global	ws2812_spibuf
+ 739              		.section	.bss.ws2812_spibuf,"aw",%nobits
+ 740              		.align	2
+ 743              	ws2812_spibuf:
+ 744 0000 00000000 		.space	156
+ 744      00000000 
+ 744      00000000 
+ 744      00000000 
+ 744      00000000 
+ 745              		.text
+ 746              	.Letext0:
+ 747              		.file 2 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
+ 748              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
+ 749              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 750              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 751              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 752              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h"
+ 753              		.file 8 "Application/Inc/ws2812.h"
+ 754              		.file 9 "Core/Inc/spi.h"
+ 755              		.file 10 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/string.h"
+ 756              		.file 11 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/math.h"
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 17
+
+
+ 757              		.file 12 "<built-in>"
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ws2812.c
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:19     .text.ws2812_init:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:25     .text.ws2812_init:00000000 ws2812_init
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:135    .text.ws2812_init:00000078 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:736    .bss.RGB_waveform:00000000 RGB_waveform
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:145    .text.ws2812_refresh:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:151    .text.ws2812_refresh:00000000 ws2812_refresh
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:185    .text.ws2812_refresh:0000001c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:743    .bss.ws2812_spibuf:00000000 ws2812_spibuf
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:191    .text.ws2812_resetbuf:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:197    .text.ws2812_resetbuf:00000000 ws2812_resetbuf
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:219    .text.ws2812_resetbuf:00000010 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:224    .text.ws2812_getData:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:230    .text.ws2812_getData:00000000 ws2812_getData
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:405    .text.ws2812_pure:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:411    .text.ws2812_pure:00000000 ws2812_pure
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:484    .text.ws2812_pure:00000044 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:489    .text.ws2812_rgbwave:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:495    .text.ws2812_rgbwave:00000000 ws2812_rgbwave
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:606    .text.ws2812_rgbwave:00000084 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:613    .text.ws2812_rgbpwmwave:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:619    .text.ws2812_rgbpwmwave:00000000 ws2812_rgbpwmwave
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:726    .text.ws2812_rgbpwmwave:0000008c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:733    .bss.RGB_waveform:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccLgE5bA.s:740    .bss.ws2812_spibuf:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_i2f
+__aeabi_fdiv
+__aeabi_fadd
+__aeabi_f2d
+__aeabi_dmul
+__aeabi_d2f
+__aeabi_fmul
+cosf
+__aeabi_dadd
+__aeabi_d2uiz
+HAL_SPI_GetState
+HAL_SPI_Transmit_DMA
+hspi2
+memset

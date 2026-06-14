@@ -1,0 +1,615 @@
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"utils.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "./Application/Src/utils.c"
+  18              		.section	.text.Get_CRC8_Check_Sum,"ax",%progbits
+  19              		.align	1
+  20              		.global	Get_CRC8_Check_Sum
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	Get_CRC8_Check_Sum:
+  26              	.LVL0:
+  27              	.LFB0:
+   1:./Application/Src/utils.c **** #include <utils.h>
+   2:./Application/Src/utils.c **** 
+   3:./Application/Src/utils.c **** // CRC8 generator polynomial: G(x) = x8 + x5 + x4 + 1
+   4:./Application/Src/utils.c **** 
+   5:./Application/Src/utils.c **** const unsigned char CRC8_TAB[256] = {
+   6:./Application/Src/utils.c ****     0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e, 0x20, 0xa3, 0xfd, 0x1f, 0x41,
+   7:./Application/Src/utils.c ****     0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd, 0x3e, 0x60, 0x82, 0xdc,
+   8:./Application/Src/utils.c ****     0x23, 0x7d, 0x9f, 0xc1, 0x42, 0x1c, 0xfe, 0xa0, 0xe1, 0xbf, 0x5d, 0x03, 0x80, 0xde, 0x3c, 0x62,
+   9:./Application/Src/utils.c ****     0xbe, 0xe0, 0x02, 0x5c, 0xdf, 0x81, 0x63, 0x3d, 0x7c, 0x22, 0xc0, 0x9e, 0x1d, 0x43, 0xa1, 0xff,
+  10:./Application/Src/utils.c ****     0x46, 0x18, 0xfa, 0xa4, 0x27, 0x79, 0x9b, 0xc5, 0x84, 0xda, 0x38, 0x66, 0xe5, 0xbb, 0x59, 0x07,
+  11:./Application/Src/utils.c ****     0xdb, 0x85, 0x67, 0x39, 0xba, 0xe4, 0x06, 0x58, 0x19, 0x47, 0xa5, 0xfb, 0x78, 0x26, 0xc4, 0x9a,
+  12:./Application/Src/utils.c ****     0x65, 0x3b, 0xd9, 0x87, 0x04, 0x5a, 0xb8, 0xe6, 0xa7, 0xf9, 0x1b, 0x45, 0xc6, 0x98, 0x7a, 0x24,
+  13:./Application/Src/utils.c ****     0xf8, 0xa6, 0x44, 0x1a, 0x99, 0xc7, 0x25, 0x7b, 0x3a, 0x64, 0x86, 0xd8, 0x5b, 0x05, 0xe7, 0xb9,
+  14:./Application/Src/utils.c ****     0x8c, 0xd2, 0x30, 0x6e, 0xed, 0xb3, 0x51, 0x0f, 0x4e, 0x10, 0xf2, 0xac, 0x2f, 0x71, 0x93, 0xcd,
+  15:./Application/Src/utils.c ****     0x11, 0x4f, 0xad, 0xf3, 0x70, 0x2e, 0xcc, 0x92, 0xd3, 0x8d, 0x6f, 0x31, 0xb2, 0xec, 0x0e, 0x50,
+  16:./Application/Src/utils.c ****     0xaf, 0xf1, 0x13, 0x4d, 0xce, 0x90, 0x72, 0x2c, 0x6d, 0x33, 0xd1, 0x8f, 0x0c, 0x52, 0xb0, 0xee,
+  17:./Application/Src/utils.c ****     0x32, 0x6c, 0x8e, 0xd0, 0x53, 0x0d, 0xef, 0xb1, 0xf0, 0xae, 0x4c, 0x12, 0x91, 0xcf, 0x2d, 0x73,
+  18:./Application/Src/utils.c ****     0xca, 0x94, 0x76, 0x28, 0xab, 0xf5, 0x17, 0x49, 0x08, 0x56, 0xb4, 0xea, 0x69, 0x37, 0xd5, 0x8b,
+  19:./Application/Src/utils.c ****     0x57, 0x09, 0xeb, 0xb5, 0x36, 0x68, 0x8a, 0xd4, 0x95, 0xcb, 0x29, 0x77, 0xf4, 0xaa, 0x48, 0x16,
+  20:./Application/Src/utils.c ****     0xe9, 0xb7, 0x55, 0x0b, 0x88, 0xd6, 0x34, 0x6a, 0x2b, 0x75, 0x97, 0xc9, 0x4a, 0x14, 0xf6, 0xa8,
+  21:./Application/Src/utils.c ****     0x74, 0x2a, 0xc8, 0x96, 0x15, 0x4b, 0xa9, 0xf7, 0xb6, 0xe8, 0x0a, 0x54, 0xd7, 0x89, 0x6b, 0x35
+  22:./Application/Src/utils.c **** };
+  23:./Application/Src/utils.c **** 
+  24:./Application/Src/utils.c **** unsigned char Get_CRC8_Check_Sum(unsigned char *pchMessage, unsigned int dwLength, unsigned char uc
+  28              		.loc 1 24 106 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              		.loc 1 24 106 is_stmt 0 view .LVU1
+  34 0000 0346     		mov	r3, r0
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 2
+
+
+  35 0002 1046     		mov	r0, r2
+  36              	.LVL1:
+  25:./Application/Src/utils.c ****     unsigned char ucIndex;
+  37              		.loc 1 25 5 is_stmt 1 view .LVU2
+  26:./Application/Src/utils.c ****     while (dwLength--) {
+  38              		.loc 1 26 5 view .LVU3
+  39              		.loc 1 26 11 is_stmt 0 view .LVU4
+  40 0004 05E0     		b	.L2
+  41              	.LVL2:
+  42              	.L3:
+  27:./Application/Src/utils.c ****         ucIndex = ucCRC8 ^ (*pchMessage++);
+  43              		.loc 1 27 9 is_stmt 1 view .LVU5
+  44              		.loc 1 27 29 is_stmt 0 view .LVU6
+  45 0006 13F8011B 		ldrb	r1, [r3], #1	@ zero_extendqisi2
+  46              	.LVL3:
+  47              		.loc 1 27 17 view .LVU7
+  48 000a 4140     		eors	r1, r1, r0
+  49              	.LVL4:
+  28:./Application/Src/utils.c ****         ucCRC8 = CRC8_TAB[ucIndex];
+  50              		.loc 1 28 9 is_stmt 1 view .LVU8
+  51              		.loc 1 28 16 is_stmt 0 view .LVU9
+  52 000c 0348     		ldr	r0, .L4
+  53              	.LVL5:
+  54              		.loc 1 28 16 view .LVU10
+  55 000e 405C     		ldrb	r0, [r0, r1]	@ zero_extendqisi2
+  56              	.LVL6:
+  26:./Application/Src/utils.c ****     while (dwLength--) {
+  57              		.loc 1 26 20 view .LVU11
+  58 0010 1146     		mov	r1, r2
+  59              	.LVL7:
+  60              	.L2:
+  26:./Application/Src/utils.c ****     while (dwLength--) {
+  61              		.loc 1 26 12 is_stmt 1 view .LVU12
+  26:./Application/Src/utils.c ****     while (dwLength--) {
+  62              		.loc 1 26 20 is_stmt 0 view .LVU13
+  63 0012 4A1E     		subs	r2, r1, #1
+  64              	.LVL8:
+  26:./Application/Src/utils.c ****     while (dwLength--) {
+  65              		.loc 1 26 12 view .LVU14
+  66 0014 0029     		cmp	r1, #0
+  67 0016 F6D1     		bne	.L3
+  29:./Application/Src/utils.c ****     }
+  30:./Application/Src/utils.c ****     return ucCRC8;
+  68              		.loc 1 30 5 is_stmt 1 view .LVU15
+  31:./Application/Src/utils.c **** }
+  69              		.loc 1 31 1 is_stmt 0 view .LVU16
+  70 0018 7047     		bx	lr
+  71              	.L5:
+  72 001a 00BF     		.align	2
+  73              	.L4:
+  74 001c 00000000 		.word	CRC8_TAB
+  75              		.cfi_endproc
+  76              	.LFE0:
+  78              		.section	.text.Get_CRC16_Check_Sum,"ax",%progbits
+  79              		.align	1
+  80              		.global	Get_CRC16_Check_Sum
+  81              		.syntax unified
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 3
+
+
+  82              		.thumb
+  83              		.thumb_func
+  85              	Get_CRC16_Check_Sum:
+  86              	.LVL9:
+  87              	.LFB1:
+  32:./Application/Src/utils.c **** 
+  33:./Application/Src/utils.c **** // CRC16
+  34:./Application/Src/utils.c **** const uint16_t wCRC_Table[256] = {
+  35:./Application/Src/utils.c ****     0x0000, 0x1189, 0x2312, 0x329b, 0x4624, 0x57ad, 0x6536, 0x74bf,
+  36:./Application/Src/utils.c ****     0x8c48, 0x9dc1, 0xaf5a, 0xbed3, 0xca6c, 0xdbe5, 0xe97e, 0xf8f7,
+  37:./Application/Src/utils.c ****     0x1081, 0x0108, 0x3393, 0x221a, 0x56a5, 0x472c, 0x75b7, 0x643e,
+  38:./Application/Src/utils.c ****     0x9cc9, 0x8d40, 0xbfdb, 0xae52, 0xdaed, 0xcb64, 0xf9ff, 0xe876,
+  39:./Application/Src/utils.c ****     0x2102, 0x308b, 0x0210, 0x1399, 0x6726, 0x76af, 0x4434, 0x55bd,
+  40:./Application/Src/utils.c ****     0xad4a, 0xbcc3, 0x8e58, 0x9fd1, 0xeb6e, 0xfae7, 0xc87c, 0xd9f5,
+  41:./Application/Src/utils.c ****     0x3183, 0x200a, 0x1291, 0x0318, 0x77a7, 0x662e, 0x54b5, 0x453c,
+  42:./Application/Src/utils.c ****     0xbdcb, 0xac42, 0x9ed9, 0x8f50, 0xfbef, 0xea66, 0xd8fd, 0xc974,
+  43:./Application/Src/utils.c ****     0x4204, 0x538d, 0x6116, 0x709f, 0x0420, 0x15a9, 0x2732, 0x36bb,
+  44:./Application/Src/utils.c ****     0xce4c, 0xdfc5, 0xed5e, 0xfcd7, 0x8868, 0x99e1, 0xab7a, 0xbaf3,
+  45:./Application/Src/utils.c ****     0x5285, 0x430c, 0x7197, 0x601e, 0x14a1, 0x0528, 0x37b3, 0x263a,
+  46:./Application/Src/utils.c ****     0xdecd, 0xcf44, 0xfddf, 0xec56, 0x98e9, 0x8960, 0xbbfb, 0xaa72,
+  47:./Application/Src/utils.c ****     0x6306, 0x728f, 0x4014, 0x519d, 0x2522, 0x34ab, 0x0630, 0x17b9,
+  48:./Application/Src/utils.c ****     0xef4e, 0xfec7, 0xcc5c, 0xddd5, 0xa96a, 0xb8e3, 0x8a78, 0x9bf1,
+  49:./Application/Src/utils.c ****     0x7387, 0x620e, 0x5095, 0x411c, 0x35a3, 0x242a, 0x16b1, 0x0738,
+  50:./Application/Src/utils.c ****     0xffcf, 0xee46, 0xdcdd, 0xcd54, 0xb9eb, 0xa862, 0x9af9, 0x8b70,
+  51:./Application/Src/utils.c ****     0x8408, 0x9581, 0xa71a, 0xb693, 0xc22c, 0xd3a5, 0xe13e, 0xf0b7,
+  52:./Application/Src/utils.c ****     0x0840, 0x19c9, 0x2b52, 0x3adb, 0x4e64, 0x5fed, 0x6d76, 0x7cff,
+  53:./Application/Src/utils.c ****     0x9489, 0x8500, 0xb79b, 0xa612, 0xd2ad, 0xc324, 0xf1bf, 0xe036,
+  54:./Application/Src/utils.c ****     0x18c1, 0x0948, 0x3bd3, 0x2a5a, 0x5ee5, 0x4f6c, 0x7df7, 0x6c7e,
+  55:./Application/Src/utils.c ****     0xa50a, 0xb483, 0x8618, 0x9791, 0xe32e, 0xf2a7, 0xc03c, 0xd1b5,
+  56:./Application/Src/utils.c ****     0x2942, 0x38cb, 0x0a50, 0x1bd9, 0x6f66, 0x7eef, 0x4c74, 0x5dfd,
+  57:./Application/Src/utils.c ****     0xb58b, 0xa402, 0x9699, 0x8710, 0xf3af, 0xe226, 0xd0bd, 0xc134,
+  58:./Application/Src/utils.c ****     0x39c3, 0x284a, 0x1ad1, 0x0b58, 0x7fe7, 0x6e6e, 0x5cf5, 0x4d7c,
+  59:./Application/Src/utils.c ****     0xc60c, 0xd785, 0xe51e, 0xf497, 0x8028, 0x91a1, 0xa33a, 0xb2b3,
+  60:./Application/Src/utils.c ****     0x4a44, 0x5bcd, 0x6956, 0x78df, 0x0c60, 0x1de9, 0x2f72, 0x3efb,
+  61:./Application/Src/utils.c ****     0xd68d, 0xc704, 0xf59f, 0xe416, 0x90a9, 0x8120, 0xb3bb, 0xa232,
+  62:./Application/Src/utils.c ****     0x5ac5, 0x4b4c, 0x79d7, 0x685e, 0x1ce1, 0x0d68, 0x3ff3, 0x2e7a,
+  63:./Application/Src/utils.c ****     0xe70e, 0xf687, 0xc41c, 0xd595, 0xa12a, 0xb0a3, 0x8238, 0x93b1,
+  64:./Application/Src/utils.c ****     0x6b46, 0x7acf, 0x4854, 0x59dd, 0x2d62, 0x3ceb, 0x0e70, 0x1ff9,
+  65:./Application/Src/utils.c ****     0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,
+  66:./Application/Src/utils.c ****     0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78
+  67:./Application/Src/utils.c **** };
+  68:./Application/Src/utils.c **** 
+  69:./Application/Src/utils.c **** /*
+  70:./Application/Src/utils.c **** ** Descriptions: CRC16 checksum function
+  71:./Application/Src/utils.c **** ** Input: Data to check, Stream length, initialized checksum
+  72:./Application/Src/utils.c **** ** Output: CRC checksum
+  73:./Application/Src/utils.c **** */
+  74:./Application/Src/utils.c **** uint16_t Get_CRC16_Check_Sum(const uint8_t *pchMessage, uint32_t dwLength, uint16_t wCRC) {
+  88              		.loc 1 74 91 is_stmt 1 view -0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92              		@ link register save eliminated.
+  75:./Application/Src/utils.c ****     uint8_t chData;
+  93              		.loc 1 75 5 view .LVU18
+  76:./Application/Src/utils.c ****     if (pchMessage == NULL) {
+  94              		.loc 1 76 5 view .LVU19
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 4
+
+
+  95              		.loc 1 76 8 is_stmt 0 view .LVU20
+  96 0000 0346     		mov	r3, r0
+  97 0002 68B9     		cbnz	r0, .L8
+  77:./Application/Src/utils.c ****         return 0xFFFF;
+  98              		.loc 1 77 16 view .LVU21
+  99 0004 4FF6FF72 		movw	r2, #65535
+ 100              	.LVL10:
+ 101              		.loc 1 77 16 view .LVU22
+ 102 0008 0DE0     		b	.L7
+ 103              	.LVL11:
+ 104              	.L9:
+  78:./Application/Src/utils.c ****     }
+  79:./Application/Src/utils.c ****     while (dwLength--) {
+  80:./Application/Src/utils.c ****         chData = *pchMessage++;
+ 105              		.loc 1 80 9 is_stmt 1 view .LVU23
+ 106              		.loc 1 80 16 is_stmt 0 view .LVU24
+ 107 000a 13F8011B 		ldrb	r1, [r3], #1	@ zero_extendqisi2
+ 108              	.LVL12:
+  81:./Application/Src/utils.c ****         wCRC = (uint16_t)(wCRC >> 8) ^ wCRC_Table[(uint16_t)(wCRC ^ (uint16_t)chData) & 0x00ff];
+ 109              		.loc 1 81 9 is_stmt 1 view .LVU25
+ 110              		.loc 1 81 51 is_stmt 0 view .LVU26
+ 111 000e 5140     		eors	r1, r1, r2
+ 112              		.loc 1 81 87 view .LVU27
+ 113 0010 C9B2     		uxtb	r1, r1
+ 114              		.loc 1 81 50 view .LVU28
+ 115 0012 DFF818C0 		ldr	ip, .L11
+ 116 0016 3CF81110 		ldrh	r1, [ip, r1, lsl #1]
+ 117              		.loc 1 81 14 view .LVU29
+ 118 001a 81EA1222 		eor	r2, r1, r2, lsr #8
+ 119              	.LVL13:
+  79:./Application/Src/utils.c ****         chData = *pchMessage++;
+ 120              		.loc 1 79 20 view .LVU30
+ 121 001e 0146     		mov	r1, r0
+ 122              	.LVL14:
+ 123              	.L8:
+  79:./Application/Src/utils.c ****         chData = *pchMessage++;
+ 124              		.loc 1 79 12 is_stmt 1 view .LVU31
+  79:./Application/Src/utils.c ****         chData = *pchMessage++;
+ 125              		.loc 1 79 20 is_stmt 0 view .LVU32
+ 126 0020 481E     		subs	r0, r1, #1
+ 127              	.LVL15:
+  79:./Application/Src/utils.c ****         chData = *pchMessage++;
+ 128              		.loc 1 79 12 view .LVU33
+ 129 0022 0029     		cmp	r1, #0
+ 130 0024 F1D1     		bne	.L9
+ 131              	.LVL16:
+ 132              	.L7:
+  82:./Application/Src/utils.c ****     }
+  83:./Application/Src/utils.c ****     return wCRC;
+  84:./Application/Src/utils.c **** }...
+ 133              		.loc 1 84 1 view .LVU34
+ 134 0026 1046     		mov	r0, r2
+ 135 0028 7047     		bx	lr
+ 136              	.L12:
+ 137 002a 00BF     		.align	2
+ 138              	.L11:
+ 139 002c 00000000 		.word	wCRC_Table
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 5
+
+
+ 140              		.cfi_endproc
+ 141              	.LFE1:
+ 143              		.global	wCRC_Table
+ 144              		.section	.rodata.wCRC_Table,"a"
+ 145              		.align	2
+ 148              	wCRC_Table:
+ 149 0000 0000     		.short	0
+ 150 0002 8911     		.short	4489
+ 151 0004 1223     		.short	8978
+ 152 0006 9B32     		.short	12955
+ 153 0008 2446     		.short	17956
+ 154 000a AD57     		.short	22445
+ 155 000c 3665     		.short	25910
+ 156 000e BF74     		.short	29887
+ 157 0010 488C     		.short	-29624
+ 158 0012 C19D     		.short	-25151
+ 159 0014 5AAF     		.short	-20646
+ 160 0016 D3BE     		.short	-16685
+ 161 0018 6CCA     		.short	-13716
+ 162 001a E5DB     		.short	-9243
+ 163 001c 7EE9     		.short	-5762
+ 164 001e F7F8     		.short	-1801
+ 165 0020 8110     		.short	4225
+ 166 0022 0801     		.short	264
+ 167 0024 9333     		.short	13203
+ 168 0026 1A22     		.short	8730
+ 169 0028 A556     		.short	22181
+ 170 002a 2C47     		.short	18220
+ 171 002c B775     		.short	30135
+ 172 002e 3E64     		.short	25662
+ 173 0030 C99C     		.short	-25399
+ 174 0032 408D     		.short	-29376
+ 175 0034 DBBF     		.short	-16421
+ 176 0036 52AE     		.short	-20910
+ 177 0038 EDDA     		.short	-9491
+ 178 003a 64CB     		.short	-13468
+ 179 003c FFF9     		.short	-1537
+ 180 003e 76E8     		.short	-6026
+ 181 0040 0221     		.short	8450
+ 182 0042 8B30     		.short	12427
+ 183 0044 1002     		.short	528
+ 184 0046 9913     		.short	5017
+ 185 0048 2667     		.short	26406
+ 186 004a AF76     		.short	30383
+ 187 004c 3444     		.short	17460
+ 188 004e BD55     		.short	21949
+ 189 0050 4AAD     		.short	-21174
+ 190 0052 C3BC     		.short	-17213
+ 191 0054 588E     		.short	-29096
+ 192 0056 D19F     		.short	-24623
+ 193 0058 6EEB     		.short	-5266
+ 194 005a E7FA     		.short	-1305
+ 195 005c 7CC8     		.short	-14212
+ 196 005e F5D9     		.short	-9739
+ 197 0060 8331     		.short	12675
+ 198 0062 0A20     		.short	8202
+ 199 0064 9112     		.short	4753
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 6
+
+
+ 200 0066 1803     		.short	792
+ 201 0068 A777     		.short	30631
+ 202 006a 2E66     		.short	26158
+ 203 006c B554     		.short	21685
+ 204 006e 3C45     		.short	17724
+ 205 0070 CBBD     		.short	-16949
+ 206 0072 42AC     		.short	-21438
+ 207 0074 D99E     		.short	-24871
+ 208 0076 508F     		.short	-28848
+ 209 0078 EFFB     		.short	-1041
+ 210 007a 66EA     		.short	-5530
+ 211 007c FDD8     		.short	-9987
+ 212 007e 74C9     		.short	-13964
+ 213 0080 0442     		.short	16900
+ 214 0082 8D53     		.short	21389
+ 215 0084 1661     		.short	24854
+ 216 0086 9F70     		.short	28831
+ 217 0088 2004     		.short	1056
+ 218 008a A915     		.short	5545
+ 219 008c 3227     		.short	10034
+ 220 008e BB36     		.short	14011
+ 221 0090 4CCE     		.short	-12724
+ 222 0092 C5DF     		.short	-8251
+ 223 0094 5EED     		.short	-4770
+ 224 0096 D7FC     		.short	-809
+ 225 0098 6888     		.short	-30616
+ 226 009a E199     		.short	-26143
+ 227 009c 7AAB     		.short	-21638
+ 228 009e F3BA     		.short	-17677
+ 229 00a0 8552     		.short	21125
+ 230 00a2 0C43     		.short	17164
+ 231 00a4 9771     		.short	29079
+ 232 00a6 1E60     		.short	24606
+ 233 00a8 A114     		.short	5281
+ 234 00aa 2805     		.short	1320
+ 235 00ac B337     		.short	14259
+ 236 00ae 3A26     		.short	9786
+ 237 00b0 CDDE     		.short	-8499
+ 238 00b2 44CF     		.short	-12476
+ 239 00b4 DFFD     		.short	-545
+ 240 00b6 56EC     		.short	-5034
+ 241 00b8 E998     		.short	-26391
+ 242 00ba 6089     		.short	-30368
+ 243 00bc FBBB     		.short	-17413
+ 244 00be 72AA     		.short	-21902
+ 245 00c0 0663     		.short	25350
+ 246 00c2 8F72     		.short	29327
+ 247 00c4 1440     		.short	16404
+ 248 00c6 9D51     		.short	20893
+ 249 00c8 2225     		.short	9506
+ 250 00ca AB34     		.short	13483
+ 251 00cc 3006     		.short	1584
+ 252 00ce B917     		.short	6073
+ 253 00d0 4EEF     		.short	-4274
+ 254 00d2 C7FE     		.short	-313
+ 255 00d4 5CCC     		.short	-13220
+ 256 00d6 D5DD     		.short	-8747
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 7
+
+
+ 257 00d8 6AA9     		.short	-22166
+ 258 00da E3B8     		.short	-18205
+ 259 00dc 788A     		.short	-30088
+ 260 00de F19B     		.short	-25615
+ 261 00e0 8773     		.short	29575
+ 262 00e2 0E62     		.short	25102
+ 263 00e4 9550     		.short	20629
+ 264 00e6 1C41     		.short	16668
+ 265 00e8 A335     		.short	13731
+ 266 00ea 2A24     		.short	9258
+ 267 00ec B116     		.short	5809
+ 268 00ee 3807     		.short	1848
+ 269 00f0 CFFF     		.short	-49
+ 270 00f2 46EE     		.short	-4538
+ 271 00f4 DDDC     		.short	-8995
+ 272 00f6 54CD     		.short	-12972
+ 273 00f8 EBB9     		.short	-17941
+ 274 00fa 62A8     		.short	-22430
+ 275 00fc F99A     		.short	-25863
+ 276 00fe 708B     		.short	-29840
+ 277 0100 0884     		.short	-31736
+ 278 0102 8195     		.short	-27263
+ 279 0104 1AA7     		.short	-22758
+ 280 0106 93B6     		.short	-18797
+ 281 0108 2CC2     		.short	-15828
+ 282 010a A5D3     		.short	-11355
+ 283 010c 3EE1     		.short	-7874
+ 284 010e B7F0     		.short	-3913
+ 285 0110 4008     		.short	2112
+ 286 0112 C919     		.short	6601
+ 287 0114 522B     		.short	11090
+ 288 0116 DB3A     		.short	15067
+ 289 0118 644E     		.short	20068
+ 290 011a ED5F     		.short	24557
+ 291 011c 766D     		.short	28022
+ 292 011e FF7C     		.short	31999
+ 293 0120 8994     		.short	-27511
+ 294 0122 0085     		.short	-31488
+ 295 0124 9BB7     		.short	-18533
+ 296 0126 12A6     		.short	-23022
+ 297 0128 ADD2     		.short	-11603
+ 298 012a 24C3     		.short	-15580
+ 299 012c BFF1     		.short	-3649
+ 300 012e 36E0     		.short	-8138
+ 301 0130 C118     		.short	6337
+ 302 0132 4809     		.short	2376
+ 303 0134 D33B     		.short	15315
+ 304 0136 5A2A     		.short	10842
+ 305 0138 E55E     		.short	24293
+ 306 013a 6C4F     		.short	20332
+ 307 013c F77D     		.short	32247
+ 308 013e 7E6C     		.short	27774
+ 309 0140 0AA5     		.short	-23286
+ 310 0142 83B4     		.short	-19325
+ 311 0144 1886     		.short	-31208
+ 312 0146 9197     		.short	-26735
+ 313 0148 2EE3     		.short	-7378
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 8
+
+
+ 314 014a A7F2     		.short	-3417
+ 315 014c 3CC0     		.short	-16324
+ 316 014e B5D1     		.short	-11851
+ 317 0150 4229     		.short	10562
+ 318 0152 CB38     		.short	14539
+ 319 0154 500A     		.short	2640
+ 320 0156 D91B     		.short	7129
+ 321 0158 666F     		.short	28518
+ 322 015a EF7E     		.short	32495
+ 323 015c 744C     		.short	19572
+ 324 015e FD5D     		.short	24061
+ 325 0160 8BB5     		.short	-19061
+ 326 0162 02A4     		.short	-23550
+ 327 0164 9996     		.short	-26983
+ 328 0166 1087     		.short	-30960
+ 329 0168 AFF3     		.short	-3153
+ 330 016a 26E2     		.short	-7642
+ 331 016c BDD0     		.short	-12099
+ 332 016e 34C1     		.short	-16076
+ 333 0170 C339     		.short	14787
+ 334 0172 4A28     		.short	10314
+ 335 0174 D11A     		.short	6865
+ 336 0176 580B     		.short	2904
+ 337 0178 E77F     		.short	32743
+ 338 017a 6E6E     		.short	28270
+ 339 017c F55C     		.short	23797
+ 340 017e 7C4D     		.short	19836
+ 341 0180 0CC6     		.short	-14836
+ 342 0182 85D7     		.short	-10363
+ 343 0184 1EE5     		.short	-6882
+ 344 0186 97F4     		.short	-2921
+ 345 0188 2880     		.short	-32728
+ 346 018a A191     		.short	-28255
+ 347 018c 3AA3     		.short	-23750
+ 348 018e B3B2     		.short	-19789
+ 349 0190 444A     		.short	19012
+ 350 0192 CD5B     		.short	23501
+ 351 0194 5669     		.short	26966
+ 352 0196 DF78     		.short	30943
+ 353 0198 600C     		.short	3168
+ 354 019a E91D     		.short	7657
+ 355 019c 722F     		.short	12146
+ 356 019e FB3E     		.short	16123
+ 357 01a0 8DD6     		.short	-10611
+ 358 01a2 04C7     		.short	-14588
+ 359 01a4 9FF5     		.short	-2657
+ 360 01a6 16E4     		.short	-7146
+ 361 01a8 A990     		.short	-28503
+ 362 01aa 2081     		.short	-32480
+ 363 01ac BBB3     		.short	-19525
+ 364 01ae 32A2     		.short	-24014
+ 365 01b0 C55A     		.short	23237
+ 366 01b2 4C4B     		.short	19276
+ 367 01b4 D779     		.short	31191
+ 368 01b6 5E68     		.short	26718
+ 369 01b8 E11C     		.short	7393
+ 370 01ba 680D     		.short	3432
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 9
+
+
+ 371 01bc F33F     		.short	16371
+ 372 01be 7A2E     		.short	11898
+ 373 01c0 0EE7     		.short	-6386
+ 374 01c2 87F6     		.short	-2425
+ 375 01c4 1CC4     		.short	-15332
+ 376 01c6 95D5     		.short	-10859
+ 377 01c8 2AA1     		.short	-24278
+ 378 01ca A3B0     		.short	-20317
+ 379 01cc 3882     		.short	-32200
+ 380 01ce B193     		.short	-27727
+ 381 01d0 466B     		.short	27462
+ 382 01d2 CF7A     		.short	31439
+ 383 01d4 5448     		.short	18516
+ 384 01d6 DD59     		.short	23005
+ 385 01d8 622D     		.short	11618
+ 386 01da EB3C     		.short	15595
+ 387 01dc 700E     		.short	3696
+ 388 01de F91F     		.short	8185
+ 389 01e0 8FF7     		.short	-2161
+ 390 01e2 06E6     		.short	-6650
+ 391 01e4 9DD4     		.short	-11107
+ 392 01e6 14C5     		.short	-15084
+ 393 01e8 ABB1     		.short	-20053
+ 394 01ea 22A0     		.short	-24542
+ 395 01ec B992     		.short	-27975
+ 396 01ee 3083     		.short	-31952
+ 397 01f0 C77B     		.short	31687
+ 398 01f2 4E6A     		.short	27214
+ 399 01f4 D558     		.short	22741
+ 400 01f6 5C49     		.short	18780
+ 401 01f8 E33D     		.short	15843
+ 402 01fa 6A2C     		.short	11370
+ 403 01fc F11E     		.short	7921
+ 404 01fe 780F     		.short	3960
+ 405              		.global	CRC8_TAB
+ 406              		.section	.rodata.CRC8_TAB,"a"
+ 407              		.align	2
+ 410              	CRC8_TAB:
+ 411 0000 005EBCE2 		.ascii	"\000^\274\342a?\335\203\302\234~ \243\375\037A\235\303"
+ 411      613FDD83 
+ 411      C29C7E20 
+ 411      A3FD1F41 
+ 411      9DC3
+ 412 0012 217FFCA2 		.ascii	"!\177\374\242@\036_\001\343\275>`\202\334#}\237\301"
+ 412      401E5F01 
+ 412      E3BD3E60 
+ 412      82DC237D 
+ 412      9FC1
+ 413 0024 421CFEA0 		.ascii	"B\034\376\240\341\277]\003\200\336<b\276\340\002\\\337"
+ 413      E1BF5D03 
+ 413      80DE3C62 
+ 413      BEE0025C 
+ 413      DF
+ 414 0035 81633D7C 		.ascii	"\201c=|\"\300\236\035C\241\377F\030\372\244'y\233\305"
+ 414      22C09E1D 
+ 414      43A1FF46 
+ 414      18FAA427 
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 10
+
+
+ 414      799BC5
+ 415 0048 84DA3866 		.ascii	"\204\3328f\345\273Y\007\333\205g9\272\344\006X\031G"
+ 415      E5BB5907 
+ 415      DB856739 
+ 415      BAE40658 
+ 415      1947
+ 416 005a A5FB7826 		.ascii	"\245\373x&\304\232e;\331\207\004Z\270\346\247\371\033"
+ 416      C49A653B 
+ 416      D987045A 
+ 416      B8E6A7F9 
+ 416      1B
+ 417 006b 45C6987A 		.ascii	"E\306\230z$\370\246D\032\231\307%{:d\206\330[\005\347"
+ 417      24F8A644 
+ 417      1A99C725 
+ 417      7B3A6486 
+ 417      D85B05E7 
+ 418 007f B98CD230 		.ascii	"\271\214\3220n\355\263Q\017N\020\362\254/q\223\315\021"
+ 418      6EEDB351 
+ 418      0F4E10F2 
+ 418      AC2F7193 
+ 418      CD11
+ 419 0091 4FADF370 		.ascii	"O\255\363p.\314\222\323\215o1\262\354\016P\257\361\023"
+ 419      2ECC92D3 
+ 419      8D6F31B2 
+ 419      EC0E50AF 
+ 419      F113
+ 420 00a3 4DCE9072 		.ascii	"M\316\220r,m3\321\217\014R\260\3562l\216\320S\015\357"
+ 420      2C6D33D1 
+ 420      8F0C52B0 
+ 420      EE326C8E 
+ 420      D0530DEF 
+ 421 00b7 B1F0AE4C 		.ascii	"\261\360\256L\022\221\317-s\312\224v(\253\365\027I\010"
+ 421      1291CF2D 
+ 421      73CA9476 
+ 421      28ABF517 
+ 421      4908
+ 422 00c9 56B4EA69 		.ascii	"V\264\352i7\325\213W\011\353\2656h\212\324\225\313)"
+ 422      37D58B57 
+ 422      09EBB536 
+ 422      688AD495 
+ 422      CB29
+ 423 00db 77F4AA48 		.ascii	"w\364\252H\026\351\267U\013\210\3264j+u\227\311J\024"
+ 423      16E9B755 
+ 423      0B88D634 
+ 423      6A2B7597 
+ 423      C94A14
+ 424 00ee F6A8742A 		.ascii	"\366\250t*\310\226\025K\251\367\266\350\012T\327\211"
+ 424      C896154B 
+ 424      A9F7B6E8 
+ 424      0A54D789 
+ 425 00fe 6B35     		.ascii	"k5"
+ 426              		.text
+ 427              	.Letext0:
+ 428              		.file 2 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
+ 429              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 utils.c
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:19     .text.Get_CRC8_Check_Sum:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:25     .text.Get_CRC8_Check_Sum:00000000 Get_CRC8_Check_Sum
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:74     .text.Get_CRC8_Check_Sum:0000001c $d
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:410    .rodata.CRC8_TAB:00000000 CRC8_TAB
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:79     .text.Get_CRC16_Check_Sum:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:85     .text.Get_CRC16_Check_Sum:00000000 Get_CRC16_Check_Sum
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:139    .text.Get_CRC16_Check_Sum:0000002c $d
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:148    .rodata.wCRC_Table:00000000 wCRC_Table
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:145    .rodata.wCRC_Table:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\cc1WtYrx.s:407    .rodata.CRC8_TAB:00000000 $d
+
+NO UNDEFINED SYMBOLS

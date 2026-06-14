@@ -1,0 +1,665 @@
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"application.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "./Application/Src/application.c"
+  18              		.section	.text.init_keys,"ax",%progbits
+  19              		.align	1
+  20              		.global	init_keys
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	init_keys:
+  26              	.LFB65:
+   1:./Application/Src/application.c **** #include <application.h>
+   2:./Application/Src/application.c **** 
+   3:./Application/Src/application.c **** key_bullet_t Keys[KEY_NUMBER];
+   4:./Application/Src/application.c **** bool Keys_pressed[KEY_NUMBER];
+   5:./Application/Src/application.c **** VOFA_REPORT vofa;
+   6:./Application/Src/application.c **** key_packet_t key_packet;
+   7:./Application/Src/application.c **** frame_header_t frame_header;
+   8:./Application/Src/application.c **** frame_body_tail_t frame_body_tail;
+   9:./Application/Src/application.c **** referee_packet_t referee_packet;
+  10:./Application/Src/application.c **** volatile uint32_t ms_counter = 0;
+  11:./Application/Src/application.c **** 
+  12:./Application/Src/application.c **** void init_keys(){
+  27              		.loc 1 12 17 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  13:./Application/Src/application.c ****     memset(Keys, 0, sizeof(Keys));
+  36              		.loc 1 13 5 view .LVU1
+  37 0002 0B4C     		ldr	r4, .L3
+  38 0004 3C22     		movs	r2, #60
+  39 0006 0021     		movs	r1, #0
+  40 0008 2046     		mov	r0, r4
+  41 000a FFF7FEFF 		bl	memset
+  42              	.LVL0:
+  14:./Application/Src/application.c ****     memset(Keys_pressed, 0, sizeof(Keys_pressed));
+  43              		.loc 1 14 5 view .LVU2
+  44 000e 094B     		ldr	r3, .L3+4
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 2
+
+
+  45 0010 0022     		movs	r2, #0
+  46 0012 1A80     		strh	r2, [r3]	@ movhi
+  47 0014 9A70     		strb	r2, [r3, #2]
+  15:./Application/Src/application.c ****     Keys[0].key = 3; // PA3
+  48              		.loc 1 15 5 view .LVU3
+  49              		.loc 1 15 17 is_stmt 0 view .LVU4
+  50 0016 0323     		movs	r3, #3
+  51 0018 2360     		str	r3, [r4]
+  16:./Application/Src/application.c ****     Keys[1].key = 4; // PA4
+  52              		.loc 1 16 5 is_stmt 1 view .LVU5
+  53              		.loc 1 16 17 is_stmt 0 view .LVU6
+  54 001a 0423     		movs	r3, #4
+  55 001c 6361     		str	r3, [r4, #20]
+  17:./Application/Src/application.c ****     Keys[2].key = 5; // PA5
+  56              		.loc 1 17 5 is_stmt 1 view .LVU7
+  57              		.loc 1 17 17 is_stmt 0 view .LVU8
+  58 001e 0523     		movs	r3, #5
+  59 0020 A362     		str	r3, [r4, #40]
+  18:./Application/Src/application.c ****     Keys[0].small_bullet_x_pos = 1160;
+  60              		.loc 1 18 5 is_stmt 1 view .LVU9
+  61              		.loc 1 18 32 is_stmt 0 view .LVU10
+  62 0022 4FF49163 		mov	r3, #1160
+  63 0026 6360     		str	r3, [r4, #4]
+  19:./Application/Src/application.c ****     Keys[0].small_bullet_y_pos = 560;
+  64              		.loc 1 19 5 is_stmt 1 view .LVU11
+  65              		.loc 1 19 32 is_stmt 0 view .LVU12
+  66 0028 4FF40C73 		mov	r3, #560
+  67 002c A360     		str	r3, [r4, #8]
+  20:./Application/Src/application.c **** }
+  68              		.loc 1 20 1 view .LVU13
+  69 002e 10BD     		pop	{r4, pc}
+  70              	.L4:
+  71              		.align	2
+  72              	.L3:
+  73 0030 00000000 		.word	Keys
+  74 0034 00000000 		.word	Keys_pressed
+  75              		.cfi_endproc
+  76              	.LFE65:
+  78              		.section	.text.init_vofa,"ax",%progbits
+  79              		.align	1
+  80              		.global	init_vofa
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	init_vofa:
+  86              	.LFB66:
+  21:./Application/Src/application.c **** 
+  22:./Application/Src/application.c **** void init_vofa(){
+  87              		.loc 1 22 17 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+  23:./Application/Src/application.c ****     vofa.tail[0] = 0x00;
+  92              		.loc 1 23 5 view .LVU15
+  93              		.loc 1 23 18 is_stmt 0 view .LVU16
+  94 0000 044B     		ldr	r3, .L6
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 3
+
+
+  95 0002 0022     		movs	r2, #0
+  96 0004 1A75     		strb	r2, [r3, #20]
+  24:./Application/Src/application.c ****     vofa.tail[1] = 0x00;
+  97              		.loc 1 24 5 is_stmt 1 view .LVU17
+  98              		.loc 1 24 18 is_stmt 0 view .LVU18
+  99 0006 5A75     		strb	r2, [r3, #21]
+  25:./Application/Src/application.c ****     vofa.tail[2] = 0x80;
+ 100              		.loc 1 25 5 is_stmt 1 view .LVU19
+ 101              		.loc 1 25 18 is_stmt 0 view .LVU20
+ 102 0008 8022     		movs	r2, #128
+ 103 000a 9A75     		strb	r2, [r3, #22]
+  26:./Application/Src/application.c ****     vofa.tail[3] = 0x7F;
+ 104              		.loc 1 26 5 is_stmt 1 view .LVU21
+ 105              		.loc 1 26 18 is_stmt 0 view .LVU22
+ 106 000c 7F22     		movs	r2, #127
+ 107 000e DA75     		strb	r2, [r3, #23]
+  27:./Application/Src/application.c **** }
+ 108              		.loc 1 27 1 view .LVU23
+ 109 0010 7047     		bx	lr
+ 110              	.L7:
+ 111 0012 00BF     		.align	2
+ 112              	.L6:
+ 113 0014 00000000 		.word	vofa
+ 114              		.cfi_endproc
+ 115              	.LFE66:
+ 117              		.section	.text.init_packet,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	init_packet
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 124              	init_packet:
+ 125              	.LFB67:
+  28:./Application/Src/application.c **** 
+  29:./Application/Src/application.c **** void init_packet(){
+ 126              		.loc 1 29 19 is_stmt 1 view -0
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 131              	.LCFI1:
+ 132              		.cfi_def_cfa_offset 24
+ 133              		.cfi_offset 3, -24
+ 134              		.cfi_offset 4, -20
+ 135              		.cfi_offset 5, -16
+ 136              		.cfi_offset 6, -12
+ 137              		.cfi_offset 7, -8
+ 138              		.cfi_offset 14, -4
+  30:./Application/Src/application.c ****     // for custom keyboard the command id will be 0x0306 with fixed 8 byte data, the size of packet
+  31:./Application/Src/application.c ****     // we can fill the packet header in starting stage:
+  32:./Application/Src/application.c ****     memset(&key_packet, 0, sizeof(key_packet));
+ 139              		.loc 1 32 5 view .LVU25
+ 140 0002 1D4F     		ldr	r7, .L10
+ 141 0004 0023     		movs	r3, #0
+ 142 0006 3B60     		str	r3, [r7]
+ 143 0008 7B60     		str	r3, [r7, #4]
+  33:./Application/Src/application.c ****     memset(&frame_header, 0, sizeof(frame_header));
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 4
+
+
+ 144              		.loc 1 33 5 view .LVU26
+ 145 000a 1C4E     		ldr	r6, .L10+4
+ 146 000c 3360     		str	r3, [r6]
+ 147 000e 3371     		strb	r3, [r6, #4]
+  34:./Application/Src/application.c ****     memset(&frame_body_tail, 0, sizeof(frame_body_tail));
+ 148              		.loc 1 34 5 view .LVU27
+ 149 0010 1B4D     		ldr	r5, .L10+8
+ 150 0012 2B60     		str	r3, [r5]
+ 151 0014 6B60     		str	r3, [r5, #4]
+ 152 0016 AB60     		str	r3, [r5, #8]
+  35:./Application/Src/application.c ****     memset(&referee_packet, 0, sizeof(referee_packet));
+ 153              		.loc 1 35 5 view .LVU28
+ 154 0018 1A4C     		ldr	r4, .L10+12
+ 155 001a 2360     		str	r3, [r4]
+ 156 001c 6360     		str	r3, [r4, #4]
+ 157 001e A360     		str	r3, [r4, #8]
+ 158 0020 E360     		str	r3, [r4, #12]
+ 159 0022 2374     		strb	r3, [r4, #16]
+  36:./Application/Src/application.c **** 
+  37:./Application/Src/application.c ****     frame_header.SOF = 0xA5; // fixed
+ 160              		.loc 1 37 5 view .LVU29
+ 161              		.loc 1 37 22 is_stmt 0 view .LVU30
+ 162 0024 A522     		movs	r2, #165
+ 163 0026 3270     		strb	r2, [r6]
+  38:./Application/Src/application.c ****     frame_header.data_length = sizeof(key_packet_t); // 8 bytes
+ 164              		.loc 1 38 5 is_stmt 1 view .LVU31
+ 165              		.loc 1 38 30 is_stmt 0 view .LVU32
+ 166 0028 0822     		movs	r2, #8
+ 167 002a 7270     		strb	r2, [r6, #1]
+ 168 002c B370     		strb	r3, [r6, #2]
+  39:./Application/Src/application.c ****     frame_header.seq = 0; // packet sequence starts from any value, then increments per packet
+ 169              		.loc 1 39 5 is_stmt 1 view .LVU33
+  40:./Application/Src/application.c ****     frame_header.crc8 = Get_CRC8_Check_Sum((uint8_t *)&frame_header,
+ 170              		.loc 1 40 5 view .LVU34
+ 171              		.loc 1 40 25 is_stmt 0 view .LVU35
+ 172 002e FF22     		movs	r2, #255
+ 173 0030 0421     		movs	r1, #4
+ 174 0032 3046     		mov	r0, r6
+ 175 0034 FFF7FEFF 		bl	Get_CRC8_Check_Sum
+ 176              	.LVL1:
+ 177              		.loc 1 40 23 discriminator 1 view .LVU36
+ 178 0038 3071     		strb	r0, [r6, #4]
+  41:./Application/Src/application.c ****                                            sizeof(frame_header) - sizeof(frame_header.crc8),
+  42:./Application/Src/application.c ****                                            CRC8_INIT);
+  43:./Application/Src/application.c **** 
+  44:./Application/Src/application.c ****     frame_body_tail.cmd_id = 0x0306;
+ 179              		.loc 1 44 5 is_stmt 1 view .LVU37
+ 180              		.loc 1 44 28 is_stmt 0 view .LVU38
+ 181 003a 2A46     		mov	r2, r5
+ 182 003c 40F20633 		movw	r3, #774
+ 183 0040 22F8023B 		strh	r3, [r2], #2	@ movhi
+  45:./Application/Src/application.c ****     memcpy(frame_body_tail.data, &key_packet, sizeof(key_packet));
+ 184              		.loc 1 45 5 is_stmt 1 view .LVU39
+ 185 0044 3B46     		mov	r3, r7
+ 186 0046 03CB     		ldmia	r3!, {r0, r1}
+ 187 0048 C5F80200 		str	r0, [r5, #2]	@ unaligned
+ 188 004c 5160     		str	r1, [r2, #4]	@ unaligned
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 5
+
+
+  46:./Application/Src/application.c **** 
+  47:./Application/Src/application.c ****     referee_packet.fht = frame_header;
+ 189              		.loc 1 47 5 view .LVU40
+ 190              		.loc 1 47 24 is_stmt 0 view .LVU41
+ 191 004e 96E80300 		ldm	r6, {r0, r1}
+ 192 0052 2060     		str	r0, [r4]
+ 193 0054 2171     		strb	r1, [r4, #4]
+  48:./Application/Src/application.c ****     referee_packet.fbt = frame_body_tail;
+ 194              		.loc 1 48 5 is_stmt 1 view .LVU42
+ 195              		.loc 1 48 24 is_stmt 0 view .LVU43
+ 196 0056 07CD     		ldmia	r5!, {r0, r1, r2}
+ 197 0058 C4F80500 		str	r0, [r4, #5]	@ unaligned
+ 198 005c C4F80910 		str	r1, [r4, #9]	@ unaligned
+ 199 0060 C4F80D20 		str	r2, [r4, #13]	@ unaligned
+  49:./Application/Src/application.c ****     referee_packet.fbt.frame_tail = Get_CRC16_Check_Sum((uint8_t *)&referee_packet,
+ 200              		.loc 1 49 5 is_stmt 1 view .LVU44
+ 201              		.loc 1 49 37 is_stmt 0 view .LVU45
+ 202 0064 4FF6FF72 		movw	r2, #65535
+ 203 0068 0F21     		movs	r1, #15
+ 204 006a 2046     		mov	r0, r4
+ 205 006c FFF7FEFF 		bl	Get_CRC16_Check_Sum
+ 206              	.LVL2:
+ 207              		.loc 1 49 35 discriminator 1 view .LVU46
+ 208 0070 A4F80F00 		strh	r0, [r4, #15]	@ unaligned
+  50:./Application/Src/application.c ****                                                         sizeof(referee_packet) - sizeof(referee_pac
+  51:./Application/Src/application.c ****                                                         CRC16_INIT);
+  52:./Application/Src/application.c **** }
+ 209              		.loc 1 52 1 view .LVU47
+ 210 0074 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 211              	.L11:
+ 212 0076 00BF     		.align	2
+ 213              	.L10:
+ 214 0078 00000000 		.word	key_packet
+ 215 007c 00000000 		.word	frame_header
+ 216 0080 00000000 		.word	frame_body_tail
+ 217 0084 00000000 		.word	referee_packet
+ 218              		.cfi_endproc
+ 219              	.LFE67:
+ 221              		.section	.text.loop_report,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	loop_report
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 228              	loop_report:
+ 229              	.LFB68:
+  53:./Application/Src/application.c **** 
+  54:./Application/Src/application.c **** // this function used for debug!
+  55:./Application/Src/application.c **** void loop_report(){
+ 230              		.loc 1 55 19 is_stmt 1 view -0
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 0
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234 0000 70B5     		push	{r4, r5, r6, lr}
+ 235              	.LCFI2:
+ 236              		.cfi_def_cfa_offset 16
+ 237              		.cfi_offset 4, -16
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 6
+
+
+ 238              		.cfi_offset 5, -12
+ 239              		.cfi_offset 6, -8
+ 240              		.cfi_offset 14, -4
+  56:./Application/Src/application.c ****     bool is_small_bullet = (bool)HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6);
+ 241              		.loc 1 56 5 view .LVU49
+ 242              		.loc 1 56 34 is_stmt 0 view .LVU50
+ 243 0002 4021     		movs	r1, #64
+ 244 0004 1148     		ldr	r0, .L14
+ 245 0006 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 246              	.LVL3:
+ 247              		.loc 1 56 10 discriminator 1 view .LVU51
+ 248 000a 061E     		subs	r6, r0, #0
+ 249 000c 18BF     		it	ne
+ 250 000e 0126     		movne	r6, #1
+ 251              	.LVL4:
+  57:./Application/Src/application.c **** 
+  58:./Application/Src/application.c ****     vofa.val[0] = (float)Keys[0].key;
+ 252              		.loc 1 58 5 is_stmt 1 view .LVU52
+ 253              		.loc 1 58 33 is_stmt 0 view .LVU53
+ 254 0010 0F4D     		ldr	r5, .L14+4
+ 255              		.loc 1 58 19 view .LVU54
+ 256 0012 2868     		ldr	r0, [r5]
+ 257 0014 FFF7FEFF 		bl	__aeabi_i2f
+ 258              	.LVL5:
+ 259              		.loc 1 58 17 view .LVU55
+ 260 0018 0E4C     		ldr	r4, .L14+8
+ 261 001a 2060     		str	r0, [r4]	@ float
+  59:./Application/Src/application.c ****     vofa.val[1] = (float)Keys[0].big_bullet_x_pos;
+ 262              		.loc 1 59 5 is_stmt 1 view .LVU56
+ 263              		.loc 1 59 19 is_stmt 0 view .LVU57
+ 264 001c E868     		ldr	r0, [r5, #12]
+ 265 001e FFF7FEFF 		bl	__aeabi_i2f
+ 266              	.LVL6:
+ 267              		.loc 1 59 17 view .LVU58
+ 268 0022 6060     		str	r0, [r4, #4]	@ float
+  60:./Application/Src/application.c ****     vofa.val[2] = (float)is_small_bullet;
+ 269              		.loc 1 60 5 is_stmt 1 view .LVU59
+ 270              		.loc 1 60 19 is_stmt 0 view .LVU60
+ 271 0024 3046     		mov	r0, r6
+ 272 0026 FFF7FEFF 		bl	__aeabi_ui2f
+ 273              	.LVL7:
+ 274              		.loc 1 60 17 view .LVU61
+ 275 002a A060     		str	r0, [r4, #8]	@ float
+  61:./Application/Src/application.c ****     vofa.val[3] = (float)Keys_pressed[0];
+ 276              		.loc 1 61 5 is_stmt 1 view .LVU62
+ 277              		.loc 1 61 19 is_stmt 0 view .LVU63
+ 278 002c 0A4B     		ldr	r3, .L14+12
+ 279 002e 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 280 0030 FFF7FEFF 		bl	__aeabi_ui2f
+ 281              	.LVL8:
+ 282              		.loc 1 61 17 view .LVU64
+ 283 0034 E060     		str	r0, [r4, #12]	@ float
+  62:./Application/Src/application.c ****     HAL_UART_Transmit_DMA(&huart1, (void*)&vofa, sizeof(vofa));
+ 284              		.loc 1 62 5 is_stmt 1 view .LVU65
+ 285 0036 1822     		movs	r2, #24
+ 286 0038 2146     		mov	r1, r4
+ 287 003a 0848     		ldr	r0, .L14+16
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 7
+
+
+ 288 003c FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 289              	.LVL9:
+  63:./Application/Src/application.c ****     ms_counter++;
+ 290              		.loc 1 63 5 view .LVU66
+ 291              		.loc 1 63 15 is_stmt 0 view .LVU67
+ 292 0040 074A     		ldr	r2, .L14+20
+ 293 0042 1368     		ldr	r3, [r2]
+ 294 0044 0133     		adds	r3, r3, #1
+ 295 0046 1360     		str	r3, [r2]
+  64:./Application/Src/application.c **** }
+ 296              		.loc 1 64 1 view .LVU68
+ 297 0048 70BD     		pop	{r4, r5, r6, pc}
+ 298              	.LVL10:
+ 299              	.L15:
+ 300              		.loc 1 64 1 view .LVU69
+ 301 004a 00BF     		.align	2
+ 302              	.L14:
+ 303 004c 00080140 		.word	1073809408
+ 304 0050 00000000 		.word	Keys
+ 305 0054 00000000 		.word	vofa
+ 306 0058 00000000 		.word	Keys_pressed
+ 307 005c 00000000 		.word	huart1
+ 308 0060 00000000 		.word	ms_counter
+ 309              		.cfi_endproc
+ 310              	.LFE68:
+ 312              		.section	.text.wait_ms,"ax",%progbits
+ 313              		.align	1
+ 314              		.global	wait_ms
+ 315              		.syntax unified
+ 316              		.thumb
+ 317              		.thumb_func
+ 319              	wait_ms:
+ 320              	.LVL11:
+ 321              	.LFB69:
+  65:./Application/Src/application.c **** 
+  66:./Application/Src/application.c **** void wait_ms(int time_ms){
+ 322              		.loc 1 66 26 is_stmt 1 view -0
+ 323              		.cfi_startproc
+ 324              		@ args = 0, pretend = 0, frame = 0
+ 325              		@ frame_needed = 0, uses_anonymous_args = 0
+ 326              		@ link register save eliminated.
+  67:./Application/Src/application.c ****     ms_counter = 0;
+ 327              		.loc 1 67 5 view .LVU71
+ 328              		.loc 1 67 16 is_stmt 0 view .LVU72
+ 329 0000 034B     		ldr	r3, .L18
+ 330 0002 0022     		movs	r2, #0
+ 331 0004 1A60     		str	r2, [r3]
+  68:./Application/Src/application.c ****     while (ms_counter < time_ms);
+ 332              		.loc 1 68 5 is_stmt 1 view .LVU73
+ 333              	.L17:
+ 334              		.loc 1 68 23 discriminator 1 view .LVU74
+ 335 0006 024B     		ldr	r3, .L18
+ 336 0008 1B68     		ldr	r3, [r3]
+ 337 000a 8342     		cmp	r3, r0
+ 338 000c FBD3     		bcc	.L17
+  69:./Application/Src/application.c **** }
+ 339              		.loc 1 69 1 is_stmt 0 view .LVU75
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 8
+
+
+ 340 000e 7047     		bx	lr
+ 341              	.L19:
+ 342              		.align	2
+ 343              	.L18:
+ 344 0010 00000000 		.word	ms_counter
+ 345              		.cfi_endproc
+ 346              	.LFE69:
+ 348              		.section	.text.loop_scan_keys,"ax",%progbits
+ 349              		.align	1
+ 350              		.global	loop_scan_keys
+ 351              		.syntax unified
+ 352              		.thumb
+ 353              		.thumb_func
+ 355              	loop_scan_keys:
+ 356              	.LFB70:
+  70:./Application/Src/application.c **** 
+  71:./Application/Src/application.c **** // scan for keys that is triggered:
+  72:./Application/Src/application.c **** void loop_scan_keys(){
+ 357              		.loc 1 72 22 is_stmt 1 view -0
+ 358              		.cfi_startproc
+ 359              		@ args = 0, pretend = 0, frame = 0
+ 360              		@ frame_needed = 0, uses_anonymous_args = 0
+ 361 0000 38B5     		push	{r3, r4, r5, lr}
+ 362              	.LCFI3:
+ 363              		.cfi_def_cfa_offset 16
+ 364              		.cfi_offset 3, -16
+ 365              		.cfi_offset 4, -12
+ 366              		.cfi_offset 5, -8
+ 367              		.cfi_offset 14, -4
+  73:./Application/Src/application.c ****     // read for pin PA3 PA4 PA5:
+  74:./Application/Src/application.c ****     for (int index = 0; index < KEY_NUMBER; index++){
+ 368              		.loc 1 74 5 view .LVU77
+ 369              	.LBB2:
+ 370              		.loc 1 74 10 view .LVU78
+ 371              	.LVL12:
+ 372              		.loc 1 74 14 is_stmt 0 view .LVU79
+ 373 0002 0025     		movs	r5, #0
+ 374              		.loc 1 74 5 view .LVU80
+ 375 0004 0CE0     		b	.L21
+ 376              	.LVL13:
+ 377              	.L27:
+  75:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+  76:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
+ 378              		.loc 1 76 13 is_stmt 1 view .LVU81
+ 379 0006 1920     		movs	r0, #25
+ 380 0008 FFF7FEFF 		bl	wait_ms
+ 381              	.LVL14:
+  77:./Application/Src/application.c ****             Keys_pressed[index] = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
+ 382              		.loc 1 77 13 view .LVU82
+ 383              		.loc 1 77 36 is_stmt 0 view .LVU83
+ 384 000c 2146     		mov	r1, r4
+ 385 000e 0D48     		ldr	r0, .L28
+ 386 0010 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 387              	.LVL15:
+ 388              		.loc 1 77 13 discriminator 1 view .LVU84
+ 389 0014 B0FA80F0 		clz	r0, r0
+ 390 0018 4009     		lsrs	r0, r0, #5
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 9
+
+
+ 391              		.loc 1 77 33 discriminator 1 view .LVU85
+ 392 001a 0B4B     		ldr	r3, .L28+4
+ 393 001c 5855     		strb	r0, [r3, r5]
+ 394              	.L23:
+  74:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 395              		.loc 1 74 50 is_stmt 1 discriminator 2 view .LVU86
+ 396 001e 0135     		adds	r5, r5, #1
+ 397              	.LVL16:
+ 398              	.L21:
+  74:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 399              		.loc 1 74 31 discriminator 1 view .LVU87
+ 400 0020 022D     		cmp	r5, #2
+ 401 0022 0DDC     		bgt	.L26
+  75:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 402              		.loc 1 75 9 view .LVU88
+  75:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 403              		.loc 1 75 62 is_stmt 0 view .LVU89
+ 404 0024 EB1C     		adds	r3, r5, #3
+  75:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 405              		.loc 1 75 52 view .LVU90
+ 406 0026 0124     		movs	r4, #1
+ 407 0028 9C40     		lsls	r4, r4, r3
+  75:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 408              		.loc 1 75 14 view .LVU91
+ 409 002a A4B2     		uxth	r4, r4
+ 410 002c 2146     		mov	r1, r4
+ 411 002e 0548     		ldr	r0, .L28
+ 412 0030 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 413              	.LVL17:
+  75:./Application/Src/application.c ****         if (!HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)))){
+ 414              		.loc 1 75 12 discriminator 1 view .LVU92
+ 415 0034 0028     		cmp	r0, #0
+ 416 0036 E6D0     		beq	.L27
+  78:./Application/Src/application.c ****         } else {
+  79:./Application/Src/application.c ****             Keys_pressed[index] = 0;
+ 417              		.loc 1 79 13 is_stmt 1 view .LVU93
+ 418              		.loc 1 79 33 is_stmt 0 view .LVU94
+ 419 0038 034B     		ldr	r3, .L28+4
+ 420 003a 0022     		movs	r2, #0
+ 421 003c 5A55     		strb	r2, [r3, r5]
+ 422 003e EEE7     		b	.L23
+ 423              	.L26:
+ 424              	.LBE2:
+  80:./Application/Src/application.c ****         }
+  81:./Application/Src/application.c ****     }
+  82:./Application/Src/application.c **** }
+ 425              		.loc 1 82 1 view .LVU95
+ 426 0040 38BD     		pop	{r3, r4, r5, pc}
+ 427              	.LVL18:
+ 428              	.L29:
+ 429              		.loc 1 82 1 view .LVU96
+ 430 0042 00BF     		.align	2
+ 431              	.L28:
+ 432 0044 00080140 		.word	1073809408
+ 433 0048 00000000 		.word	Keys_pressed
+ 434              		.cfi_endproc
+ 435              	.LFE70:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 10
+
+
+ 437              		.global	ms_counter
+ 438              		.section	.bss.ms_counter,"aw",%nobits
+ 439              		.align	2
+ 442              	ms_counter:
+ 443 0000 00000000 		.space	4
+ 444              		.global	referee_packet
+ 445              		.section	.bss.referee_packet,"aw",%nobits
+ 446              		.align	2
+ 449              	referee_packet:
+ 450 0000 00000000 		.space	17
+ 450      00000000 
+ 450      00000000 
+ 450      00000000 
+ 450      00
+ 451              		.global	frame_body_tail
+ 452              		.section	.bss.frame_body_tail,"aw",%nobits
+ 453              		.align	2
+ 456              	frame_body_tail:
+ 457 0000 00000000 		.space	12
+ 457      00000000 
+ 457      00000000 
+ 458              		.global	frame_header
+ 459              		.section	.bss.frame_header,"aw",%nobits
+ 460              		.align	2
+ 463              	frame_header:
+ 464 0000 00000000 		.space	5
+ 464      00
+ 465              		.global	key_packet
+ 466              		.section	.bss.key_packet,"aw",%nobits
+ 467              		.align	2
+ 470              	key_packet:
+ 471 0000 00000000 		.space	8
+ 471      00000000 
+ 472              		.global	vofa
+ 473              		.section	.bss.vofa,"aw",%nobits
+ 474              		.align	2
+ 477              	vofa:
+ 478 0000 00000000 		.space	24
+ 478      00000000 
+ 478      00000000 
+ 478      00000000 
+ 478      00000000 
+ 479              		.global	Keys_pressed
+ 480              		.section	.bss.Keys_pressed,"aw",%nobits
+ 481              		.align	2
+ 484              	Keys_pressed:
+ 485 0000 000000   		.space	3
+ 486              		.global	Keys
+ 487              		.section	.bss.Keys,"aw",%nobits
+ 488              		.align	2
+ 491              	Keys:
+ 492 0000 00000000 		.space	60
+ 492      00000000 
+ 492      00000000 
+ 492      00000000 
+ 492      00000000 
+ 493              		.text
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 11
+
+
+ 494              	.Letext0:
+ 495              		.file 2 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
+ 496              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
+ 497              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 498              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 499              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 500              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 501              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 502              		.file 9 "Application/Inc/application.h"
+ 503              		.file 10 "Core/Inc/usart.h"
+ 504              		.file 11 "Application/Inc/utils.h"
+ 505              		.file 12 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/string.h"
+ 506              		.file 13 "<built-in>"
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 application.c
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:19     .text.init_keys:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:25     .text.init_keys:00000000 init_keys
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:73     .text.init_keys:00000030 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:491    .bss.Keys:00000000 Keys
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:484    .bss.Keys_pressed:00000000 Keys_pressed
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:79     .text.init_vofa:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:85     .text.init_vofa:00000000 init_vofa
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:113    .text.init_vofa:00000014 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:477    .bss.vofa:00000000 vofa
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:118    .text.init_packet:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:124    .text.init_packet:00000000 init_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:214    .text.init_packet:00000078 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:470    .bss.key_packet:00000000 key_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:463    .bss.frame_header:00000000 frame_header
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:456    .bss.frame_body_tail:00000000 frame_body_tail
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:449    .bss.referee_packet:00000000 referee_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:222    .text.loop_report:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:228    .text.loop_report:00000000 loop_report
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:303    .text.loop_report:0000004c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:442    .bss.ms_counter:00000000 ms_counter
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:313    .text.wait_ms:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:319    .text.wait_ms:00000000 wait_ms
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:344    .text.wait_ms:00000010 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:349    .text.loop_scan_keys:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:355    .text.loop_scan_keys:00000000 loop_scan_keys
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:432    .text.loop_scan_keys:00000044 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:439    .bss.ms_counter:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:446    .bss.referee_packet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:453    .bss.frame_body_tail:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:460    .bss.frame_header:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:467    .bss.key_packet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:474    .bss.vofa:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:481    .bss.Keys_pressed:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccs9RlYm.s:488    .bss.Keys:00000000 $d
+
+UNDEFINED SYMBOLS
+memset
+Get_CRC8_Check_Sum
+Get_CRC16_Check_Sum
+HAL_GPIO_ReadPin
+__aeabi_i2f
+__aeabi_ui2f
+HAL_UART_Transmit_DMA
+huart1
