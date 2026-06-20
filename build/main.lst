@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
   30:Core/Src/main.c **** /* USER CODE END Includes */
   31:Core/Src/main.c **** 
   32:Core/Src/main.c **** /* Private typedef -----------------------------------------------------------*/
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 2
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 2
 
 
   33:Core/Src/main.c **** /* USER CODE BEGIN PTD */
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
   87:Core/Src/main.c ****   /* USER CODE BEGIN SysInit */
   88:Core/Src/main.c **** 
   89:Core/Src/main.c ****   /* USER CODE END SysInit */
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 3
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 3
 
 
   90:Core/Src/main.c **** 
@@ -145,7 +145,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  111:Core/Src/main.c ****     loop_scan_keys();
  112:Core/Src/main.c ****     if (key_need_handle >= 0){ // enter fsm logic for buying bulllets:
  113:Core/Src/main.c ****       // press I/O open menu
- 114:Core/Src/main.c ****       call_buy_UI(); // also need release the key, can add function here
+ 114:Core/Src/main.c ****       call_buy_UI(0); // also need release the key, can add function here
  115:Core/Src/main.c ****       // according to index find the position to buy
  116:Core/Src/main.c ****       move_click_mouse(key_need_handle); // also need to unclick after this click can add functions
  117:Core/Src/main.c ****       // also need to click OK:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  144:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
  145:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
  146:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL10;
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 4
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 4
 
 
  147:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
   12:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
   13:Drivers/CMSIS/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
   14:Drivers/CMSIS/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 5
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 5
 
 
   15:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
   69:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   70:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
   71:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 6
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 6
 
 
   72:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  126:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
  127:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
  128:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 7
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 7
 
 
  129:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
   74 0002 90B0     		sub	sp, sp, #64
   75              	.LCFI1:
   76              		.cfi_def_cfa_offset 72
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 8
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 8
 
 
  134:Core/Src/main.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  146:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
  115              		.loc 1 146 3 is_stmt 1 view .LVU24
  146:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 9
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 9
 
 
  116              		.loc 1 146 32 is_stmt 0 view .LVU25
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  153 005e 10B0     		add	sp, sp, #64
  154              	.LCFI2:
  155              		.cfi_remember_state
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 10
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 10
 
 
  156              		.cfi_def_cfa_offset 8
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  204 0012 FFF7FEFF 		bl	MX_USART1_UART_Init
  205              	.LVL9:
   95:Core/Src/main.c ****   MX_SPI2_Init();
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 11
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 11
 
 
  206              		.loc 1 95 3 view .LVU51
@@ -631,7 +631,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  227              	.LVL16:
  104:Core/Src/main.c ****   /* USER CODE END 2 */
  228              		.loc 1 104 3 view .LVU58
- 229 0036 0A48     		ldr	r0, .L13
+ 229 0036 0B48     		ldr	r0, .L13
  230 0038 FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
  231              	.LVL17:
  232              	.L10:
@@ -645,7 +645,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  237              		.loc 1 112 5 view .LVU61
  112:Core/Src/main.c ****       // press I/O open menu
  238              		.loc 1 112 25 is_stmt 0 view .LVU62
- 239 0040 084B     		ldr	r3, .L13+4
+ 239 0040 094B     		ldr	r3, .L13+4
  240 0042 1B68     		ldr	r3, [r3]
  112:Core/Src/main.c ****       // press I/O open menu
  241              		.loc 1 112 8 view .LVU63
@@ -653,66 +653,67 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 1
  243 0046 F9DB     		blt	.L10
  114:Core/Src/main.c ****       // according to index find the position to buy
  244              		.loc 1 114 7 is_stmt 1 view .LVU64
- 245 0048 FFF7FEFF 		bl	call_buy_UI
- 246              	.LVL19:
+ 245 0048 0020     		movs	r0, #0
+ 246 004a FFF7FEFF 		bl	call_buy_UI
+ 247              	.LVL19:
  116:Core/Src/main.c ****       // also need to click OK:
- 247              		.loc 1 116 7 view .LVU65
- 248 004c 054C     		ldr	r4, .L13+4
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 12
+ 248              		.loc 1 116 7 view .LVU65
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 12
 
 
- 249 004e 2068     		ldr	r0, [r4]
- 250 0050 FFF7FEFF 		bl	move_click_mouse
- 251              	.LVL20:
+ 249 004e 064C     		ldr	r4, .L13+4
+ 250 0050 2068     		ldr	r0, [r4]
+ 251 0052 FFF7FEFF 		bl	move_click_mouse
+ 252              	.LVL20:
  118:Core/Src/main.c ****       key_need_handle = -1;
- 252              		.loc 1 118 7 view .LVU66
- 253 0054 FFF7FEFF 		bl	click_buy_bullets
- 254              	.LVL21:
+ 253              		.loc 1 118 7 view .LVU66
+ 254 0056 FFF7FEFF 		bl	click_buy_bullets
+ 255              	.LVL21:
  119:Core/Src/main.c ****     }
- 255              		.loc 1 119 7 view .LVU67
+ 256              		.loc 1 119 7 view .LVU67
  119:Core/Src/main.c ****     }
- 256              		.loc 1 119 23 is_stmt 0 view .LVU68
- 257 0058 4FF0FF33 		mov	r3, #-1
- 258 005c 2360     		str	r3, [r4]
- 259 005e EDE7     		b	.L10
- 260              	.L14:
- 261              		.align	2
- 262              	.L13:
- 263 0060 00000000 		.word	htim2
- 264 0064 00000000 		.word	key_need_handle
- 265              		.cfi_endproc
- 266              	.LFE65:
- 268              		.text
- 269              	.Letext0:
- 270              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
- 271              		.file 4 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
- 272              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 273              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 274              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
- 275              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
- 276              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 277              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
- 278              		.file 11 "Core/Inc/tim.h"
- 279              		.file 12 "Application/Inc/application.h"
- 280              		.file 13 "Application/Inc/ws2812.h"
- 281              		.file 14 "Core/Inc/spi.h"
- 282              		.file 15 "Core/Inc/usart.h"
- 283              		.file 16 "Core/Inc/dma.h"
- 284              		.file 17 "Core/Inc/gpio.h"
- 285              		.file 18 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
- 286              		.file 19 "<built-in>"
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s 			page 13
+ 257              		.loc 1 119 23 is_stmt 0 view .LVU68
+ 258 005a 4FF0FF33 		mov	r3, #-1
+ 259 005e 2360     		str	r3, [r4]
+ 260 0060 ECE7     		b	.L10
+ 261              	.L14:
+ 262 0062 00BF     		.align	2
+ 263              	.L13:
+ 264 0064 00000000 		.word	htim2
+ 265 0068 00000000 		.word	key_need_handle
+ 266              		.cfi_endproc
+ 267              	.LFE65:
+ 269              		.text
+ 270              	.Letext0:
+ 271              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
+ 272              		.file 4 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
+ 273              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 274              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 275              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ 276              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
+ 277              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 278              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
+ 279              		.file 11 "Core/Inc/tim.h"
+ 280              		.file 12 "Application/Inc/application.h"
+ 281              		.file 13 "Application/Inc/ws2812.h"
+ 282              		.file 14 "Core/Inc/spi.h"
+ 283              		.file 15 "Core/Inc/usart.h"
+ 284              		.file 16 "Core/Inc/dma.h"
+ 285              		.file 17 "Core/Inc/gpio.h"
+ 286              		.file 18 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 287              		.file 19 "<built-in>"
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:19     .text.Error_Handler:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:25     .text.Error_Handler:00000000 Error_Handler
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:57     .text.SystemClock_Config:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:63     .text.SystemClock_Config:00000000 SystemClock_Config
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:173    .text.main:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:179    .text.main:00000000 main
-C:\Users\Xuleo\AppData\Local\Temp\cc6yZu0e.s:263    .text.main:00000060 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:19     .text.Error_Handler:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:25     .text.Error_Handler:00000000 Error_Handler
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:57     .text.SystemClock_Config:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:63     .text.SystemClock_Config:00000000 SystemClock_Config
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:173    .text.main:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:179    .text.main:00000000 main
+C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:264    .text.main:00000064 $d
 
 UNDEFINED SYMBOLS
 memset

@@ -78,7 +78,7 @@ void wait_ms(int time_ms);
 void mouse_control(uint16_t x, uint16_t y, bool click);
 
 // following function each they will send packets to referee system
-void call_buy_UI();
+void call_buy_UI(bool need_reset);
 void move_click_mouse(int key);
 void click_buy_bullets();
 

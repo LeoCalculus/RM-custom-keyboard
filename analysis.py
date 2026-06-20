@@ -111,6 +111,13 @@ def send_scan_code(vk, key_up):
 CRC8_INIT = 0xFF
 CRC16_INIT = 0xFFFF
 MAX_DATA_LENGTH = 512
+EVENT_POLL_INTERVAL_MS = 10
+
+# A 34 ms interval is below the requested 30 Hz upper limit (29.4 Hz).
+SIMULATION_INTERVAL_MS = 34
+SIMULATION_HALF_CYCLE_TICKS = 15
+SIMULATION_CURSOR_X = 960
+SIMULATION_CURSOR_Y = 379
 
 
 def crc8(data, init=CRC8_INIT):
@@ -465,6 +472,10 @@ class AnalyzerApp(tk.Tk):
         self.events = queue.Queue()
         self.worker = None
         self.input_controller = PyAutoGuiInputController(self)
+        self.simulator_running = False
+        self.simulator_after_id = None
+        self.simulator_tick = 0
+        self.simulator_seq = 0
 
         self.port_var = tk.StringVar()
         self.baud_var = tk.StringVar(value="115200")
@@ -499,6 +510,12 @@ class AnalyzerApp(tk.Tk):
 
         ttk.Button(controls, text="Clear", command=self.clear_views).pack(side=tk.LEFT, padx=(8, 0))
         ttk.Button(controls, text="Inject Sample", command=self.inject_sample).pack(side=tk.LEFT, padx=(8, 0))
+        self.simulate_button = ttk.Button(
+            controls,
+            text="Simulate ≤30 Hz",
+            command=self.toggle_simulator,
+        )
+        self.simulate_button.pack(side=tk.LEFT, padx=(8, 0))
 
         self.pc_control_button = ttk.Checkbutton(
             controls,
@@ -557,6 +574,9 @@ class AnalyzerApp(tk.Tk):
             self.status_var.set("Stopping...")
             self.start_button.configure(state=tk.DISABLED)
             return
+
+        if self.simulator_running:
+            self.stop_simulator()
 
         if serial is None:
             messagebox.showerror("pyserial missing", "Run: python -m pip install pyserial")
@@ -625,6 +645,55 @@ class AnalyzerApp(tk.Tk):
         release_frame = self.build_frame(0x0306, release_payload, seq=1)
         self.events.put(("data", press_frame + release_frame))
 
+    def toggle_simulator(self):
+        """Feed the normal receive path with valid 0x0306 frames at <= 30 Hz."""
+        if self.simulator_running:
+            self.stop_simulator()
+            self.status_var.set("30 Hz simulation stopped")
+            return
+
+        if self.worker:
+            messagebox.showwarning(
+                "Serial active",
+                "Stop the serial connection before starting the local 30 Hz simulation.",
+            )
+            return
+
+        self.simulator_running = True
+        self.simulator_tick = 0
+        self.simulator_seq = 0
+        self.simulate_button.configure(text="Stop Simulation")
+        self.status_var.set("30 Hz simulation running")
+        self.simulate_receive_tick()
+
+    def simulate_receive_tick(self):
+        if not self.simulator_running:
+            return
+
+        # Hold I for 15 frames (about 510 ms), then release it for 15 frames.
+        # Coordinates remain fixed so the test does not generate mouse clicks.
+        key_value = ord("I") if self.simulator_tick < SIMULATION_HALF_CYCLE_TICKS else 0
+        payload = struct.pack(
+            "<HHHH",
+            key_value,
+            SIMULATION_CURSOR_X,
+            SIMULATION_CURSOR_Y,
+            0,
+        )
+        self.events.put(("data", self.build_frame(0x0306, payload, seq=self.simulator_seq)))
+
+        self.simulator_seq = (self.simulator_seq + 1) & 0xFF
+        self.simulator_tick = (self.simulator_tick + 1) % (SIMULATION_HALF_CYCLE_TICKS * 2)
+        self.simulator_after_id = self.after(SIMULATION_INTERVAL_MS, self.simulate_receive_tick)
+
+    def stop_simulator(self):
+        self.simulator_running = False
+        if self.simulator_after_id is not None:
+            self.after_cancel(self.simulator_after_id)
+            self.simulator_after_id = None
+        self.simulate_button.configure(text="Simulate ≤30 Hz")
+        self.input_controller.release_all()
+
     def build_frame(self, cmd_id, payload, seq=0):
         header_without_crc = struct.pack("<BHB", 0xA5, len(payload), seq & 0xFF)
         header = header_without_crc + bytes([crc8(header_without_crc)])
@@ -654,7 +723,7 @@ class AnalyzerApp(tk.Tk):
         except queue.Empty:
             pass
 
-        self.after(40, self.poll_events)
+        self.after(EVENT_POLL_INTERVAL_MS, self.poll_events)
 
     def append_raw(self, data):
         self.raw_text.insert(tk.END, hex_bytes(data) + "\n")
@@ -710,6 +779,7 @@ class AnalyzerApp(tk.Tk):
             widget.delete("1.0", f"{line_count - max_lines}.0")
 
     def destroy(self):
+        self.stop_simulator()
         self.input_controller.release_all()
         if self.worker:
             self.worker.stop()

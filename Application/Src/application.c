@@ -11,7 +11,7 @@ volatile uint32_t ms_counter = 0;
 volatile bool is_small_bullet = 0; // true -> small bullet
 volatile int key_need_handle = -1; // no key need to ne handled when it is -1
 
-#define PACKET_SEND_DELAY 34
+#define PACKET_SEND_DELAY 28
 #define KEY_FALL_BLOCK_MS 200U
 #define SMALL_BULLET_KEY 'O'
 #define BIG_BULLET_KEY 'I'
@@ -336,7 +336,7 @@ void loop_scan_keys(){
     }
 }
 
-void call_buy_UI(){
+void call_buy_UI(bool need_reset){
     if (is_small_bullet){
         key_packet.key_value = SMALL_BULLET_KEY;
     } else { // big bullet 
@@ -352,7 +352,10 @@ void call_buy_UI(){
 
     // release O/I after opening the buy UI.
     key_packet.key_value = 0;
-    update_packet_and_send();
+    // release was handled in mouse packet sending
+    if (need_reset)
+        update_packet_and_send(); 
+    // update_packet_and_send(); 
 }
 
 void mouse_control(uint16_t x, uint16_t y, bool click){
@@ -475,7 +478,7 @@ void click_buy_bullets(){
     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
     
     // also quit the page
-    call_buy_UI(); // click the corresponding key again to close UI
+    call_buy_UI(1); // click the corresponding key again to close UI
 }
 
 static void update_packet_and_send(void){
