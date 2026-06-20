@@ -97,8 +97,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   // test: set all LED red:
-  ws2812_pure(255,0,0);
-  ws2812_refresh();
+  ws2812_init(0.5f);
   init_keys();
   init_vofa();
   init_packet();

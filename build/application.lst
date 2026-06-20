@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 1
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -36,1629 +36,2292 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 1
    8:./Application/Src/application.c **** frame_body_tail_t frame_body_tail;
    9:./Application/Src/application.c **** referee_packet_t referee_packet;
   10:./Application/Src/application.c **** volatile uint32_t ms_counter = 0;
-  11:./Application/Src/application.c **** volatile bool is_small_bullet = 0;
+  11:./Application/Src/application.c **** volatile bool is_small_bullet = 0; // true -> small bullet
   12:./Application/Src/application.c **** volatile int key_need_handle = -1; // no key need to ne handled when it is -1
   13:./Application/Src/application.c **** 
   14:./Application/Src/application.c **** #define PACKET_SEND_DELAY 34
   15:./Application/Src/application.c **** #define KEY_FALL_BLOCK_MS 200U
-  16:./Application/Src/application.c **** #define SMALL_BULLET_KEY 'P'
-  17:./Application/Src/application.c **** #define BIG_BULLET_KEY 'P'
+  16:./Application/Src/application.c **** #define SMALL_BULLET_KEY 'O'
+  17:./Application/Src/application.c **** #define BIG_BULLET_KEY 'I'
   18:./Application/Src/application.c **** 
-  19:./Application/Src/application.c **** #define BUY_BUTTON_X 0
-  20:./Application/Src/application.c **** #define BUY_BUTTON_Y 0
-  21:./Application/Src/application.c **** #define CONFIRM_BUTTON_X 0
-  22:./Application/Src/application.c **** #define CONFIRM_BUTTON_Y 0
+  19:./Application/Src/application.c **** #define BUY_BUTTON_X 1275
+  20:./Application/Src/application.c **** #define BUY_BUTTON_Y 990
+  21:./Application/Src/application.c **** #define CONFIRM_BUTTON_X 1190
+  22:./Application/Src/application.c **** #define CONFIRM_BUTTON_Y 865
   23:./Application/Src/application.c **** 
-  24:./Application/Src/application.c **** static void update_packet_and_send(void);
-  25:./Application/Src/application.c **** static volatile bool long_pressed = 0;
+  24:./Application/Src/application.c **** // #define BUY_BUTTON_X 960
+  25:./Application/Src/application.c **** // #define BUY_BUTTON_Y 379
   26:./Application/Src/application.c **** 
-  27:./Application/Src/application.c **** void init_keys(){
-  27              		.loc 1 27 17 view -0
+  27:./Application/Src/application.c **** // #define CONFIRM_BUTTON_X 893
+  28:./Application/Src/application.c **** // #define CONFIRM_BUTTON_Y 491
+  29:./Application/Src/application.c **** 
+  30:./Application/Src/application.c **** #define PA5_BUY_BIG 8
+  31:./Application/Src/application.c **** #define PA4_BUY_BIG 10
+  32:./Application/Src/application.c **** #define PA3_BUY_BIG 12
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 2
+
+
+  33:./Application/Src/application.c **** #define PA5_BUY_SMALL 80 
+  34:./Application/Src/application.c **** #define PA4_BUY_SMALL 100
+  35:./Application/Src/application.c **** #define PA3_BUY_SMALL 120
+  36:./Application/Src/application.c **** 
+  37:./Application/Src/application.c **** static void update_packet_and_send(void);
+  38:./Application/Src/application.c **** volatile bool long_pressed[3];
+  39:./Application/Src/application.c **** static volatile int phase = 0;
+  40:./Application/Src/application.c **** 
+  41:./Application/Src/application.c **** // big : 8 10 12
+  42:./Application/Src/application.c **** // small: 80 100 120
+  43:./Application/Src/application.c **** // 1: (1405,860); 2:(1490,860); 5:(1475,860); 10:(1665,860)
+  44:./Application/Src/application.c **** // -1: (1150,860); -2: (1070,860); -5: (980,860); -10: (895,860)
+  45:./Application/Src/application.c **** // 10: (1405,860); 20:(1490,860); 50:(1475,860); 100:(1665,860)
+  46:./Application/Src/application.c **** // -10: (1150,860); -20: (1070,860); -50: (980,860); -100: (895,860)
+  47:./Application/Src/application.c **** // #define BUY_ONE_X 1450
+  48:./Application/Src/application.c **** // #define BUY_NEG_ONE_X 1150
+  49:./Application/Src/application.c **** // #define BUY_Y 860
+  50:./Application/Src/application.c **** 
+  51:./Application/Src/application.c **** #define BUY_Y 860
+  52:./Application/Src/application.c **** 
+  53:./Application/Src/application.c **** void init_keys(){
+  27              		.loc 1 53 17 view -0
   28              		.cfi_startproc
   29              		@ args = 0, pretend = 0, frame = 0
   30              		@ frame_needed = 0, uses_anonymous_args = 0
   31 0000 10B5     		push	{r4, lr}
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 2
-
-
   32              	.LCFI0:
   33              		.cfi_def_cfa_offset 8
   34              		.cfi_offset 4, -8
   35              		.cfi_offset 14, -4
-  28:./Application/Src/application.c ****     memset(Keys, 0, sizeof(Keys));
-  36              		.loc 1 28 5 view .LVU1
-  37 0002 0E4C     		ldr	r4, .L3
+  54:./Application/Src/application.c ****     memset(Keys, 0, sizeof(Keys));
+  36              		.loc 1 54 5 view .LVU1
+  37 0002 124C     		ldr	r4, .L3
   38 0004 3C22     		movs	r2, #60
   39 0006 0021     		movs	r1, #0
   40 0008 2046     		mov	r0, r4
   41 000a FFF7FEFF 		bl	memset
   42              	.LVL0:
-  29:./Application/Src/application.c ****     memset(Keys_pressed, 0, sizeof(Keys_pressed));
-  43              		.loc 1 29 5 view .LVU2
-  44 000e 0C4B     		ldr	r3, .L3+4
+  55:./Application/Src/application.c ****     memset(Keys_pressed, 0, sizeof(Keys_pressed));
+  43              		.loc 1 55 5 view .LVU2
+  44 000e 104B     		ldr	r3, .L3+4
   45 0010 0022     		movs	r2, #0
   46 0012 1A80     		strh	r2, [r3]	@ movhi
   47 0014 9A70     		strb	r2, [r3, #2]
-  30:./Application/Src/application.c ****     Keys[0].key = 3; // PA3
-  48              		.loc 1 30 5 view .LVU3
-  49              		.loc 1 30 17 is_stmt 0 view .LVU4
+  56:./Application/Src/application.c ****     Keys[0].key = 3; // PA3
+  48              		.loc 1 56 5 view .LVU3
+  49              		.loc 1 56 17 is_stmt 0 view .LVU4
   50 0016 0323     		movs	r3, #3
   51 0018 2360     		str	r3, [r4]
-  31:./Application/Src/application.c ****     Keys[1].key = 4; // PA4
-  52              		.loc 1 31 5 is_stmt 1 view .LVU5
-  53              		.loc 1 31 17 is_stmt 0 view .LVU6
+  57:./Application/Src/application.c ****     Keys[1].key = 4; // PA4
+  52              		.loc 1 57 5 is_stmt 1 view .LVU5
+  53              		.loc 1 57 17 is_stmt 0 view .LVU6
   54 001a 0423     		movs	r3, #4
   55 001c 6361     		str	r3, [r4, #20]
-  32:./Application/Src/application.c ****     Keys[2].key = 5; // PA5
-  56              		.loc 1 32 5 is_stmt 1 view .LVU7
-  57              		.loc 1 32 17 is_stmt 0 view .LVU8
+  58:./Application/Src/application.c ****     Keys[2].key = 5; // PA5
+  56              		.loc 1 58 5 is_stmt 1 view .LVU7
+  57              		.loc 1 58 17 is_stmt 0 view .LVU8
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 3
+
+
   58 001e 0523     		movs	r3, #5
   59 0020 A362     		str	r3, [r4, #40]
-  33:./Application/Src/application.c ****     Keys[0].small_bullet_x_pos = 491;
-  60              		.loc 1 33 5 is_stmt 1 view .LVU9
-  61              		.loc 1 33 32 is_stmt 0 view .LVU10
+  59:./Application/Src/application.c ****     Keys[0].small_bullet_x_pos = 491;
+  60              		.loc 1 59 5 is_stmt 1 view .LVU9
+  61              		.loc 1 59 32 is_stmt 0 view .LVU10
   62 0022 40F2EB13 		movw	r3, #491
   63 0026 6360     		str	r3, [r4, #4]
-  34:./Application/Src/application.c ****     Keys[0].small_bullet_y_pos = 675;
-  64              		.loc 1 34 5 is_stmt 1 view .LVU11
-  65              		.loc 1 34 32 is_stmt 0 view .LVU12
+  60:./Application/Src/application.c ****     Keys[0].small_bullet_y_pos = 675;
+  64              		.loc 1 60 5 is_stmt 1 view .LVU11
+  65              		.loc 1 60 32 is_stmt 0 view .LVU12
   66 0028 40F2A323 		movw	r3, #675
   67 002c A360     		str	r3, [r4, #8]
-  35:./Application/Src/application.c ****     Keys[0].big_bullet_x_pos = 2036;
-  68              		.loc 1 35 5 is_stmt 1 view .LVU13
-  69              		.loc 1 35 30 is_stmt 0 view .LVU14
-  70 002e 40F2F473 		movw	r3, #2036
+  61:./Application/Src/application.c ****     Keys[0].big_bullet_x_pos = 1580;
+  68              		.loc 1 61 5 is_stmt 1 view .LVU13
+  69              		.loc 1 61 30 is_stmt 0 view .LVU14
+  70 002e 40F22C63 		movw	r3, #1580
   71 0032 E360     		str	r3, [r4, #12]
-  36:./Application/Src/application.c ****     Keys[0].big_bullet_y_pos = 671;
-  72              		.loc 1 36 5 is_stmt 1 view .LVU15
-  73              		.loc 1 36 30 is_stmt 0 view .LVU16
-  74 0034 40F29F23 		movw	r3, #671
+  62:./Application/Src/application.c ****     Keys[0].big_bullet_y_pos = 860;
+  72              		.loc 1 62 5 is_stmt 1 view .LVU15
+  73              		.loc 1 62 30 is_stmt 0 view .LVU16
+  74 0034 4FF45773 		mov	r3, #860
   75 0038 2361     		str	r3, [r4, #16]
-  37:./Application/Src/application.c ****     Keys[1].small_bullet_x_pos = 0;
-  76              		.loc 1 37 5 is_stmt 1 view .LVU17
-  38:./Application/Src/application.c ****     Keys[1].small_bullet_y_pos = 0;
-  77              		.loc 1 38 5 view .LVU18
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 3
+  63:./Application/Src/application.c ****     Keys[1].small_bullet_x_pos = 0;
+  76              		.loc 1 63 5 is_stmt 1 view .LVU17
+  64:./Application/Src/application.c ****     Keys[1].small_bullet_y_pos = 0;
+  77              		.loc 1 64 5 view .LVU18
+  65:./Application/Src/application.c ****     Keys[1].big_bullet_x_pos = 1495;
+  78              		.loc 1 65 5 view .LVU19
+  79              		.loc 1 65 30 is_stmt 0 view .LVU20
+  80 003a 40F2D752 		movw	r2, #1495
+  81 003e 2262     		str	r2, [r4, #32]
+  66:./Application/Src/application.c ****     Keys[1].big_bullet_y_pos = 860;
+  82              		.loc 1 66 5 is_stmt 1 view .LVU21
+  83              		.loc 1 66 30 is_stmt 0 view .LVU22
+  84 0040 6362     		str	r3, [r4, #36]
+  67:./Application/Src/application.c ****     Keys[2].small_bullet_x_pos = 0;
+  85              		.loc 1 67 5 is_stmt 1 view .LVU23
+  68:./Application/Src/application.c ****     Keys[2].small_bullet_y_pos = 0;
+  86              		.loc 1 68 5 view .LVU24
+  69:./Application/Src/application.c ****     Keys[2].big_bullet_x_pos = 1405;
+  87              		.loc 1 69 5 view .LVU25
+  88              		.loc 1 69 30 is_stmt 0 view .LVU26
+  89 0042 40F27D52 		movw	r2, #1405
+  90 0046 6263     		str	r2, [r4, #52]
+  70:./Application/Src/application.c ****     Keys[2].big_bullet_y_pos = 860;
+  91              		.loc 1 70 5 is_stmt 1 view .LVU27
+  92              		.loc 1 70 30 is_stmt 0 view .LVU28
+  93 0048 A363     		str	r3, [r4, #56]
+  71:./Application/Src/application.c **** }
+  94              		.loc 1 71 1 view .LVU29
+  95 004a 10BD     		pop	{r4, pc}
+  96              	.L4:
+  97              		.align	2
+  98              	.L3:
+  99 004c 00000000 		.word	Keys
+ 100 0050 00000000 		.word	Keys_pressed
+ 101              		.cfi_endproc
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 4
 
 
-  39:./Application/Src/application.c ****     Keys[1].big_bullet_x_pos = 0;
-  78              		.loc 1 39 5 view .LVU19
-  40:./Application/Src/application.c ****     Keys[1].big_bullet_y_pos = 0;
-  79              		.loc 1 40 5 view .LVU20
-  41:./Application/Src/application.c ****     Keys[2].small_bullet_x_pos = 0;
-  80              		.loc 1 41 5 view .LVU21
-  42:./Application/Src/application.c ****     Keys[2].small_bullet_y_pos = 0;
-  81              		.loc 1 42 5 view .LVU22
-  43:./Application/Src/application.c ****     Keys[2].big_bullet_x_pos = 0;
-  82              		.loc 1 43 5 view .LVU23
-  44:./Application/Src/application.c ****     Keys[2].big_bullet_y_pos = 0;
-  83              		.loc 1 44 5 view .LVU24
-  45:./Application/Src/application.c **** }
-  84              		.loc 1 45 1 is_stmt 0 view .LVU25
-  85 003a 10BD     		pop	{r4, pc}
-  86              	.L4:
-  87              		.align	2
-  88              	.L3:
-  89 003c 00000000 		.word	Keys
-  90 0040 00000000 		.word	Keys_pressed
-  91              		.cfi_endproc
-  92              	.LFE65:
-  94              		.section	.text.init_vofa,"ax",%progbits
-  95              		.align	1
-  96              		.global	init_vofa
-  97              		.syntax unified
-  98              		.thumb
-  99              		.thumb_func
- 101              	init_vofa:
- 102              	.LFB66:
-  46:./Application/Src/application.c **** 
-  47:./Application/Src/application.c **** void init_vofa(){
- 103              		.loc 1 47 17 is_stmt 1 view -0
- 104              		.cfi_startproc
- 105              		@ args = 0, pretend = 0, frame = 0
- 106              		@ frame_needed = 0, uses_anonymous_args = 0
- 107              		@ link register save eliminated.
-  48:./Application/Src/application.c ****     vofa.tail[0] = 0x00;
- 108              		.loc 1 48 5 view .LVU27
- 109              		.loc 1 48 18 is_stmt 0 view .LVU28
- 110 0000 044B     		ldr	r3, .L6
- 111 0002 0022     		movs	r2, #0
- 112 0004 1A75     		strb	r2, [r3, #20]
-  49:./Application/Src/application.c ****     vofa.tail[1] = 0x00;
- 113              		.loc 1 49 5 is_stmt 1 view .LVU29
- 114              		.loc 1 49 18 is_stmt 0 view .LVU30
- 115 0006 5A75     		strb	r2, [r3, #21]
-  50:./Application/Src/application.c ****     vofa.tail[2] = 0x80;
- 116              		.loc 1 50 5 is_stmt 1 view .LVU31
- 117              		.loc 1 50 18 is_stmt 0 view .LVU32
- 118 0008 8022     		movs	r2, #128
- 119 000a 9A75     		strb	r2, [r3, #22]
-  51:./Application/Src/application.c ****     vofa.tail[3] = 0x7F;
- 120              		.loc 1 51 5 is_stmt 1 view .LVU33
- 121              		.loc 1 51 18 is_stmt 0 view .LVU34
- 122 000c 7F22     		movs	r2, #127
- 123 000e DA75     		strb	r2, [r3, #23]
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 4
+ 102              	.LFE65:
+ 104              		.section	.text.init_vofa,"ax",%progbits
+ 105              		.align	1
+ 106              		.global	init_vofa
+ 107              		.syntax unified
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	init_vofa:
+ 112              	.LFB67:
+  72:./Application/Src/application.c **** 
+  73:./Application/Src/application.c **** // inot sota
+  74:./Application/Src/application.c **** // void get_key_pattern(int num){
+  75:./Application/Src/application.c **** //     // -2 for 0
+  76:./Application/Src/application.c **** //     // -1 for 1
+  77:./Application/Src/application.c **** //     //  5 for 2
+  78:./Application/Src/application.c **** //     //  1 for 3
+  79:./Application/Src/application.c **** //     //  2 for 4
+  80:./Application/Src/application.c **** //     // 10 for 5
+  81:./Application/Src/application.c **** 
+  82:./Application/Src/application.c **** //     //if ball type is true, than big ball, else, small ball
+  83:./Application/Src/application.c **** //     if(is_small_bullet){
+  84:./Application/Src/application.c **** //         num/=10;
+  85:./Application/Src/application.c **** //     }
+  86:./Application/Src/application.c **** //     int a[6] = {0};
+  87:./Application/Src/application.c **** //     int temp;
+  88:./Application/Src/application.c **** //     // get how many ten needed
+  89:./Application/Src/application.c **** //     a[5] = num / 10;
+  90:./Application/Src/application.c **** //     temp = num % 10;
+  91:./Application/Src/application.c **** //     //if remaining is between those number, it can be done in two operations
+  92:./Application/Src/application.c **** //     if(temp >= 3 && temp <= 7){
+  93:./Application/Src/application.c **** //         temp=temp-5;
+  94:./Application/Src/application.c **** //         a[2]+=1;
+  95:./Application/Src/application.c **** //         //-2 -1 0 1 2
+  96:./Application/Src/application.c **** //         temp+=2;
+  97:./Application/Src/application.c **** //         //prevent double count
+  98:./Application/Src/application.c **** //         a[temp]=(temp!=2)?1:0;
+  99:./Application/Src/application.c **** //     } 
+ 100:./Application/Src/application.c **** //     // if 8 or 9, eg 8-8 give the index 0, which corrispond to -2
+ 101:./Application/Src/application.c **** //     else if(temp>=5){
+ 102:./Application/Src/application.c **** //         temp-=8;
+ 103:./Application/Src/application.c **** //         a[temp]+=1;
+ 104:./Application/Src/application.c **** //     }
+ 105:./Application/Src/application.c **** //     // if 1 or 2, eg, 1+3 = index 4, corrispond to + 1
+ 106:./Application/Src/application.c **** //     else{
+ 107:./Application/Src/application.c **** //         a[temp+3]=1;
+ 108:./Application/Src/application.c **** //     }
+ 109:./Application/Src/application.c **** //     for(int i=0;i<6;i++){
+ 110:./Application/Src/application.c **** //         for(int j=0;j<a[i];j++){
+ 111:./Application/Src/application.c **** //             if(i<=1){
+ 112:./Application/Src/application.c **** //                 mouse_control(BUY_NEG_ONE_X - (1-i)*90, BUY_Y, true);
+ 113:./Application/Src/application.c **** //                 temp = BUY_NEG_ONE_X - (1-i)*90;
+ 114:./Application/Src/application.c **** //             }
+ 115:./Application/Src/application.c **** //             else{
+ 116:./Application/Src/application.c **** //                 mouse_control(BUY_ONE_X + (i-2)*90, BUY_Y, true);
+ 117:./Application/Src/application.c **** //                 temp = BUY_NEG_ONE_X + (i-2)*90;
+ 118:./Application/Src/application.c **** //             }            
+ 119:./Application/Src/application.c **** //         }
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 5
 
 
-  52:./Application/Src/application.c **** }
- 124              		.loc 1 52 1 view .LVU35
- 125 0010 7047     		bx	lr
- 126              	.L7:
- 127 0012 00BF     		.align	2
- 128              	.L6:
- 129 0014 00000000 		.word	vofa
- 130              		.cfi_endproc
- 131              	.LFE66:
- 133              		.section	.text.init_packet,"ax",%progbits
- 134              		.align	1
- 135              		.global	init_packet
- 136              		.syntax unified
- 137              		.thumb
- 138              		.thumb_func
- 140              	init_packet:
- 141              	.LFB67:
-  53:./Application/Src/application.c **** 
-  54:./Application/Src/application.c **** void init_packet(){
- 142              		.loc 1 54 19 is_stmt 1 view -0
- 143              		.cfi_startproc
- 144              		@ args = 0, pretend = 0, frame = 0
- 145              		@ frame_needed = 0, uses_anonymous_args = 0
- 146 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 147              	.LCFI1:
- 148              		.cfi_def_cfa_offset 24
- 149              		.cfi_offset 3, -24
- 150              		.cfi_offset 4, -20
- 151              		.cfi_offset 5, -16
- 152              		.cfi_offset 6, -12
- 153              		.cfi_offset 7, -8
- 154              		.cfi_offset 14, -4
-  55:./Application/Src/application.c ****     // for custom keyboard the command id will be 0x0306 with fixed 8 byte data, the size of packet
-  56:./Application/Src/application.c ****     // we can fill the packet header in starting stage:
-  57:./Application/Src/application.c ****     memset(&key_packet, 0, sizeof(key_packet));
- 155              		.loc 1 57 5 view .LVU37
- 156 0002 1D4F     		ldr	r7, .L10
- 157 0004 0023     		movs	r3, #0
- 158 0006 3B60     		str	r3, [r7]
- 159 0008 7B60     		str	r3, [r7, #4]
-  58:./Application/Src/application.c ****     memset(&frame_header, 0, sizeof(frame_header));
- 160              		.loc 1 58 5 view .LVU38
- 161 000a 1C4E     		ldr	r6, .L10+4
- 162 000c 3360     		str	r3, [r6]
- 163 000e 3371     		strb	r3, [r6, #4]
-  59:./Application/Src/application.c ****     memset(&frame_body_tail, 0, sizeof(frame_body_tail));
- 164              		.loc 1 59 5 view .LVU39
- 165 0010 1B4D     		ldr	r5, .L10+8
- 166 0012 2B60     		str	r3, [r5]
- 167 0014 6B60     		str	r3, [r5, #4]
- 168 0016 AB60     		str	r3, [r5, #8]
-  60:./Application/Src/application.c ****     memset(&referee_packet, 0, sizeof(referee_packet));
- 169              		.loc 1 60 5 view .LVU40
- 170 0018 1A4C     		ldr	r4, .L10+12
- 171 001a 2360     		str	r3, [r4]
- 172 001c 6360     		str	r3, [r4, #4]
- 173 001e A360     		str	r3, [r4, #8]
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 5
-
-
- 174 0020 E360     		str	r3, [r4, #12]
- 175 0022 2374     		strb	r3, [r4, #16]
-  61:./Application/Src/application.c **** 
-  62:./Application/Src/application.c ****     frame_header.SOF = 0xA5; // fixed
- 176              		.loc 1 62 5 view .LVU41
- 177              		.loc 1 62 22 is_stmt 0 view .LVU42
- 178 0024 A522     		movs	r2, #165
- 179 0026 3270     		strb	r2, [r6]
-  63:./Application/Src/application.c ****     frame_header.data_length = sizeof(key_packet_t); // 8 bytes
- 180              		.loc 1 63 5 is_stmt 1 view .LVU43
- 181              		.loc 1 63 30 is_stmt 0 view .LVU44
- 182 0028 0822     		movs	r2, #8
- 183 002a 7270     		strb	r2, [r6, #1]
- 184 002c B370     		strb	r3, [r6, #2]
-  64:./Application/Src/application.c ****     frame_header.seq = 0; // packet sequence starts from any value, then increments per packet
- 185              		.loc 1 64 5 is_stmt 1 view .LVU45
-  65:./Application/Src/application.c ****     frame_header.crc8 = Get_CRC8_Check_Sum((uint8_t *)&frame_header,
- 186              		.loc 1 65 5 view .LVU46
- 187              		.loc 1 65 25 is_stmt 0 view .LVU47
- 188 002e FF22     		movs	r2, #255
- 189 0030 0421     		movs	r1, #4
- 190 0032 3046     		mov	r0, r6
- 191 0034 FFF7FEFF 		bl	Get_CRC8_Check_Sum
- 192              	.LVL1:
- 193              		.loc 1 65 23 discriminator 1 view .LVU48
- 194 0038 3071     		strb	r0, [r6, #4]
-  66:./Application/Src/application.c ****                                            sizeof(frame_header) - sizeof(frame_header.crc8),
-  67:./Application/Src/application.c ****                                            CRC8_INIT);
-  68:./Application/Src/application.c **** 
-  69:./Application/Src/application.c ****     frame_body_tail.cmd_id = 0x0306;
- 195              		.loc 1 69 5 is_stmt 1 view .LVU49
- 196              		.loc 1 69 28 is_stmt 0 view .LVU50
- 197 003a 2A46     		mov	r2, r5
- 198 003c 40F20633 		movw	r3, #774
- 199 0040 22F8023B 		strh	r3, [r2], #2	@ movhi
-  70:./Application/Src/application.c ****     memcpy(frame_body_tail.data, &key_packet, sizeof(key_packet));
- 200              		.loc 1 70 5 is_stmt 1 view .LVU51
- 201 0044 3B46     		mov	r3, r7
- 202 0046 03CB     		ldmia	r3!, {r0, r1}
- 203 0048 C5F80200 		str	r0, [r5, #2]	@ unaligned
- 204 004c 5160     		str	r1, [r2, #4]	@ unaligned
-  71:./Application/Src/application.c **** 
-  72:./Application/Src/application.c ****     referee_packet.fht = frame_header;
- 205              		.loc 1 72 5 view .LVU52
- 206              		.loc 1 72 24 is_stmt 0 view .LVU53
- 207 004e 96E80300 		ldm	r6, {r0, r1}
- 208 0052 2060     		str	r0, [r4]
- 209 0054 2171     		strb	r1, [r4, #4]
-  73:./Application/Src/application.c ****     referee_packet.fbt = frame_body_tail;
- 210              		.loc 1 73 5 is_stmt 1 view .LVU54
- 211              		.loc 1 73 24 is_stmt 0 view .LVU55
- 212 0056 07CD     		ldmia	r5!, {r0, r1, r2}
- 213 0058 C4F80500 		str	r0, [r4, #5]	@ unaligned
- 214 005c C4F80910 		str	r1, [r4, #9]	@ unaligned
- 215 0060 C4F80D20 		str	r2, [r4, #13]	@ unaligned
-  74:./Application/Src/application.c ****     referee_packet.fbt.frame_tail = Get_CRC16_Check_Sum((uint8_t *)&referee_packet,
- 216              		.loc 1 74 5 is_stmt 1 view .LVU56
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 6
-
-
- 217              		.loc 1 74 37 is_stmt 0 view .LVU57
- 218 0064 4FF6FF72 		movw	r2, #65535
- 219 0068 0F21     		movs	r1, #15
- 220 006a 2046     		mov	r0, r4
- 221 006c FFF7FEFF 		bl	Get_CRC16_Check_Sum
- 222              	.LVL2:
- 223              		.loc 1 74 35 discriminator 1 view .LVU58
- 224 0070 A4F80F00 		strh	r0, [r4, #15]	@ unaligned
-  75:./Application/Src/application.c ****                                                         sizeof(referee_packet) - sizeof(referee_pac
-  76:./Application/Src/application.c ****                                                         CRC16_INIT);
-  77:./Application/Src/application.c **** }
- 225              		.loc 1 77 1 view .LVU59
- 226 0074 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 227              	.L11:
- 228 0076 00BF     		.align	2
- 229              	.L10:
- 230 0078 00000000 		.word	key_packet
- 231 007c 00000000 		.word	frame_header
- 232 0080 00000000 		.word	frame_body_tail
- 233 0084 00000000 		.word	referee_packet
- 234              		.cfi_endproc
- 235              	.LFE67:
- 237              		.section	.text.loop_report,"ax",%progbits
- 238              		.align	1
- 239              		.global	loop_report
- 240              		.syntax unified
- 241              		.thumb
- 242              		.thumb_func
- 244              	loop_report:
- 245              	.LFB68:
-  78:./Application/Src/application.c **** 
-  79:./Application/Src/application.c **** // this function used for debug!
-  80:./Application/Src/application.c **** void loop_report(){
- 246              		.loc 1 80 19 is_stmt 1 view -0
- 247              		.cfi_startproc
- 248              		@ args = 0, pretend = 0, frame = 0
- 249              		@ frame_needed = 0, uses_anonymous_args = 0
- 250 0000 10B5     		push	{r4, lr}
- 251              	.LCFI2:
- 252              		.cfi_def_cfa_offset 8
- 253              		.cfi_offset 4, -8
- 254              		.cfi_offset 14, -4
-  81:./Application/Src/application.c ****     vofa.val[0] = (float)Keys[0].key;
- 255              		.loc 1 81 5 view .LVU61
- 256              		.loc 1 81 19 is_stmt 0 view .LVU62
- 257 0002 0F4B     		ldr	r3, .L14
- 258 0004 1868     		ldr	r0, [r3]
- 259 0006 FFF7FEFF 		bl	__aeabi_i2f
- 260              	.LVL3:
- 261              		.loc 1 81 17 view .LVU63
- 262 000a 0E4C     		ldr	r4, .L14+4
- 263 000c 2060     		str	r0, [r4]	@ float
-  82:./Application/Src/application.c ****     vofa.val[1] = (float)key_need_handle;
- 264              		.loc 1 82 5 is_stmt 1 view .LVU64
- 265              		.loc 1 82 19 is_stmt 0 view .LVU65
- 266 000e 0E4B     		ldr	r3, .L14+8
- 267 0010 1868     		ldr	r0, [r3]
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 7
-
-
- 268 0012 FFF7FEFF 		bl	__aeabi_i2f
- 269              	.LVL4:
- 270              		.loc 1 82 17 view .LVU66
- 271 0016 6060     		str	r0, [r4, #4]	@ float
-  83:./Application/Src/application.c ****     vofa.val[2] = (float)is_small_bullet;
- 272              		.loc 1 83 5 is_stmt 1 view .LVU67
- 273              		.loc 1 83 19 is_stmt 0 view .LVU68
- 274 0018 0C4B     		ldr	r3, .L14+12
- 275 001a 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 276 001c FFF7FEFF 		bl	__aeabi_ui2f
- 277              	.LVL5:
- 278              		.loc 1 83 17 view .LVU69
- 279 0020 A060     		str	r0, [r4, #8]	@ float
-  84:./Application/Src/application.c ****     vofa.val[3] = (float)Keys_pressed[0];
- 280              		.loc 1 84 5 is_stmt 1 view .LVU70
- 281              		.loc 1 84 19 is_stmt 0 view .LVU71
- 282 0022 0B4B     		ldr	r3, .L14+16
- 283 0024 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 284 0026 FFF7FEFF 		bl	__aeabi_ui2f
- 285              	.LVL6:
- 286              		.loc 1 84 17 view .LVU72
- 287 002a E060     		str	r0, [r4, #12]	@ float
-  85:./Application/Src/application.c ****     HAL_UART_Transmit_DMA(&huart1, (void*)&vofa, sizeof(vofa));
- 288              		.loc 1 85 5 is_stmt 1 view .LVU73
- 289 002c 1822     		movs	r2, #24
- 290 002e 2146     		mov	r1, r4
- 291 0030 0848     		ldr	r0, .L14+20
- 292 0032 FFF7FEFF 		bl	HAL_UART_Transmit_DMA
- 293              	.LVL7:
-  86:./Application/Src/application.c ****     ms_counter++;
- 294              		.loc 1 86 5 view .LVU74
- 295              		.loc 1 86 15 is_stmt 0 view .LVU75
- 296 0036 084A     		ldr	r2, .L14+24
- 297 0038 1368     		ldr	r3, [r2]
- 298 003a 0133     		adds	r3, r3, #1
- 299 003c 1360     		str	r3, [r2]
-  87:./Application/Src/application.c **** }
- 300              		.loc 1 87 1 view .LVU76
- 301 003e 10BD     		pop	{r4, pc}
- 302              	.L15:
- 303              		.align	2
- 304              	.L14:
- 305 0040 00000000 		.word	Keys
- 306 0044 00000000 		.word	vofa
- 307 0048 00000000 		.word	key_need_handle
- 308 004c 00000000 		.word	is_small_bullet
- 309 0050 00000000 		.word	Keys_pressed
- 310 0054 00000000 		.word	huart1
- 311 0058 00000000 		.word	ms_counter
- 312              		.cfi_endproc
- 313              	.LFE68:
- 315              		.section	.text.wait_ms,"ax",%progbits
- 316              		.align	1
- 317              		.global	wait_ms
- 318              		.syntax unified
- 319              		.thumb
- 320              		.thumb_func
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 8
-
-
- 322              	wait_ms:
- 323              	.LVL8:
- 324              	.LFB69:
-  88:./Application/Src/application.c **** 
-  89:./Application/Src/application.c **** void wait_ms(int time_ms){
- 325              		.loc 1 89 26 is_stmt 1 view -0
- 326              		.cfi_startproc
- 327              		@ args = 0, pretend = 0, frame = 0
- 328              		@ frame_needed = 0, uses_anonymous_args = 0
- 329              		.loc 1 89 26 is_stmt 0 view .LVU78
- 330 0000 38B5     		push	{r3, r4, r5, lr}
- 331              	.LCFI3:
- 332              		.cfi_def_cfa_offset 16
- 333              		.cfi_offset 3, -16
- 334              		.cfi_offset 4, -12
- 335              		.cfi_offset 5, -8
- 336              		.cfi_offset 14, -4
- 337 0002 0546     		mov	r5, r0
-  90:./Application/Src/application.c ****     uint32_t start_tick = HAL_GetTick();
- 338              		.loc 1 90 5 is_stmt 1 view .LVU79
- 339              		.loc 1 90 27 is_stmt 0 view .LVU80
- 340 0004 FFF7FEFF 		bl	HAL_GetTick
- 341              	.LVL9:
- 342              		.loc 1 90 27 view .LVU81
- 343 0008 0446     		mov	r4, r0
- 344              	.LVL10:
-  91:./Application/Src/application.c **** 
-  92:./Application/Src/application.c ****     while ((uint32_t)(HAL_GetTick() - start_tick) < (uint32_t)time_ms);
- 345              		.loc 1 92 5 is_stmt 1 view .LVU82
- 346              	.L17:
- 347              		.loc 1 92 51 discriminator 2 view .LVU83
- 348              		.loc 1 92 23 is_stmt 0 discriminator 2 view .LVU84
- 349 000a FFF7FEFF 		bl	HAL_GetTick
- 350              	.LVL11:
- 351              		.loc 1 92 37 discriminator 2 view .LVU85
- 352 000e 001B     		subs	r0, r0, r4
- 353              		.loc 1 92 51 discriminator 2 view .LVU86
- 354 0010 A842     		cmp	r0, r5
- 355 0012 FAD3     		bcc	.L17
-  93:./Application/Src/application.c **** }
- 356              		.loc 1 93 1 view .LVU87
- 357 0014 38BD     		pop	{r3, r4, r5, pc}
- 358              		.loc 1 93 1 view .LVU88
- 359              		.cfi_endproc
- 360              	.LFE69:
- 362              		.section	.text.update_packet_and_send,"ax",%progbits
- 363              		.align	1
- 364              		.syntax unified
- 365              		.thumb
- 366              		.thumb_func
- 368              	update_packet_and_send:
- 369              	.LFB75:
-  94:./Application/Src/application.c **** 
-  95:./Application/Src/application.c **** // scan for keys that is triggered:
-  96:./Application/Src/application.c **** void loop_scan_keys(){
-  97:./Application/Src/application.c ****     static uint32_t key_fall_block_until = 0;
-  98:./Application/Src/application.c ****     uint32_t now = HAL_GetTick();
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 9
-
-
-  99:./Application/Src/application.c **** 
- 100:./Application/Src/application.c ****     // also check for small bullet
- 101:./Application/Src/application.c ****     is_small_bullet = (bool)HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6);
- 102:./Application/Src/application.c **** 
- 103:./Application/Src/application.c ****     if ((int32_t)(now - key_fall_block_until) < 0){
- 104:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
- 105:./Application/Src/application.c ****         return;
- 106:./Application/Src/application.c ****     }
- 107:./Application/Src/application.c **** 
- 108:./Application/Src/application.c ****     // read for pin PA3(0) PA4(1) PA5(2):
- 109:./Application/Src/application.c ****     for (int index = 0; index < KEY_NUMBER; index++){
- 110:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
- 111:./Application/Src/application.c **** 
- 112:./Application/Src/application.c ****         if (is_pressed && !Keys_pressed[index]){
- 113:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
- 114:./Application/Src/application.c ****             // after delay, if still pressed -> true else false
- 115:./Application/Src/application.c ****             is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
- 116:./Application/Src/application.c ****             if (is_pressed && !long_pressed){
- 117:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
- 118:./Application/Src/application.c ****                 key_need_handle = index;
- 119:./Application/Src/application.c ****                 long_pressed = 1;
- 120:./Application/Src/application.c ****                 memset(Keys_pressed, 0, sizeof(Keys_pressed));
- 121:./Application/Src/application.c ****                 return;
- 122:./Application/Src/application.c ****             }
- 123:./Application/Src/application.c ****         } else {
- 124:./Application/Src/application.c ****             long_pressed = 0;
- 125:./Application/Src/application.c ****         }
- 126:./Application/Src/application.c **** 
- 127:./Application/Src/application.c ****         if (is_pressed){
- 128:./Application/Src/application.c ****             Keys_pressed[index] = true;
- 129:./Application/Src/application.c ****         } else {
- 130:./Application/Src/application.c ****             Keys_pressed[index] = false;
- 131:./Application/Src/application.c ****         }
- 132:./Application/Src/application.c ****     }
- 133:./Application/Src/application.c **** }
- 134:./Application/Src/application.c **** 
- 135:./Application/Src/application.c **** void call_buy_UI(){
- 136:./Application/Src/application.c ****     if (is_small_bullet){
- 137:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
- 138:./Application/Src/application.c ****     } else { // big bullet 
- 139:./Application/Src/application.c ****         key_packet.key_value = BIG_BULLET_KEY;
- 140:./Application/Src/application.c ****     }
- 141:./Application/Src/application.c **** 
- 142:./Application/Src/application.c ****     key_packet.x_position = 0;
- 143:./Application/Src/application.c ****     key_packet.y_position = 0;
- 144:./Application/Src/application.c ****     key_packet.mouse_left = 0;
- 145:./Application/Src/application.c ****     key_packet.mouse_right = 0;
- 146:./Application/Src/application.c ****     key_packet.reserved = 0;
- 147:./Application/Src/application.c ****     update_packet_and_send();
- 148:./Application/Src/application.c **** 
- 149:./Application/Src/application.c ****     // release O/I after opening the buy UI.
- 150:./Application/Src/application.c ****     key_packet.key_value = 0;
- 151:./Application/Src/application.c ****     update_packet_and_send();
- 152:./Application/Src/application.c **** }
- 153:./Application/Src/application.c **** 
- 154:./Application/Src/application.c **** void mouse_control(uint16_t x, uint16_t y, bool click){
- 155:./Application/Src/application.c ****     // packet update for mouse
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 10
-
-
- 156:./Application/Src/application.c ****     key_packet.key_value = 0;
- 157:./Application/Src/application.c ****     key_packet.x_position = x;
- 158:./Application/Src/application.c ****     key_packet.y_position = y;
- 159:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
- 160:./Application/Src/application.c ****     key_packet.mouse_right = 0;
- 161:./Application/Src/application.c ****     key_packet.reserved = 0;
- 162:./Application/Src/application.c ****     update_packet_and_send();
- 163:./Application/Src/application.c ****     // after send add delay
- 164:./Application/Src/application.c ****     wait_ms(PACKET_SEND_DELAY);
- 165:./Application/Src/application.c **** }
- 166:./Application/Src/application.c **** 
- 167:./Application/Src/application.c **** void move_click_mouse(int key){
- 168:./Application/Src/application.c ****     uint16_t x = 0;
- 169:./Application/Src/application.c ****     uint16_t y = 0;
- 170:./Application/Src/application.c **** 
- 171:./Application/Src/application.c ****     switch (key)
- 172:./Application/Src/application.c ****     {
- 173:./Application/Src/application.c ****         case 0:
- 174:./Application/Src/application.c ****             if (is_small_bullet){
- 175:./Application/Src/application.c ****                 x = Keys[0].small_bullet_x_pos;
- 176:./Application/Src/application.c ****                 y = Keys[0].small_bullet_y_pos;
- 177:./Application/Src/application.c ****             } else {
- 178:./Application/Src/application.c ****                 x = Keys[0].big_bullet_x_pos;
- 179:./Application/Src/application.c ****                 y = Keys[0].big_bullet_y_pos;
- 180:./Application/Src/application.c ****             }
- 181:./Application/Src/application.c ****             break;
- 182:./Application/Src/application.c ****         
- 183:./Application/Src/application.c ****         case 1:
- 184:./Application/Src/application.c ****             if (is_small_bullet){
- 185:./Application/Src/application.c ****                 x = Keys[1].small_bullet_x_pos;
- 186:./Application/Src/application.c ****                 y = Keys[1].small_bullet_y_pos;
- 187:./Application/Src/application.c ****             } else {
- 188:./Application/Src/application.c ****                 x = Keys[1].big_bullet_x_pos;
- 189:./Application/Src/application.c ****                 y = Keys[1].big_bullet_y_pos;
- 190:./Application/Src/application.c ****             }
- 191:./Application/Src/application.c ****             break;
- 192:./Application/Src/application.c **** 
- 193:./Application/Src/application.c ****         case 2:
- 194:./Application/Src/application.c ****             if (is_small_bullet){
- 195:./Application/Src/application.c ****                 x = Keys[2].small_bullet_x_pos;
- 196:./Application/Src/application.c ****                 y = Keys[2].small_bullet_y_pos;
- 197:./Application/Src/application.c ****             } else {
- 198:./Application/Src/application.c ****                 x = Keys[2].big_bullet_x_pos;
- 199:./Application/Src/application.c ****                 y = Keys[2].big_bullet_y_pos;
- 200:./Application/Src/application.c ****             }
- 201:./Application/Src/application.c ****             break;
- 202:./Application/Src/application.c ****         
- 203:./Application/Src/application.c ****         default:
- 204:./Application/Src/application.c ****             break;
- 205:./Application/Src/application.c ****     }
- 206:./Application/Src/application.c **** 
- 207:./Application/Src/application.c ****     if (x == 0 && y == 0){
- 208:./Application/Src/application.c ****         // Position not filled yet. Do not click the top-left corner by accident.
- 209:./Application/Src/application.c ****         return;
- 210:./Application/Src/application.c ****     }
- 211:./Application/Src/application.c **** 
- 212:./Application/Src/application.c ****     mouse_control(x, y, false);
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 11
-
-
- 213:./Application/Src/application.c ****     mouse_control(x, y, true);
- 214:./Application/Src/application.c ****     mouse_control(x, y, false);
- 215:./Application/Src/application.c **** }
- 216:./Application/Src/application.c **** 
- 217:./Application/Src/application.c **** void click_buy_bullets(){
- 218:./Application/Src/application.c **** 
- 219:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
- 220:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, true);
- 221:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
- 222:./Application/Src/application.c **** 
- 223:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
- 224:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, true);
- 225:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
- 226:./Application/Src/application.c **** }
- 227:./Application/Src/application.c **** 
- 228:./Application/Src/application.c **** static void update_packet_and_send(void){
- 370              		.loc 1 228 41 is_stmt 1 view -0
- 371              		.cfi_startproc
- 372              		@ args = 0, pretend = 0, frame = 0
- 373              		@ frame_needed = 0, uses_anonymous_args = 0
- 374 0000 70B5     		push	{r4, r5, r6, lr}
- 375              	.LCFI4:
- 376              		.cfi_def_cfa_offset 16
- 377              		.cfi_offset 4, -16
- 378              		.cfi_offset 5, -12
- 379              		.cfi_offset 6, -8
- 380              		.cfi_offset 14, -4
- 229:./Application/Src/application.c ****     memcpy(frame_body_tail.data, &key_packet, sizeof(key_packet));
- 381              		.loc 1 229 5 view .LVU90
- 382 0002 184C     		ldr	r4, .L23
- 383 0004 184B     		ldr	r3, .L23+4
- 384 0006 03CB     		ldmia	r3!, {r0, r1}
- 385 0008 C4F80200 		str	r0, [r4, #2]	@ unaligned
- 386 000c C4F80610 		str	r1, [r4, #6]	@ unaligned
- 230:./Application/Src/application.c **** 
- 231:./Application/Src/application.c ****     frame_header.crc8 = Get_CRC8_Check_Sum((uint8_t *)&frame_header,
- 387              		.loc 1 231 5 view .LVU91
- 388              		.loc 1 231 25 is_stmt 0 view .LVU92
- 389 0010 164E     		ldr	r6, .L23+8
- 390 0012 FF22     		movs	r2, #255
- 391 0014 0421     		movs	r1, #4
- 392 0016 3046     		mov	r0, r6
- 393 0018 FFF7FEFF 		bl	Get_CRC8_Check_Sum
- 394              	.LVL12:
- 395              		.loc 1 231 23 discriminator 1 view .LVU93
- 396 001c 3071     		strb	r0, [r6, #4]
- 232:./Application/Src/application.c ****                                            sizeof(frame_header) - sizeof(frame_header.crc8),
- 233:./Application/Src/application.c ****                                            CRC8_INIT);
- 234:./Application/Src/application.c **** 
- 235:./Application/Src/application.c ****     referee_packet.fht = frame_header;
- 397              		.loc 1 235 5 is_stmt 1 view .LVU94
- 398              		.loc 1 235 24 is_stmt 0 view .LVU95
- 399 001e 144D     		ldr	r5, .L23+12
- 400 0020 96E80300 		ldm	r6, {r0, r1}
- 401 0024 2860     		str	r0, [r5]
- 402 0026 2971     		strb	r1, [r5, #4]
- 236:./Application/Src/application.c ****     referee_packet.fbt = frame_body_tail;
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 12
-
-
- 403              		.loc 1 236 5 is_stmt 1 view .LVU96
- 404              		.loc 1 236 24 is_stmt 0 view .LVU97
- 405 0028 2346     		mov	r3, r4
- 406 002a 07CB     		ldmia	r3!, {r0, r1, r2}
- 407 002c C5F80500 		str	r0, [r5, #5]	@ unaligned
- 408 0030 C5F80910 		str	r1, [r5, #9]	@ unaligned
- 409 0034 C5F80D20 		str	r2, [r5, #13]	@ unaligned
- 237:./Application/Src/application.c ****     referee_packet.fbt.frame_tail = Get_CRC16_Check_Sum((uint8_t *)&referee_packet,
- 410              		.loc 1 237 5 is_stmt 1 view .LVU98
- 411              		.loc 1 237 37 is_stmt 0 view .LVU99
- 412 0038 4FF6FF72 		movw	r2, #65535
- 413 003c 0F21     		movs	r1, #15
- 414 003e 2846     		mov	r0, r5
- 415 0040 FFF7FEFF 		bl	Get_CRC16_Check_Sum
- 416              	.LVL13:
- 417              		.loc 1 237 35 discriminator 1 view .LVU100
- 418 0044 A5F80F00 		strh	r0, [r5, #15]	@ unaligned
- 238:./Application/Src/application.c ****                                                         sizeof(referee_packet) - sizeof(referee_pac
- 239:./Application/Src/application.c ****                                                         CRC16_INIT);
- 240:./Application/Src/application.c **** 
- 241:./Application/Src/application.c ****     if (HAL_UART_Transmit_DMA(&huart3, (uint8_t *)&referee_packet, sizeof(referee_packet)) == HAL_O
- 419              		.loc 1 241 5 is_stmt 1 view .LVU101
- 420              		.loc 1 241 9 is_stmt 0 view .LVU102
- 421 0048 1122     		movs	r2, #17
- 422 004a 2946     		mov	r1, r5
- 423 004c 0948     		ldr	r0, .L23+16
- 424 004e FFF7FEFF 		bl	HAL_UART_Transmit_DMA
- 425              	.LVL14:
- 426              		.loc 1 241 8 discriminator 1 view .LVU103
- 427 0052 00B1     		cbz	r0, .L22
- 428              	.L19:
- 242:./Application/Src/application.c ****         wait_ms(PACKET_SEND_DELAY);
- 243:./Application/Src/application.c ****         frame_header.seq++;
- 244:./Application/Src/application.c ****     }
- 245:./Application/Src/application.c **** }
- 429              		.loc 1 245 1 view .LVU104
- 430 0054 70BD     		pop	{r4, r5, r6, pc}
- 431              	.L22:
- 242:./Application/Src/application.c ****         wait_ms(PACKET_SEND_DELAY);
- 432              		.loc 1 242 9 is_stmt 1 view .LVU105
- 433 0056 2220     		movs	r0, #34
- 434 0058 FFF7FEFF 		bl	wait_ms
- 435              	.LVL15:
- 243:./Application/Src/application.c ****     }
- 436              		.loc 1 243 9 view .LVU106
- 243:./Application/Src/application.c ****     }
- 437              		.loc 1 243 21 is_stmt 0 view .LVU107
- 438 005c F378     		ldrb	r3, [r6, #3]	@ zero_extendqisi2
- 243:./Application/Src/application.c ****     }
- 439              		.loc 1 243 25 view .LVU108
- 440 005e 0133     		adds	r3, r3, #1
- 441 0060 F370     		strb	r3, [r6, #3]
- 442              		.loc 1 245 1 view .LVU109
- 443 0062 F7E7     		b	.L19
- 444              	.L24:
- 445              		.align	2
- 446              	.L23:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 13
-
-
- 447 0064 00000000 		.word	frame_body_tail
- 448 0068 00000000 		.word	key_packet
- 449 006c 00000000 		.word	frame_header
- 450 0070 00000000 		.word	referee_packet
- 451 0074 00000000 		.word	huart3
- 452              		.cfi_endproc
- 453              	.LFE75:
- 455              		.section	.text.loop_scan_keys,"ax",%progbits
- 456              		.align	1
- 457              		.global	loop_scan_keys
- 458              		.syntax unified
- 459              		.thumb
- 460              		.thumb_func
- 462              	loop_scan_keys:
- 463              	.LFB70:
-  96:./Application/Src/application.c ****     static uint32_t key_fall_block_until = 0;
- 464              		.loc 1 96 22 is_stmt 1 view -0
- 465              		.cfi_startproc
- 466              		@ args = 0, pretend = 0, frame = 0
- 467              		@ frame_needed = 0, uses_anonymous_args = 0
- 468 0000 38B5     		push	{r3, r4, r5, lr}
- 469              	.LCFI5:
- 470              		.cfi_def_cfa_offset 16
- 471              		.cfi_offset 3, -16
- 472              		.cfi_offset 4, -12
- 473              		.cfi_offset 5, -8
- 474              		.cfi_offset 14, -4
-  97:./Application/Src/application.c ****     uint32_t now = HAL_GetTick();
- 475              		.loc 1 97 5 view .LVU111
-  98:./Application/Src/application.c **** 
- 476              		.loc 1 98 5 view .LVU112
-  98:./Application/Src/application.c **** 
- 477              		.loc 1 98 20 is_stmt 0 view .LVU113
- 478 0002 FFF7FEFF 		bl	HAL_GetTick
- 479              	.LVL16:
- 480 0006 0446     		mov	r4, r0
- 481              	.LVL17:
- 101:./Application/Src/application.c **** 
- 482              		.loc 1 101 5 is_stmt 1 view .LVU114
- 101:./Application/Src/application.c **** 
- 483              		.loc 1 101 29 is_stmt 0 view .LVU115
- 484 0008 4021     		movs	r1, #64
- 485 000a 2948     		ldr	r0, .L36
- 486              	.LVL18:
- 101:./Application/Src/application.c **** 
- 487              		.loc 1 101 29 view .LVU116
- 488 000c FFF7FEFF 		bl	HAL_GPIO_ReadPin
- 489              	.LVL19:
- 101:./Application/Src/application.c **** 
- 490              		.loc 1 101 23 discriminator 1 view .LVU117
- 491 0010 0038     		subs	r0, r0, #0
- 492 0012 18BF     		it	ne
- 493 0014 0120     		movne	r0, #1
- 101:./Application/Src/application.c **** 
- 494              		.loc 1 101 21 discriminator 1 view .LVU118
- 495 0016 274B     		ldr	r3, .L36+4
- 496 0018 1870     		strb	r0, [r3]
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 14
-
-
- 103:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
- 497              		.loc 1 103 5 is_stmt 1 view .LVU119
- 103:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
- 498              		.loc 1 103 23 is_stmt 0 view .LVU120
- 499 001a 274B     		ldr	r3, .L36+8
- 500 001c 1B68     		ldr	r3, [r3]
- 501 001e E41A     		subs	r4, r4, r3
- 502              	.LVL20:
- 103:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
- 503              		.loc 1 103 8 view .LVU121
- 504 0020 002C     		cmp	r4, #0
- 505 0022 01DB     		blt	.L35
- 506              	.LBB2:
- 109:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
- 507              		.loc 1 109 14 view .LVU122
- 508 0024 0025     		movs	r5, #0
- 509 0026 0DE0     		b	.L26
- 510              	.L35:
- 511              	.LBE2:
- 104:./Application/Src/application.c ****         return;
- 512              		.loc 1 104 9 is_stmt 1 view .LVU123
- 513 0028 244B     		ldr	r3, .L36+12
- 514 002a 0022     		movs	r2, #0
- 515 002c 1A80     		strh	r2, [r3]	@ movhi
- 516 002e 9A70     		strb	r2, [r3, #2]
- 105:./Application/Src/application.c ****     }
- 517              		.loc 1 105 9 view .LVU124
- 518              	.L25:
- 133:./Application/Src/application.c **** 
- 519              		.loc 1 133 1 is_stmt 0 view .LVU125
- 520 0030 38BD     		pop	{r3, r4, r5, pc}
- 521              	.LVL21:
- 522              	.L28:
- 523              	.LBB5:
- 524              	.LBB3:
- 124:./Application/Src/application.c ****         }
- 525              		.loc 1 124 13 is_stmt 1 view .LVU126
- 124:./Application/Src/application.c ****         }
- 526              		.loc 1 124 26 is_stmt 0 view .LVU127
- 527 0032 234A     		ldr	r2, .L36+16
- 528 0034 0021     		movs	r1, #0
- 529 0036 1170     		strb	r1, [r2]
- 530              	.L29:
- 127:./Application/Src/application.c ****             Keys_pressed[index] = true;
- 531              		.loc 1 127 9 is_stmt 1 view .LVU128
- 127:./Application/Src/application.c ****             Keys_pressed[index] = true;
- 532              		.loc 1 127 12 is_stmt 0 view .LVU129
- 533 0038 002B     		cmp	r3, #0
- 534 003a 35D0     		beq	.L30
- 128:./Application/Src/application.c ****         } else {
- 535              		.loc 1 128 13 is_stmt 1 view .LVU130
- 128:./Application/Src/application.c ****         } else {
- 536              		.loc 1 128 33 is_stmt 0 view .LVU131
- 537 003c 1F4B     		ldr	r3, .L36+12
- 538              	.LVL22:
- 128:./Application/Src/application.c ****         } else {
- 539              		.loc 1 128 33 view .LVU132
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 15
-
-
- 540 003e 0122     		movs	r2, #1
- 541 0040 5A55     		strb	r2, [r3, r5]
- 542              	.L31:
- 128:./Application/Src/application.c ****         } else {
- 543              		.loc 1 128 33 view .LVU133
- 544              	.LBE3:
- 109:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
- 545              		.loc 1 109 50 is_stmt 1 discriminator 2 view .LVU134
- 546 0042 0135     		adds	r5, r5, #1
- 547              	.LVL23:
- 548              	.L26:
- 109:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
- 549              		.loc 1 109 31 discriminator 1 view .LVU135
- 550 0044 022D     		cmp	r5, #2
- 551 0046 F3DC     		bgt	.L25
- 552              	.LBB4:
- 110:./Application/Src/application.c **** 
- 553              		.loc 1 110 9 view .LVU136
- 110:./Application/Src/application.c **** 
- 554              		.loc 1 110 76 is_stmt 0 view .LVU137
- 555 0048 EB1C     		adds	r3, r5, #3
- 110:./Application/Src/application.c **** 
- 556              		.loc 1 110 66 view .LVU138
- 557 004a 0124     		movs	r4, #1
- 558 004c 9C40     		lsls	r4, r4, r3
- 110:./Application/Src/application.c **** 
- 559              		.loc 1 110 28 view .LVU139
- 560 004e A4B2     		uxth	r4, r4
- 561 0050 2146     		mov	r1, r4
- 562 0052 1748     		ldr	r0, .L36
- 563 0054 FFF7FEFF 		bl	HAL_GPIO_ReadPin
- 564              	.LVL24:
- 110:./Application/Src/application.c **** 
- 565              		.loc 1 110 14 discriminator 1 view .LVU140
- 566 0058 0028     		cmp	r0, #0
- 567 005a 0CBF     		ite	eq
- 568 005c 0123     		moveq	r3, #1
- 569 005e 0023     		movne	r3, #0
- 570              	.LVL25:
- 112:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
- 571              		.loc 1 112 9 is_stmt 1 view .LVU141
- 112:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
- 572              		.loc 1 112 12 is_stmt 0 view .LVU142
- 573 0060 E7D1     		bne	.L28
- 112:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
- 574              		.loc 1 112 40 discriminator 1 view .LVU143
- 575 0062 164A     		ldr	r2, .L36+12
- 576 0064 525D     		ldrb	r2, [r2, r5]	@ zero_extendqisi2
- 112:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
- 577              		.loc 1 112 24 discriminator 1 view .LVU144
- 578 0066 002A     		cmp	r2, #0
- 579 0068 E3D1     		bne	.L28
- 113:./Application/Src/application.c ****             // after delay, if still pressed -> true else false
- 580              		.loc 1 113 13 is_stmt 1 view .LVU145
- 581 006a 1920     		movs	r0, #25
- 582 006c FFF7FEFF 		bl	wait_ms
- 583              	.LVL26:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 16
-
-
- 115:./Application/Src/application.c ****             if (is_pressed && !long_pressed){
- 584              		.loc 1 115 13 view .LVU146
- 115:./Application/Src/application.c ****             if (is_pressed && !long_pressed){
- 585              		.loc 1 115 27 is_stmt 0 view .LVU147
- 586 0070 2146     		mov	r1, r4
- 587 0072 0F48     		ldr	r0, .L36
- 588 0074 FFF7FEFF 		bl	HAL_GPIO_ReadPin
- 589              	.LVL27:
- 115:./Application/Src/application.c ****             if (is_pressed && !long_pressed){
- 590              		.loc 1 115 24 discriminator 1 view .LVU148
- 591 0078 0028     		cmp	r0, #0
- 592 007a 0CBF     		ite	eq
- 593 007c 0123     		moveq	r3, #1
- 594 007e 0023     		movne	r3, #0
- 595              	.LVL28:
- 116:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
- 596              		.loc 1 116 13 is_stmt 1 view .LVU149
- 116:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
- 597              		.loc 1 116 16 is_stmt 0 view .LVU150
- 598 0080 DAD1     		bne	.L29
- 116:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
- 599              		.loc 1 116 31 discriminator 1 view .LVU151
- 600 0082 0F4A     		ldr	r2, .L36+16
- 601 0084 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 116:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
- 602              		.loc 1 116 28 discriminator 1 view .LVU152
- 603 0086 002A     		cmp	r2, #0
- 604 0088 D6D1     		bne	.L29
- 117:./Application/Src/application.c ****                 key_need_handle = index;
- 605              		.loc 1 117 17 is_stmt 1 view .LVU153
- 117:./Application/Src/application.c ****                 key_need_handle = index;
- 606              		.loc 1 117 40 is_stmt 0 view .LVU154
- 607 008a FFF7FEFF 		bl	HAL_GetTick
- 608              	.LVL29:
- 117:./Application/Src/application.c ****                 key_need_handle = index;
- 609              		.loc 1 117 54 discriminator 1 view .LVU155
- 610 008e C830     		adds	r0, r0, #200
- 117:./Application/Src/application.c ****                 key_need_handle = index;
- 611              		.loc 1 117 38 discriminator 1 view .LVU156
- 612 0090 094A     		ldr	r2, .L36+8
- 613 0092 1060     		str	r0, [r2]
- 118:./Application/Src/application.c ****                 long_pressed = 1;
- 614              		.loc 1 118 17 is_stmt 1 view .LVU157
- 118:./Application/Src/application.c ****                 long_pressed = 1;
- 615              		.loc 1 118 33 is_stmt 0 view .LVU158
- 616 0094 0B4B     		ldr	r3, .L36+20
- 617 0096 1D60     		str	r5, [r3]
- 119:./Application/Src/application.c ****                 memset(Keys_pressed, 0, sizeof(Keys_pressed));
- 618              		.loc 1 119 17 is_stmt 1 view .LVU159
- 119:./Application/Src/application.c ****                 memset(Keys_pressed, 0, sizeof(Keys_pressed));
- 619              		.loc 1 119 30 is_stmt 0 view .LVU160
- 620 0098 094B     		ldr	r3, .L36+16
- 621 009a 0122     		movs	r2, #1
- 622 009c 1A70     		strb	r2, [r3]
- 120:./Application/Src/application.c ****                 return;
- 623              		.loc 1 120 17 is_stmt 1 view .LVU161
- 624 009e 074B     		ldr	r3, .L36+12
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 17
-
-
- 625 00a0 0022     		movs	r2, #0
- 626 00a2 1A80     		strh	r2, [r3]	@ movhi
- 627 00a4 9A70     		strb	r2, [r3, #2]
- 121:./Application/Src/application.c ****             }
- 628              		.loc 1 121 17 view .LVU162
- 629 00a6 C3E7     		b	.L25
- 630              	.LVL30:
- 631              	.L30:
- 130:./Application/Src/application.c ****         }
- 632              		.loc 1 130 13 view .LVU163
- 130:./Application/Src/application.c ****         }
- 633              		.loc 1 130 33 is_stmt 0 view .LVU164
- 634 00a8 044B     		ldr	r3, .L36+12
- 635              	.LVL31:
- 130:./Application/Src/application.c ****         }
- 636              		.loc 1 130 33 view .LVU165
- 637 00aa 0022     		movs	r2, #0
- 638 00ac 5A55     		strb	r2, [r3, r5]
- 639 00ae C8E7     		b	.L31
- 640              	.L37:
- 641              		.align	2
- 642              	.L36:
- 643 00b0 00080140 		.word	1073809408
- 644 00b4 00000000 		.word	is_small_bullet
- 645 00b8 00000000 		.word	key_fall_block_until.0
- 646 00bc 00000000 		.word	Keys_pressed
- 647 00c0 00000000 		.word	long_pressed
- 648 00c4 00000000 		.word	key_need_handle
- 649              	.LBE4:
- 650              	.LBE5:
- 651              		.cfi_endproc
- 652              	.LFE70:
- 654              		.section	.text.call_buy_UI,"ax",%progbits
- 655              		.align	1
- 656              		.global	call_buy_UI
- 657              		.syntax unified
- 658              		.thumb
- 659              		.thumb_func
- 661              	call_buy_UI:
- 662              	.LFB71:
- 135:./Application/Src/application.c ****     if (is_small_bullet){
- 663              		.loc 1 135 19 is_stmt 1 view -0
- 664              		.cfi_startproc
- 665              		@ args = 0, pretend = 0, frame = 0
- 666              		@ frame_needed = 0, uses_anonymous_args = 0
- 667 0000 38B5     		push	{r3, r4, r5, lr}
- 668              	.LCFI6:
- 669              		.cfi_def_cfa_offset 16
- 670              		.cfi_offset 3, -16
- 671              		.cfi_offset 4, -12
- 672              		.cfi_offset 5, -8
- 673              		.cfi_offset 14, -4
- 136:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
- 674              		.loc 1 136 5 view .LVU167
- 136:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
- 675              		.loc 1 136 9 is_stmt 0 view .LVU168
- 676 0002 114B     		ldr	r3, .L42
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 18
-
-
- 677 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 136:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
- 678              		.loc 1 136 8 view .LVU169
- 679 0006 DBB1     		cbz	r3, .L39
- 137:./Application/Src/application.c ****     } else { // big bullet 
- 680              		.loc 1 137 9 is_stmt 1 view .LVU170
- 137:./Application/Src/application.c ****     } else { // big bullet 
- 681              		.loc 1 137 30 is_stmt 0 view .LVU171
- 682 0008 104B     		ldr	r3, .L42+4
- 683 000a 5022     		movs	r2, #80
- 684 000c 1A80     		strh	r2, [r3]	@ movhi
- 685              	.L40:
- 142:./Application/Src/application.c ****     key_packet.y_position = 0;
- 686              		.loc 1 142 5 is_stmt 1 view .LVU172
- 142:./Application/Src/application.c ****     key_packet.y_position = 0;
- 687              		.loc 1 142 27 is_stmt 0 view .LVU173
- 688 000e 0F4C     		ldr	r4, .L42+4
- 689 0010 6388     		ldrh	r3, [r4, #2]
- 690 0012 6FF30B03 		bfc	r3, #0, #12
- 691 0016 6380     		strh	r3, [r4, #2]	@ movhi
- 143:./Application/Src/application.c ****     key_packet.mouse_left = 0;
- 692              		.loc 1 143 5 is_stmt 1 view .LVU174
- 143:./Application/Src/application.c ****     key_packet.mouse_left = 0;
- 693              		.loc 1 143 27 is_stmt 0 view .LVU175
- 694 0018 A388     		ldrh	r3, [r4, #4]
- 695 001a 6FF30B03 		bfc	r3, #0, #12
- 696 001e A380     		strh	r3, [r4, #4]	@ movhi
- 144:./Application/Src/application.c ****     key_packet.mouse_right = 0;
- 697              		.loc 1 144 5 is_stmt 1 view .LVU176
- 144:./Application/Src/application.c ****     key_packet.mouse_right = 0;
- 698              		.loc 1 144 27 is_stmt 0 view .LVU177
- 699 0020 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
- 700 0022 23F0F003 		bic	r3, r3, #240
- 701 0026 E370     		strb	r3, [r4, #3]
- 145:./Application/Src/application.c ****     key_packet.reserved = 0;
- 702              		.loc 1 145 5 is_stmt 1 view .LVU178
- 145:./Application/Src/application.c ****     key_packet.reserved = 0;
- 703              		.loc 1 145 28 is_stmt 0 view .LVU179
- 704 0028 6379     		ldrb	r3, [r4, #5]	@ zero_extendqisi2
- 705 002a 23F0F003 		bic	r3, r3, #240
- 706 002e 6371     		strb	r3, [r4, #5]
- 146:./Application/Src/application.c ****     update_packet_and_send();
- 707              		.loc 1 146 5 is_stmt 1 view .LVU180
- 146:./Application/Src/application.c ****     update_packet_and_send();
- 708              		.loc 1 146 25 is_stmt 0 view .LVU181
- 709 0030 0025     		movs	r5, #0
- 710 0032 E580     		strh	r5, [r4, #6]	@ movhi
- 147:./Application/Src/application.c **** 
- 711              		.loc 1 147 5 is_stmt 1 view .LVU182
- 712 0034 FFF7FEFF 		bl	update_packet_and_send
- 713              	.LVL32:
- 150:./Application/Src/application.c ****     update_packet_and_send();
- 714              		.loc 1 150 5 view .LVU183
- 150:./Application/Src/application.c ****     update_packet_and_send();
- 715              		.loc 1 150 26 is_stmt 0 view .LVU184
- 716 0038 2580     		strh	r5, [r4]	@ movhi
- 151:./Application/Src/application.c **** }
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 19
-
-
- 717              		.loc 1 151 5 is_stmt 1 view .LVU185
- 718 003a FFF7FEFF 		bl	update_packet_and_send
- 719              	.LVL33:
- 152:./Application/Src/application.c **** 
- 720              		.loc 1 152 1 is_stmt 0 view .LVU186
- 721 003e 38BD     		pop	{r3, r4, r5, pc}
- 722              	.L39:
- 139:./Application/Src/application.c ****     }
- 723              		.loc 1 139 9 is_stmt 1 view .LVU187
- 139:./Application/Src/application.c ****     }
- 724              		.loc 1 139 30 is_stmt 0 view .LVU188
- 725 0040 024B     		ldr	r3, .L42+4
- 726 0042 5022     		movs	r2, #80
- 727 0044 1A80     		strh	r2, [r3]	@ movhi
- 728 0046 E2E7     		b	.L40
- 729              	.L43:
- 730              		.align	2
- 731              	.L42:
- 732 0048 00000000 		.word	is_small_bullet
- 733 004c 00000000 		.word	key_packet
- 734              		.cfi_endproc
- 735              	.LFE71:
- 737              		.section	.text.mouse_control,"ax",%progbits
- 738              		.align	1
- 739              		.global	mouse_control
- 740              		.syntax unified
- 741              		.thumb
- 742              		.thumb_func
- 744              	mouse_control:
- 745              	.LVL34:
- 746              	.LFB72:
- 154:./Application/Src/application.c ****     // packet update for mouse
- 747              		.loc 1 154 55 is_stmt 1 view -0
- 748              		.cfi_startproc
- 749              		@ args = 0, pretend = 0, frame = 0
- 750              		@ frame_needed = 0, uses_anonymous_args = 0
- 154:./Application/Src/application.c ****     // packet update for mouse
- 751              		.loc 1 154 55 is_stmt 0 view .LVU190
- 752 0000 08B5     		push	{r3, lr}
- 753              	.LCFI7:
- 754              		.cfi_def_cfa_offset 8
- 755              		.cfi_offset 3, -8
- 756              		.cfi_offset 14, -4
- 156:./Application/Src/application.c ****     key_packet.x_position = x;
- 757              		.loc 1 156 5 is_stmt 1 view .LVU191
- 156:./Application/Src/application.c ****     key_packet.x_position = x;
- 758              		.loc 1 156 26 is_stmt 0 view .LVU192
- 759 0002 0F4B     		ldr	r3, .L46
- 760 0004 4FF0000C 		mov	ip, #0
- 761 0008 A3F800C0 		strh	ip, [r3]	@ movhi
- 157:./Application/Src/application.c ****     key_packet.y_position = y;
- 762              		.loc 1 157 5 is_stmt 1 view .LVU193
- 157:./Application/Src/application.c ****     key_packet.y_position = y;
- 763              		.loc 1 157 27 is_stmt 0 view .LVU194
- 764 000c B3F802E0 		ldrh	lr, [r3, #2]
- 765 0010 60F30B0E 		bfi	lr, r0, #0, #12
- 766 0014 A3F802E0 		strh	lr, [r3, #2]	@ movhi
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 20
-
-
- 158:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
- 767              		.loc 1 158 5 is_stmt 1 view .LVU195
- 158:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
- 768              		.loc 1 158 27 is_stmt 0 view .LVU196
- 769 0018 9888     		ldrh	r0, [r3, #4]
- 770              	.LVL35:
- 158:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
- 771              		.loc 1 158 27 view .LVU197
- 772 001a 61F30B00 		bfi	r0, r1, #0, #12
- 773              	.LVL36:
- 158:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
- 774              		.loc 1 158 27 view .LVU198
- 775 001e 9880     		strh	r0, [r3, #4]	@ movhi
- 159:./Application/Src/application.c ****     key_packet.mouse_right = 0;
- 776              		.loc 1 159 5 is_stmt 1 view .LVU199
- 159:./Application/Src/application.c ****     key_packet.mouse_right = 0;
- 777              		.loc 1 159 27 is_stmt 0 view .LVU200
- 778 0020 D978     		ldrb	r1, [r3, #3]	@ zero_extendqisi2
- 779 0022 62F30711 		bfi	r1, r2, #4, #4
- 780 0026 D970     		strb	r1, [r3, #3]
- 160:./Application/Src/application.c ****     key_packet.reserved = 0;
- 781              		.loc 1 160 5 is_stmt 1 view .LVU201
- 160:./Application/Src/application.c ****     key_packet.reserved = 0;
- 782              		.loc 1 160 28 is_stmt 0 view .LVU202
- 783 0028 5A79     		ldrb	r2, [r3, #5]	@ zero_extendqisi2
- 784              	.LVL37:
- 160:./Application/Src/application.c ****     key_packet.reserved = 0;
- 785              		.loc 1 160 28 view .LVU203
- 786 002a 22F0F002 		bic	r2, r2, #240
- 787 002e 5A71     		strb	r2, [r3, #5]
- 161:./Application/Src/application.c ****     update_packet_and_send();
- 788              		.loc 1 161 5 is_stmt 1 view .LVU204
- 161:./Application/Src/application.c ****     update_packet_and_send();
- 789              		.loc 1 161 25 is_stmt 0 view .LVU205
- 790 0030 A3F806C0 		strh	ip, [r3, #6]	@ movhi
- 162:./Application/Src/application.c ****     // after send add delay
- 791              		.loc 1 162 5 is_stmt 1 view .LVU206
- 792 0034 FFF7FEFF 		bl	update_packet_and_send
- 793              	.LVL38:
- 164:./Application/Src/application.c **** }
- 794              		.loc 1 164 5 view .LVU207
- 795 0038 2220     		movs	r0, #34
- 796 003a FFF7FEFF 		bl	wait_ms
- 797              	.LVL39:
- 165:./Application/Src/application.c **** 
- 798              		.loc 1 165 1 is_stmt 0 view .LVU208
- 799 003e 08BD     		pop	{r3, pc}
- 800              	.L47:
- 801              		.align	2
- 802              	.L46:
- 803 0040 00000000 		.word	key_packet
- 804              		.cfi_endproc
- 805              	.LFE72:
- 807              		.section	.text.move_click_mouse,"ax",%progbits
- 808              		.align	1
- 809              		.global	move_click_mouse
- 810              		.syntax unified
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 21
-
-
- 811              		.thumb
- 812              		.thumb_func
- 814              	move_click_mouse:
- 815              	.LVL40:
- 816              	.LFB73:
- 167:./Application/Src/application.c ****     uint16_t x = 0;
- 817              		.loc 1 167 31 is_stmt 1 view -0
- 818              		.cfi_startproc
- 819              		@ args = 0, pretend = 0, frame = 0
- 820              		@ frame_needed = 0, uses_anonymous_args = 0
- 167:./Application/Src/application.c ****     uint16_t x = 0;
- 821              		.loc 1 167 31 is_stmt 0 view .LVU210
- 822 0000 38B5     		push	{r3, r4, r5, lr}
- 823              	.LCFI8:
- 824              		.cfi_def_cfa_offset 16
- 825              		.cfi_offset 3, -16
- 826              		.cfi_offset 4, -12
- 827              		.cfi_offset 5, -8
- 828              		.cfi_offset 14, -4
- 168:./Application/Src/application.c ****     uint16_t y = 0;
- 829              		.loc 1 168 5 is_stmt 1 view .LVU211
- 830              	.LVL41:
+ 120:./Application/Src/application.c **** //         mouse_control(temp, BUY_Y, false);
+ 121:./Application/Src/application.c **** //     }
+ 122:./Application/Src/application.c ****  
+ 123:./Application/Src/application.c **** // }
+ 124:./Application/Src/application.c **** 
+ 125:./Application/Src/application.c **** /*
+ 126:./Application/Src/application.c ****  * a[i] 的含义：
+ 127:./Application/Src/application.c ****  * 0: -2
+ 128:./Application/Src/application.c ****  * 1: -1
+ 129:./Application/Src/application.c ****  * 2: +5
+ 130:./Application/Src/application.c ****  * 3: +1
+ 131:./Application/Src/application.c ****  * 4: +2
+ 132:./Application/Src/application.c ****  * 5: +10
+ 133:./Application/Src/application.c ****  *
+ 134:./Application/Src/application.c ****  * amount 是实际购买数量：
+ 135:./Application/Src/application.c ****  * 大弹：8、12、26 ...
+ 136:./Application/Src/application.c ****  * 小弹：80、120、260 ...
+ 137:./Application/Src/application.c ****  */
+ 138:./Application/Src/application.c **** bool get_key_pattern(uint32_t amount)
+ 139:./Application/Src/application.c **** {
+ 140:./Application/Src/application.c ****     // static const uint16_t button_x[6] = {
+ 141:./Application/Src/application.c ****     //     1070,  // -2
+ 142:./Application/Src/application.c ****     //     1150,  // -1
+ 143:./Application/Src/application.c ****     //     1475,  // +5
+ 144:./Application/Src/application.c ****     //     1405,  // +1
+ 145:./Application/Src/application.c ****     //     1490,  // +2
+ 146:./Application/Src/application.c ****     //     1665,  // +10
+ 147:./Application/Src/application.c ****     // };
+ 148:./Application/Src/application.c ****     static const uint16_t button_x[6] = {
+ 149:./Application/Src/application.c ****         1095,   // -2，原 1070
+ 150:./Application/Src/application.c ****         1170,   // -1，原 1150
+ 151:./Application/Src/application.c ****         1545,  // +5，原 1475
+ 152:./Application/Src/application.c ****         1395,  // +1，原 1405
+ 153:./Application/Src/application.c ****         1470,  // +2，原 1490
+ 154:./Application/Src/application.c ****         1620,  // +10，原 1665
+ 155:./Application/Src/application.c ****     };
+ 156:./Application/Src/application.c **** 
+ 157:./Application/Src/application.c ****     /*
+ 158:./Application/Src/application.c ****      * 正数必须先点，避免从 0 开始时负数按钮被 UI 截断。
+ 159:./Application/Src/application.c ****      * 8 会先点 +10，最后点 -2。
+ 160:./Application/Src/application.c ****      */
+ 161:./Application/Src/application.c ****     static const uint8_t press_order[6] = {
+ 162:./Application/Src/application.c ****         5,  // +10
+ 163:./Application/Src/application.c ****         2,  // +5
+ 164:./Application/Src/application.c ****         4,  // +2
+ 165:./Application/Src/application.c ****         3,  // +1
+ 166:./Application/Src/application.c ****         1,  // -1
+ 167:./Application/Src/application.c ****         0,  // -2
+ 168:./Application/Src/application.c ****     };
  169:./Application/Src/application.c **** 
- 831              		.loc 1 169 5 view .LVU212
- 171:./Application/Src/application.c ****     {
- 832              		.loc 1 171 5 view .LVU213
- 833 0002 0128     		cmp	r0, #1
- 834 0004 1FD0     		beq	.L49
- 835 0006 0228     		cmp	r0, #2
- 836 0008 28D0     		beq	.L50
- 837 000a 0028     		cmp	r0, #0
- 838 000c 31D1     		bne	.L58
- 174:./Application/Src/application.c ****                 x = Keys[0].small_bullet_x_pos;
- 839              		.loc 1 174 13 view .LVU214
- 174:./Application/Src/application.c ****                 x = Keys[0].small_bullet_x_pos;
- 840              		.loc 1 174 17 is_stmt 0 view .LVU215
- 841 000e 1A4B     		ldr	r3, .L60
- 842 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 174:./Application/Src/application.c ****                 x = Keys[0].small_bullet_x_pos;
- 843              		.loc 1 174 16 view .LVU216
- 844 0012 A3B1     		cbz	r3, .L52
- 175:./Application/Src/application.c ****                 y = Keys[0].small_bullet_y_pos;
- 845              		.loc 1 175 17 is_stmt 1 view .LVU217
- 175:./Application/Src/application.c ****                 y = Keys[0].small_bullet_y_pos;
- 846              		.loc 1 175 28 is_stmt 0 view .LVU218
- 847 0014 194B     		ldr	r3, .L60+4
- 175:./Application/Src/application.c ****                 y = Keys[0].small_bullet_y_pos;
- 848              		.loc 1 175 19 view .LVU219
- 849 0016 9D88     		ldrh	r5, [r3, #4]
- 850              	.LVL42:
- 176:./Application/Src/application.c ****             } else {
- 851              		.loc 1 176 17 is_stmt 1 view .LVU220
- 176:./Application/Src/application.c ****             } else {
- 852              		.loc 1 176 19 is_stmt 0 view .LVU221
- 853 0018 1C89     		ldrh	r4, [r3, #8]
- 854              	.LVL43:
- 855              	.L53:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 22
+ 170:./Application/Src/application.c ****     uint32_t a[6] = {0};
+ 171:./Application/Src/application.c ****     uint32_t unit_amount;
+ 172:./Application/Src/application.c ****     uint32_t remainder;
+ 173:./Application/Src/application.c **** 
+ 174:./Application/Src/application.c ****     /*
+ 175:./Application/Src/application.c ****      * 小弹面板只有 ±10/±20/±50/±100，
+ 176:./Application/Src/application.c ****      * 所以非 10 倍数无法精确购买。
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 6
 
 
- 207:./Application/Src/application.c ****         // Position not filled yet. Do not click the top-left corner by accident.
- 856              		.loc 1 207 5 is_stmt 1 view .LVU222
- 207:./Application/Src/application.c ****         // Position not filled yet. Do not click the top-left corner by accident.
- 857              		.loc 1 207 8 is_stmt 0 view .LVU223
- 858 001a 05B9     		cbnz	r5, .L56
- 859              	.LVL44:
- 860              	.L51:
- 207:./Application/Src/application.c ****         // Position not filled yet. Do not click the top-left corner by accident.
- 861              		.loc 1 207 16 discriminator 1 view .LVU224
- 862 001c 74B1     		cbz	r4, .L48
- 863              	.L56:
- 212:./Application/Src/application.c ****     mouse_control(x, y, true);
- 864              		.loc 1 212 5 is_stmt 1 view .LVU225
- 865 001e 0022     		movs	r2, #0
- 866 0020 2146     		mov	r1, r4
- 867 0022 2846     		mov	r0, r5
- 868              	.LVL45:
- 212:./Application/Src/application.c ****     mouse_control(x, y, true);
- 869              		.loc 1 212 5 is_stmt 0 view .LVU226
- 870 0024 FFF7FEFF 		bl	mouse_control
- 871              	.LVL46:
- 213:./Application/Src/application.c ****     mouse_control(x, y, false);
- 872              		.loc 1 213 5 is_stmt 1 view .LVU227
- 873 0028 0122     		movs	r2, #1
- 874 002a 2146     		mov	r1, r4
- 875 002c 2846     		mov	r0, r5
- 876 002e FFF7FEFF 		bl	mouse_control
- 877              	.LVL47:
- 214:./Application/Src/application.c **** }
- 878              		.loc 1 214 5 view .LVU228
- 879 0032 0022     		movs	r2, #0
- 880 0034 2146     		mov	r1, r4
- 881 0036 2846     		mov	r0, r5
- 882 0038 FFF7FEFF 		bl	mouse_control
- 883              	.LVL48:
- 884              	.L48:
- 215:./Application/Src/application.c **** 
- 885              		.loc 1 215 1 is_stmt 0 view .LVU229
- 886 003c 38BD     		pop	{r3, r4, r5, pc}
- 887              	.LVL49:
- 888              	.L52:
- 178:./Application/Src/application.c ****                 y = Keys[0].big_bullet_y_pos;
- 889              		.loc 1 178 17 is_stmt 1 view .LVU230
- 178:./Application/Src/application.c ****                 y = Keys[0].big_bullet_y_pos;
- 890              		.loc 1 178 28 is_stmt 0 view .LVU231
- 891 003e 0F4B     		ldr	r3, .L60+4
- 178:./Application/Src/application.c ****                 y = Keys[0].big_bullet_y_pos;
- 892              		.loc 1 178 19 view .LVU232
- 893 0040 9D89     		ldrh	r5, [r3, #12]
- 894              	.LVL50:
- 179:./Application/Src/application.c ****             }
- 895              		.loc 1 179 17 is_stmt 1 view .LVU233
- 179:./Application/Src/application.c ****             }
- 896              		.loc 1 179 19 is_stmt 0 view .LVU234
- 897 0042 1C8A     		ldrh	r4, [r3, #16]
- 898              	.LVL51:
- 179:./Application/Src/application.c ****             }
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 23
-
-
- 899              		.loc 1 179 19 view .LVU235
- 900 0044 E9E7     		b	.L53
- 901              	.LVL52:
- 902              	.L49:
- 184:./Application/Src/application.c ****                 x = Keys[1].small_bullet_x_pos;
- 903              		.loc 1 184 13 is_stmt 1 view .LVU236
- 184:./Application/Src/application.c ****                 x = Keys[1].small_bullet_x_pos;
- 904              		.loc 1 184 17 is_stmt 0 view .LVU237
- 905 0046 0C4B     		ldr	r3, .L60
- 906 0048 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 184:./Application/Src/application.c ****                 x = Keys[1].small_bullet_x_pos;
- 907              		.loc 1 184 16 view .LVU238
- 908 004a 1BB1     		cbz	r3, .L54
- 185:./Application/Src/application.c ****                 y = Keys[1].small_bullet_y_pos;
- 909              		.loc 1 185 17 is_stmt 1 view .LVU239
- 185:./Application/Src/application.c ****                 y = Keys[1].small_bullet_y_pos;
- 910              		.loc 1 185 28 is_stmt 0 view .LVU240
- 911 004c 0B4B     		ldr	r3, .L60+4
- 185:./Application/Src/application.c ****                 y = Keys[1].small_bullet_y_pos;
- 912              		.loc 1 185 19 view .LVU241
- 913 004e 1D8B     		ldrh	r5, [r3, #24]
- 914              	.LVL53:
- 186:./Application/Src/application.c ****             } else {
- 915              		.loc 1 186 17 is_stmt 1 view .LVU242
- 186:./Application/Src/application.c ****             } else {
- 916              		.loc 1 186 19 is_stmt 0 view .LVU243
- 917 0050 9C8B     		ldrh	r4, [r3, #28]
- 918              	.LVL54:
- 186:./Application/Src/application.c ****             } else {
- 919              		.loc 1 186 19 view .LVU244
- 920 0052 E2E7     		b	.L53
- 921              	.LVL55:
- 922              	.L54:
- 188:./Application/Src/application.c ****                 y = Keys[1].big_bullet_y_pos;
- 923              		.loc 1 188 17 is_stmt 1 view .LVU245
- 188:./Application/Src/application.c ****                 y = Keys[1].big_bullet_y_pos;
- 924              		.loc 1 188 28 is_stmt 0 view .LVU246
- 925 0054 094B     		ldr	r3, .L60+4
- 188:./Application/Src/application.c ****                 y = Keys[1].big_bullet_y_pos;
- 926              		.loc 1 188 19 view .LVU247
- 927 0056 1D8C     		ldrh	r5, [r3, #32]
- 928              	.LVL56:
- 189:./Application/Src/application.c ****             }
- 929              		.loc 1 189 17 is_stmt 1 view .LVU248
- 189:./Application/Src/application.c ****             }
- 930              		.loc 1 189 19 is_stmt 0 view .LVU249
- 931 0058 9C8C     		ldrh	r4, [r3, #36]
- 932              	.LVL57:
- 189:./Application/Src/application.c ****             }
- 933              		.loc 1 189 19 view .LVU250
- 934 005a DEE7     		b	.L53
- 935              	.LVL58:
- 936              	.L50:
- 194:./Application/Src/application.c ****                 x = Keys[2].small_bullet_x_pos;
- 937              		.loc 1 194 13 is_stmt 1 view .LVU251
- 194:./Application/Src/application.c ****                 x = Keys[2].small_bullet_x_pos;
- 938              		.loc 1 194 17 is_stmt 0 view .LVU252
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 24
-
-
- 939 005c 064B     		ldr	r3, .L60
- 940 005e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 194:./Application/Src/application.c ****                 x = Keys[2].small_bullet_x_pos;
- 941              		.loc 1 194 16 view .LVU253
- 942 0060 1BB1     		cbz	r3, .L55
- 195:./Application/Src/application.c ****                 y = Keys[2].small_bullet_y_pos;
- 943              		.loc 1 195 17 is_stmt 1 view .LVU254
- 195:./Application/Src/application.c ****                 y = Keys[2].small_bullet_y_pos;
- 944              		.loc 1 195 28 is_stmt 0 view .LVU255
- 945 0062 064B     		ldr	r3, .L60+4
- 195:./Application/Src/application.c ****                 y = Keys[2].small_bullet_y_pos;
- 946              		.loc 1 195 19 view .LVU256
- 947 0064 9D8D     		ldrh	r5, [r3, #44]
- 948              	.LVL59:
- 196:./Application/Src/application.c ****             } else {
- 949              		.loc 1 196 17 is_stmt 1 view .LVU257
- 196:./Application/Src/application.c ****             } else {
- 950              		.loc 1 196 19 is_stmt 0 view .LVU258
- 951 0066 1C8E     		ldrh	r4, [r3, #48]
- 952              	.LVL60:
- 196:./Application/Src/application.c ****             } else {
- 953              		.loc 1 196 19 view .LVU259
- 954 0068 D7E7     		b	.L53
- 955              	.LVL61:
- 956              	.L55:
- 198:./Application/Src/application.c ****                 y = Keys[2].big_bullet_y_pos;
- 957              		.loc 1 198 17 is_stmt 1 view .LVU260
- 198:./Application/Src/application.c ****                 y = Keys[2].big_bullet_y_pos;
- 958              		.loc 1 198 28 is_stmt 0 view .LVU261
- 959 006a 044B     		ldr	r3, .L60+4
- 198:./Application/Src/application.c ****                 y = Keys[2].big_bullet_y_pos;
- 960              		.loc 1 198 19 view .LVU262
- 961 006c 9D8E     		ldrh	r5, [r3, #52]
- 962              	.LVL62:
- 199:./Application/Src/application.c ****             }
- 963              		.loc 1 199 17 is_stmt 1 view .LVU263
- 199:./Application/Src/application.c ****             }
- 964              		.loc 1 199 19 is_stmt 0 view .LVU264
- 965 006e 1C8F     		ldrh	r4, [r3, #56]
- 966 0070 D3E7     		b	.L53
- 967              	.LVL63:
- 968              	.L58:
- 171:./Application/Src/application.c ****     {
- 969              		.loc 1 171 5 view .LVU265
- 970 0072 0024     		movs	r4, #0
- 971 0074 2546     		mov	r5, r4
- 972 0076 D1E7     		b	.L51
- 973              	.L61:
- 974              		.align	2
- 975              	.L60:
- 976 0078 00000000 		.word	is_small_bullet
- 977 007c 00000000 		.word	Keys
- 978              		.cfi_endproc
- 979              	.LFE73:
- 981              		.section	.text.click_buy_bullets,"ax",%progbits
- 982              		.align	1
- 983              		.global	click_buy_bullets
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 25
-
-
- 984              		.syntax unified
- 985              		.thumb
- 986              		.thumb_func
- 988              	click_buy_bullets:
- 989              	.LFB74:
+ 177:./Application/Src/application.c ****      */
+ 178:./Application/Src/application.c ****     if (is_small_bullet) {
+ 179:./Application/Src/application.c ****         if ((amount % 10U) != 0U) {
+ 180:./Application/Src/application.c ****             return false;
+ 181:./Application/Src/application.c ****         }
+ 182:./Application/Src/application.c ****         unit_amount = amount / 10U;
+ 183:./Application/Src/application.c ****     } else {
+ 184:./Application/Src/application.c ****         unit_amount = amount;
+ 185:./Application/Src/application.c ****     }
+ 186:./Application/Src/application.c **** 
+ 187:./Application/Src/application.c ****     a[5] = unit_amount / 10U;
+ 188:./Application/Src/application.c ****     remainder = unit_amount % 10U;
+ 189:./Application/Src/application.c **** 
+ 190:./Application/Src/application.c ****     switch (remainder) {
+ 191:./Application/Src/application.c ****         case 0:
+ 192:./Application/Src/application.c ****             break;
+ 193:./Application/Src/application.c **** 
+ 194:./Application/Src/application.c ****         case 1:
+ 195:./Application/Src/application.c ****             a[3]++;              // +1
+ 196:./Application/Src/application.c ****             break;
+ 197:./Application/Src/application.c **** 
+ 198:./Application/Src/application.c ****         case 2:
+ 199:./Application/Src/application.c ****             a[4]++;              // +2
+ 200:./Application/Src/application.c ****             break;
+ 201:./Application/Src/application.c **** 
+ 202:./Application/Src/application.c ****         case 3:
+ 203:./Application/Src/application.c ****             a[2]++; a[0]++;      // +5 -2
+ 204:./Application/Src/application.c ****             break;
+ 205:./Application/Src/application.c **** 
+ 206:./Application/Src/application.c ****         case 4:
+ 207:./Application/Src/application.c ****             a[2]++; a[1]++;      // +5 -1
+ 208:./Application/Src/application.c ****             break;
+ 209:./Application/Src/application.c **** 
+ 210:./Application/Src/application.c ****         case 5:
+ 211:./Application/Src/application.c ****             a[2]++;              // +5
+ 212:./Application/Src/application.c ****             break;
+ 213:./Application/Src/application.c **** 
+ 214:./Application/Src/application.c ****         case 6:
+ 215:./Application/Src/application.c ****             a[2]++; a[3]++;      // +5 +1
+ 216:./Application/Src/application.c ****             break;
  217:./Application/Src/application.c **** 
- 990              		.loc 1 217 25 is_stmt 1 view -0
- 991              		.cfi_startproc
- 992              		@ args = 0, pretend = 0, frame = 0
- 993              		@ frame_needed = 0, uses_anonymous_args = 0
- 994 0000 08B5     		push	{r3, lr}
- 995              	.LCFI9:
- 996              		.cfi_def_cfa_offset 8
- 997              		.cfi_offset 3, -8
- 998              		.cfi_offset 14, -4
- 219:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, true);
- 999              		.loc 1 219 5 view .LVU267
- 1000 0002 0022     		movs	r2, #0
- 1001 0004 1146     		mov	r1, r2
- 1002 0006 1046     		mov	r0, r2
- 1003 0008 FFF7FEFF 		bl	mouse_control
- 1004              	.LVL64:
- 220:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
- 1005              		.loc 1 220 5 view .LVU268
- 1006 000c 0122     		movs	r2, #1
- 1007 000e 0021     		movs	r1, #0
- 1008 0010 0846     		mov	r0, r1
- 1009 0012 FFF7FEFF 		bl	mouse_control
- 1010              	.LVL65:
+ 218:./Application/Src/application.c ****         case 7:
+ 219:./Application/Src/application.c ****             a[2]++; a[4]++;      // +5 +2
+ 220:./Application/Src/application.c ****             break;
  221:./Application/Src/application.c **** 
- 1011              		.loc 1 221 5 view .LVU269
- 1012 0016 0022     		movs	r2, #0
- 1013 0018 1146     		mov	r1, r2
- 1014 001a 1046     		mov	r0, r2
- 1015 001c FFF7FEFF 		bl	mouse_control
- 1016              	.LVL66:
- 223:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, true);
- 1017              		.loc 1 223 5 view .LVU270
- 1018 0020 0022     		movs	r2, #0
- 1019 0022 1146     		mov	r1, r2
- 1020 0024 1046     		mov	r0, r2
- 1021 0026 FFF7FEFF 		bl	mouse_control
- 1022              	.LVL67:
- 224:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
- 1023              		.loc 1 224 5 view .LVU271
- 1024 002a 0122     		movs	r2, #1
- 1025 002c 0021     		movs	r1, #0
- 1026 002e 0846     		mov	r0, r1
- 1027 0030 FFF7FEFF 		bl	mouse_control
- 1028              	.LVL68:
- 225:./Application/Src/application.c **** }
- 1029              		.loc 1 225 5 view .LVU272
- 1030 0034 0022     		movs	r2, #0
- 1031 0036 1146     		mov	r1, r2
- 1032 0038 1046     		mov	r0, r2
- 1033 003a FFF7FEFF 		bl	mouse_control
- 1034              	.LVL69:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 26
+ 222:./Application/Src/application.c ****         case 8:
+ 223:./Application/Src/application.c ****             a[5]++; a[0]++;      // +10 -2
+ 224:./Application/Src/application.c ****             break;
+ 225:./Application/Src/application.c **** 
+ 226:./Application/Src/application.c ****         case 9:
+ 227:./Application/Src/application.c ****             a[5]++; a[1]++;      // +10 -1
+ 228:./Application/Src/application.c ****             break;
+ 229:./Application/Src/application.c **** 
+ 230:./Application/Src/application.c ****         default:
+ 231:./Application/Src/application.c ****             return false;
+ 232:./Application/Src/application.c ****     }
+ 233:./Application/Src/application.c **** 
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 7
 
 
- 226:./Application/Src/application.c **** 
- 1035              		.loc 1 226 1 is_stmt 0 view .LVU273
- 1036 003e 08BD     		pop	{r3, pc}
- 1037              		.cfi_endproc
- 1038              	.LFE74:
- 1040              		.section	.bss.key_fall_block_until.0,"aw",%nobits
- 1041              		.align	2
- 1044              	key_fall_block_until.0:
- 1045 0000 00000000 		.space	4
- 1046              		.section	.bss.long_pressed,"aw",%nobits
- 1049              	long_pressed:
- 1050 0000 00       		.space	1
- 1051              		.global	key_need_handle
- 1052              		.section	.data.key_need_handle,"aw"
- 1053              		.align	2
- 1056              	key_need_handle:
- 1057 0000 FFFFFFFF 		.word	-1
- 1058              		.global	is_small_bullet
- 1059              		.section	.bss.is_small_bullet,"aw",%nobits
- 1062              	is_small_bullet:
- 1063 0000 00       		.space	1
- 1064              		.global	ms_counter
- 1065              		.section	.bss.ms_counter,"aw",%nobits
- 1066              		.align	2
- 1069              	ms_counter:
- 1070 0000 00000000 		.space	4
- 1071              		.global	referee_packet
- 1072              		.section	.bss.referee_packet,"aw",%nobits
- 1073              		.align	2
- 1076              	referee_packet:
- 1077 0000 00000000 		.space	17
- 1077      00000000 
- 1077      00000000 
- 1077      00000000 
- 1077      00
- 1078              		.global	frame_body_tail
- 1079              		.section	.bss.frame_body_tail,"aw",%nobits
- 1080              		.align	2
- 1083              	frame_body_tail:
- 1084 0000 00000000 		.space	12
- 1084      00000000 
- 1084      00000000 
- 1085              		.global	frame_header
- 1086              		.section	.bss.frame_header,"aw",%nobits
- 1087              		.align	2
- 1090              	frame_header:
- 1091 0000 00000000 		.space	5
- 1091      00
- 1092              		.global	key_packet
- 1093              		.section	.bss.key_packet,"aw",%nobits
- 1094              		.align	2
- 1097              	key_packet:
- 1098 0000 00000000 		.space	8
- 1098      00000000 
- 1099              		.global	vofa
- 1100              		.section	.bss.vofa,"aw",%nobits
- 1101              		.align	2
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 27
+ 234:./Application/Src/application.c ****     for (uint32_t order = 0; order < 6U; order++) {
+ 235:./Application/Src/application.c ****         uint32_t index = press_order[order];
+ 236:./Application/Src/application.c **** 
+ 237:./Application/Src/application.c ****         for (uint32_t count = 0; count < a[index]; count++) {
+ 238:./Application/Src/application.c **** 
+ 239:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, false);
+ 240:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, true);
+ 241:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, false);
+ 242:./Application/Src/application.c ****         }
+ 243:./Application/Src/application.c ****     }
+ 244:./Application/Src/application.c **** 
+ 245:./Application/Src/application.c ****     return true;
+ 246:./Application/Src/application.c **** }
+ 247:./Application/Src/application.c **** 
+ 248:./Application/Src/application.c **** void init_vofa(){
+ 113              		.loc 1 248 17 is_stmt 1 view -0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117              		@ link register save eliminated.
+ 249:./Application/Src/application.c ****     vofa.tail[0] = 0x00;
+ 118              		.loc 1 249 5 view .LVU31
+ 119              		.loc 1 249 18 is_stmt 0 view .LVU32
+ 120 0000 044B     		ldr	r3, .L6
+ 121 0002 0022     		movs	r2, #0
+ 122 0004 1A75     		strb	r2, [r3, #20]
+ 250:./Application/Src/application.c ****     vofa.tail[1] = 0x00;
+ 123              		.loc 1 250 5 is_stmt 1 view .LVU33
+ 124              		.loc 1 250 18 is_stmt 0 view .LVU34
+ 125 0006 5A75     		strb	r2, [r3, #21]
+ 251:./Application/Src/application.c ****     vofa.tail[2] = 0x80;
+ 126              		.loc 1 251 5 is_stmt 1 view .LVU35
+ 127              		.loc 1 251 18 is_stmt 0 view .LVU36
+ 128 0008 8022     		movs	r2, #128
+ 129 000a 9A75     		strb	r2, [r3, #22]
+ 252:./Application/Src/application.c ****     vofa.tail[3] = 0x7F;
+ 130              		.loc 1 252 5 is_stmt 1 view .LVU37
+ 131              		.loc 1 252 18 is_stmt 0 view .LVU38
+ 132 000c 7F22     		movs	r2, #127
+ 133 000e DA75     		strb	r2, [r3, #23]
+ 253:./Application/Src/application.c **** }
+ 134              		.loc 1 253 1 view .LVU39
+ 135 0010 7047     		bx	lr
+ 136              	.L7:
+ 137 0012 00BF     		.align	2
+ 138              	.L6:
+ 139 0014 00000000 		.word	vofa
+ 140              		.cfi_endproc
+ 141              	.LFE67:
+ 143              		.section	.text.init_packet,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	init_packet
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	init_packet:
+ 151              	.LFB68:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 8
 
 
- 1104              	vofa:
- 1105 0000 00000000 		.space	24
- 1105      00000000 
- 1105      00000000 
- 1105      00000000 
- 1105      00000000 
- 1106              		.global	Keys_pressed
- 1107              		.section	.bss.Keys_pressed,"aw",%nobits
- 1108              		.align	2
- 1111              	Keys_pressed:
- 1112 0000 000000   		.space	3
- 1113              		.global	Keys
- 1114              		.section	.bss.Keys,"aw",%nobits
- 1115              		.align	2
- 1118              	Keys:
- 1119 0000 00000000 		.space	60
- 1119      00000000 
- 1119      00000000 
- 1119      00000000 
- 1119      00000000 
- 1120              		.text
- 1121              	.Letext0:
- 1122              		.file 2 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
- 1123              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
- 1124              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 1125              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 1126              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
- 1127              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 1128              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
- 1129              		.file 9 "Core/Inc/usart.h"
- 1130              		.file 10 "Application/Inc/application.h"
- 1131              		.file 11 "Application/Inc/utils.h"
- 1132              		.file 12 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/string.h"
- 1133              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
- 1134              		.file 14 "<built-in>"
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 28
+ 254:./Application/Src/application.c **** 
+ 255:./Application/Src/application.c **** void init_packet(){
+ 152              		.loc 1 255 19 is_stmt 1 view -0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 157              	.LCFI1:
+ 158              		.cfi_def_cfa_offset 24
+ 159              		.cfi_offset 3, -24
+ 160              		.cfi_offset 4, -20
+ 161              		.cfi_offset 5, -16
+ 162              		.cfi_offset 6, -12
+ 163              		.cfi_offset 7, -8
+ 164              		.cfi_offset 14, -4
+ 256:./Application/Src/application.c ****     // for custom keyboard the command id will be 0x0306 with fixed 8 byte data, the size of packet
+ 257:./Application/Src/application.c ****     // we can fill the packet header in starting stage:
+ 258:./Application/Src/application.c ****     memset(&key_packet, 0, sizeof(key_packet));
+ 165              		.loc 1 258 5 view .LVU41
+ 166 0002 1D4F     		ldr	r7, .L10
+ 167 0004 0023     		movs	r3, #0
+ 168 0006 3B60     		str	r3, [r7]
+ 169 0008 7B60     		str	r3, [r7, #4]
+ 259:./Application/Src/application.c ****     memset(&frame_header, 0, sizeof(frame_header));
+ 170              		.loc 1 259 5 view .LVU42
+ 171 000a 1C4E     		ldr	r6, .L10+4
+ 172 000c 3360     		str	r3, [r6]
+ 173 000e 3371     		strb	r3, [r6, #4]
+ 260:./Application/Src/application.c ****     memset(&frame_body_tail, 0, sizeof(frame_body_tail));
+ 174              		.loc 1 260 5 view .LVU43
+ 175 0010 1B4D     		ldr	r5, .L10+8
+ 176 0012 2B60     		str	r3, [r5]
+ 177 0014 6B60     		str	r3, [r5, #4]
+ 178 0016 AB60     		str	r3, [r5, #8]
+ 261:./Application/Src/application.c ****     memset(&referee_packet, 0, sizeof(referee_packet));
+ 179              		.loc 1 261 5 view .LVU44
+ 180 0018 1A4C     		ldr	r4, .L10+12
+ 181 001a 2360     		str	r3, [r4]
+ 182 001c 6360     		str	r3, [r4, #4]
+ 183 001e A360     		str	r3, [r4, #8]
+ 184 0020 E360     		str	r3, [r4, #12]
+ 185 0022 2374     		strb	r3, [r4, #16]
+ 262:./Application/Src/application.c **** 
+ 263:./Application/Src/application.c ****     frame_header.SOF = 0xA5; // fixed
+ 186              		.loc 1 263 5 view .LVU45
+ 187              		.loc 1 263 22 is_stmt 0 view .LVU46
+ 188 0024 A522     		movs	r2, #165
+ 189 0026 3270     		strb	r2, [r6]
+ 264:./Application/Src/application.c ****     frame_header.data_length = sizeof(key_packet_t); // 8 bytes
+ 190              		.loc 1 264 5 is_stmt 1 view .LVU47
+ 191              		.loc 1 264 30 is_stmt 0 view .LVU48
+ 192 0028 0822     		movs	r2, #8
+ 193 002a 7270     		strb	r2, [r6, #1]
+ 194 002c B370     		strb	r3, [r6, #2]
+ 265:./Application/Src/application.c ****     frame_header.seq = 0; // packet sequence starts from any value, then increments per packet
+ 195              		.loc 1 265 5 is_stmt 1 view .LVU49
+ 266:./Application/Src/application.c ****     frame_header.crc8 = Get_CRC8_Check_Sum((uint8_t *)&frame_header,
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 9
+
+
+ 196              		.loc 1 266 5 view .LVU50
+ 197              		.loc 1 266 25 is_stmt 0 view .LVU51
+ 198 002e FF22     		movs	r2, #255
+ 199 0030 0421     		movs	r1, #4
+ 200 0032 3046     		mov	r0, r6
+ 201 0034 FFF7FEFF 		bl	Get_CRC8_Check_Sum
+ 202              	.LVL1:
+ 203              		.loc 1 266 23 discriminator 1 view .LVU52
+ 204 0038 3071     		strb	r0, [r6, #4]
+ 267:./Application/Src/application.c ****                                            sizeof(frame_header) - sizeof(frame_header.crc8),
+ 268:./Application/Src/application.c ****                                            CRC8_INIT);
+ 269:./Application/Src/application.c **** 
+ 270:./Application/Src/application.c ****     frame_body_tail.cmd_id = 0x0306;
+ 205              		.loc 1 270 5 is_stmt 1 view .LVU53
+ 206              		.loc 1 270 28 is_stmt 0 view .LVU54
+ 207 003a 2A46     		mov	r2, r5
+ 208 003c 40F20633 		movw	r3, #774
+ 209 0040 22F8023B 		strh	r3, [r2], #2	@ movhi
+ 271:./Application/Src/application.c ****     memcpy(frame_body_tail.data, &key_packet, sizeof(key_packet));
+ 210              		.loc 1 271 5 is_stmt 1 view .LVU55
+ 211 0044 3B46     		mov	r3, r7
+ 212 0046 03CB     		ldmia	r3!, {r0, r1}
+ 213 0048 C5F80200 		str	r0, [r5, #2]	@ unaligned
+ 214 004c 5160     		str	r1, [r2, #4]	@ unaligned
+ 272:./Application/Src/application.c **** 
+ 273:./Application/Src/application.c ****     referee_packet.fht = frame_header;
+ 215              		.loc 1 273 5 view .LVU56
+ 216              		.loc 1 273 24 is_stmt 0 view .LVU57
+ 217 004e 96E80300 		ldm	r6, {r0, r1}
+ 218 0052 2060     		str	r0, [r4]
+ 219 0054 2171     		strb	r1, [r4, #4]
+ 274:./Application/Src/application.c ****     referee_packet.fbt = frame_body_tail;
+ 220              		.loc 1 274 5 is_stmt 1 view .LVU58
+ 221              		.loc 1 274 24 is_stmt 0 view .LVU59
+ 222 0056 07CD     		ldmia	r5!, {r0, r1, r2}
+ 223 0058 C4F80500 		str	r0, [r4, #5]	@ unaligned
+ 224 005c C4F80910 		str	r1, [r4, #9]	@ unaligned
+ 225 0060 C4F80D20 		str	r2, [r4, #13]	@ unaligned
+ 275:./Application/Src/application.c ****     referee_packet.fbt.frame_tail = Get_CRC16_Check_Sum((uint8_t *)&referee_packet,
+ 226              		.loc 1 275 5 is_stmt 1 view .LVU60
+ 227              		.loc 1 275 37 is_stmt 0 view .LVU61
+ 228 0064 4FF6FF72 		movw	r2, #65535
+ 229 0068 0F21     		movs	r1, #15
+ 230 006a 2046     		mov	r0, r4
+ 231 006c FFF7FEFF 		bl	Get_CRC16_Check_Sum
+ 232              	.LVL2:
+ 233              		.loc 1 275 35 discriminator 1 view .LVU62
+ 234 0070 A4F80F00 		strh	r0, [r4, #15]	@ unaligned
+ 276:./Application/Src/application.c ****                                                         sizeof(referee_packet) - sizeof(referee_pac
+ 277:./Application/Src/application.c ****                                                         CRC16_INIT);
+ 278:./Application/Src/application.c **** }
+ 235              		.loc 1 278 1 view .LVU63
+ 236 0074 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 237              	.L11:
+ 238 0076 00BF     		.align	2
+ 239              	.L10:
+ 240 0078 00000000 		.word	key_packet
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 10
+
+
+ 241 007c 00000000 		.word	frame_header
+ 242 0080 00000000 		.word	frame_body_tail
+ 243 0084 00000000 		.word	referee_packet
+ 244              		.cfi_endproc
+ 245              	.LFE68:
+ 247              		.section	.text.loop_report,"ax",%progbits
+ 248              		.align	1
+ 249              		.global	loop_report
+ 250              		.syntax unified
+ 251              		.thumb
+ 252              		.thumb_func
+ 254              	loop_report:
+ 255              	.LFB69:
+ 279:./Application/Src/application.c **** 
+ 280:./Application/Src/application.c **** // this function used for debug!
+ 281:./Application/Src/application.c **** void loop_report(){
+ 256              		.loc 1 281 19 is_stmt 1 view -0
+ 257              		.cfi_startproc
+ 258              		@ args = 0, pretend = 0, frame = 0
+ 259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 260 0000 10B5     		push	{r4, lr}
+ 261              	.LCFI2:
+ 262              		.cfi_def_cfa_offset 8
+ 263              		.cfi_offset 4, -8
+ 264              		.cfi_offset 14, -4
+ 282:./Application/Src/application.c ****     vofa.val[0] = (float)Keys[0].key;
+ 265              		.loc 1 282 5 view .LVU65
+ 266              		.loc 1 282 19 is_stmt 0 view .LVU66
+ 267 0002 174B     		ldr	r3, .L14
+ 268 0004 1868     		ldr	r0, [r3]
+ 269 0006 FFF7FEFF 		bl	__aeabi_i2f
+ 270              	.LVL3:
+ 271              		.loc 1 282 17 view .LVU67
+ 272 000a 164C     		ldr	r4, .L14+4
+ 273 000c 2060     		str	r0, [r4]	@ float
+ 283:./Application/Src/application.c ****     vofa.val[1] = (float)key_need_handle;
+ 274              		.loc 1 283 5 is_stmt 1 view .LVU68
+ 275              		.loc 1 283 19 is_stmt 0 view .LVU69
+ 276 000e 164B     		ldr	r3, .L14+8
+ 277 0010 1868     		ldr	r0, [r3]
+ 278 0012 FFF7FEFF 		bl	__aeabi_i2f
+ 279              	.LVL4:
+ 280              		.loc 1 283 17 view .LVU70
+ 281 0016 6060     		str	r0, [r4, #4]	@ float
+ 284:./Application/Src/application.c ****     vofa.val[2] = (float)is_small_bullet;
+ 282              		.loc 1 284 5 is_stmt 1 view .LVU71
+ 283              		.loc 1 284 19 is_stmt 0 view .LVU72
+ 284 0018 144B     		ldr	r3, .L14+12
+ 285 001a 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 286 001c FFF7FEFF 		bl	__aeabi_ui2f
+ 287              	.LVL5:
+ 288              		.loc 1 284 17 view .LVU73
+ 289 0020 A060     		str	r0, [r4, #8]	@ float
+ 285:./Application/Src/application.c ****     vofa.val[3] = (float)Keys_pressed[0];
+ 290              		.loc 1 285 5 is_stmt 1 view .LVU74
+ 291              		.loc 1 285 19 is_stmt 0 view .LVU75
+ 292 0022 134B     		ldr	r3, .L14+16
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 11
+
+
+ 293 0024 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 294 0026 FFF7FEFF 		bl	__aeabi_ui2f
+ 295              	.LVL6:
+ 296              		.loc 1 285 17 view .LVU76
+ 297 002a E060     		str	r0, [r4, #12]	@ float
+ 286:./Application/Src/application.c ****     HAL_UART_Transmit_DMA(&huart1, (void*)&vofa, sizeof(vofa));
+ 298              		.loc 1 286 5 is_stmt 1 view .LVU77
+ 299 002c 1822     		movs	r2, #24
+ 300 002e 2146     		mov	r1, r4
+ 301 0030 1048     		ldr	r0, .L14+20
+ 302 0032 FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 303              	.LVL7:
+ 287:./Application/Src/application.c ****     ms_counter++;
+ 304              		.loc 1 287 5 view .LVU78
+ 305              		.loc 1 287 15 is_stmt 0 view .LVU79
+ 306 0036 104A     		ldr	r2, .L14+24
+ 307 0038 1368     		ldr	r3, [r2]
+ 308 003a 0133     		adds	r3, r3, #1
+ 309 003c 1360     		str	r3, [r2]
+ 288:./Application/Src/application.c ****     phase++;
+ 310              		.loc 1 288 5 is_stmt 1 view .LVU80
+ 311              		.loc 1 288 10 is_stmt 0 view .LVU81
+ 312 003e 0F4B     		ldr	r3, .L14+28
+ 313 0040 1A68     		ldr	r2, [r3]
+ 314 0042 0132     		adds	r2, r2, #1
+ 315 0044 1A60     		str	r2, [r3]
+ 289:./Application/Src/application.c ****     ws2812_rgbwave(phase/10);
+ 316              		.loc 1 289 5 is_stmt 1 view .LVU82
+ 317 0046 1B68     		ldr	r3, [r3]
+ 318 0048 0D48     		ldr	r0, .L14+32
+ 319 004a 80FB0320 		smull	r2, r0, r0, r3
+ 320 004e DB17     		asrs	r3, r3, #31
+ 321 0050 C3EBA000 		rsb	r0, r3, r0, asr #2
+ 322 0054 FFF7FEFF 		bl	ws2812_rgbwave
+ 323              	.LVL8:
+ 290:./Application/Src/application.c ****     ws2812_refresh();
+ 324              		.loc 1 290 5 view .LVU83
+ 325 0058 FFF7FEFF 		bl	ws2812_refresh
+ 326              	.LVL9:
+ 291:./Application/Src/application.c **** }
+ 327              		.loc 1 291 1 is_stmt 0 view .LVU84
+ 328 005c 10BD     		pop	{r4, pc}
+ 329              	.L15:
+ 330 005e 00BF     		.align	2
+ 331              	.L14:
+ 332 0060 00000000 		.word	Keys
+ 333 0064 00000000 		.word	vofa
+ 334 0068 00000000 		.word	key_need_handle
+ 335 006c 00000000 		.word	is_small_bullet
+ 336 0070 00000000 		.word	Keys_pressed
+ 337 0074 00000000 		.word	huart1
+ 338 0078 00000000 		.word	ms_counter
+ 339 007c 00000000 		.word	phase
+ 340 0080 67666666 		.word	1717986919
+ 341              		.cfi_endproc
+ 342              	.LFE69:
+ 344              		.section	.text.wait_ms,"ax",%progbits
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 12
+
+
+ 345              		.align	1
+ 346              		.global	wait_ms
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	wait_ms:
+ 352              	.LVL10:
+ 353              	.LFB70:
+ 292:./Application/Src/application.c **** 
+ 293:./Application/Src/application.c **** void wait_ms(int time_ms){
+ 354              		.loc 1 293 26 is_stmt 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              		.loc 1 293 26 is_stmt 0 view .LVU86
+ 359 0000 38B5     		push	{r3, r4, r5, lr}
+ 360              	.LCFI3:
+ 361              		.cfi_def_cfa_offset 16
+ 362              		.cfi_offset 3, -16
+ 363              		.cfi_offset 4, -12
+ 364              		.cfi_offset 5, -8
+ 365              		.cfi_offset 14, -4
+ 366 0002 0546     		mov	r5, r0
+ 294:./Application/Src/application.c ****     uint32_t start_tick = HAL_GetTick();
+ 367              		.loc 1 294 5 is_stmt 1 view .LVU87
+ 368              		.loc 1 294 27 is_stmt 0 view .LVU88
+ 369 0004 FFF7FEFF 		bl	HAL_GetTick
+ 370              	.LVL11:
+ 371              		.loc 1 294 27 view .LVU89
+ 372 0008 0446     		mov	r4, r0
+ 373              	.LVL12:
+ 295:./Application/Src/application.c **** 
+ 296:./Application/Src/application.c ****     while ((uint32_t)(HAL_GetTick() - start_tick) < (uint32_t)time_ms);
+ 374              		.loc 1 296 5 is_stmt 1 view .LVU90
+ 375              	.L17:
+ 376              		.loc 1 296 51 discriminator 2 view .LVU91
+ 377              		.loc 1 296 23 is_stmt 0 discriminator 2 view .LVU92
+ 378 000a FFF7FEFF 		bl	HAL_GetTick
+ 379              	.LVL13:
+ 380              		.loc 1 296 37 discriminator 2 view .LVU93
+ 381 000e 001B     		subs	r0, r0, r4
+ 382              		.loc 1 296 51 discriminator 2 view .LVU94
+ 383 0010 A842     		cmp	r0, r5
+ 384 0012 FAD3     		bcc	.L17
+ 297:./Application/Src/application.c **** }
+ 385              		.loc 1 297 1 view .LVU95
+ 386 0014 38BD     		pop	{r3, r4, r5, pc}
+ 387              		.loc 1 297 1 view .LVU96
+ 388              		.cfi_endproc
+ 389              	.LFE70:
+ 391              		.section	.text.update_packet_and_send,"ax",%progbits
+ 392              		.align	1
+ 393              		.syntax unified
+ 394              		.thumb
+ 395              		.thumb_func
+ 397              	update_packet_and_send:
+ 398              	.LFB76:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 13
+
+
+ 298:./Application/Src/application.c **** 
+ 299:./Application/Src/application.c **** // scan for keys that is triggered:
+ 300:./Application/Src/application.c **** void loop_scan_keys(){
+ 301:./Application/Src/application.c ****     static uint32_t key_fall_block_until = 0;
+ 302:./Application/Src/application.c ****     uint32_t now = HAL_GetTick();
+ 303:./Application/Src/application.c **** 
+ 304:./Application/Src/application.c ****     // also check for small bullet
+ 305:./Application/Src/application.c ****     is_small_bullet = (bool)HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6);
+ 306:./Application/Src/application.c **** 
+ 307:./Application/Src/application.c ****     if ((int32_t)(now - key_fall_block_until) < 0){
+ 308:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
+ 309:./Application/Src/application.c ****         return;
+ 310:./Application/Src/application.c ****     }
+ 311:./Application/Src/application.c **** 
+ 312:./Application/Src/application.c ****     // read for pin PA3(0) PA4(1) PA5(2):
+ 313:./Application/Src/application.c ****     for (int index = 0; index < KEY_NUMBER; index++){
+ 314:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
+ 315:./Application/Src/application.c **** 
+ 316:./Application/Src/application.c ****         if (is_pressed && !Keys_pressed[index]){
+ 317:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
+ 318:./Application/Src/application.c ****             // after delay, if still pressed -> true else false
+ 319:./Application/Src/application.c ****             is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
+ 320:./Application/Src/application.c ****             if (is_pressed && !long_pressed[index]){
+ 321:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
+ 322:./Application/Src/application.c ****                 key_need_handle = index;
+ 323:./Application/Src/application.c ****                 long_pressed[index] = 1;
+ 324:./Application/Src/application.c ****                 memset(Keys_pressed, 0, sizeof(Keys_pressed));
+ 325:./Application/Src/application.c ****                 return;
+ 326:./Application/Src/application.c ****             }
+ 327:./Application/Src/application.c ****         } else {
+ 328:./Application/Src/application.c ****             long_pressed[index] = 0;
+ 329:./Application/Src/application.c ****         }
+ 330:./Application/Src/application.c **** 
+ 331:./Application/Src/application.c ****         if (is_pressed){
+ 332:./Application/Src/application.c ****             Keys_pressed[index] = true;
+ 333:./Application/Src/application.c ****         } else {
+ 334:./Application/Src/application.c ****             Keys_pressed[index] = false;
+ 335:./Application/Src/application.c ****         }
+ 336:./Application/Src/application.c ****     }
+ 337:./Application/Src/application.c **** }
+ 338:./Application/Src/application.c **** 
+ 339:./Application/Src/application.c **** void call_buy_UI(){
+ 340:./Application/Src/application.c ****     if (is_small_bullet){
+ 341:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
+ 342:./Application/Src/application.c ****     } else { // big bullet 
+ 343:./Application/Src/application.c ****         key_packet.key_value = BIG_BULLET_KEY;
+ 344:./Application/Src/application.c ****     }
+ 345:./Application/Src/application.c **** 
+ 346:./Application/Src/application.c ****     key_packet.x_position = 0;
+ 347:./Application/Src/application.c ****     key_packet.y_position = 0;
+ 348:./Application/Src/application.c ****     key_packet.mouse_left = 0;
+ 349:./Application/Src/application.c ****     key_packet.mouse_right = 0;
+ 350:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 351:./Application/Src/application.c ****     update_packet_and_send();
+ 352:./Application/Src/application.c **** 
+ 353:./Application/Src/application.c ****     // release O/I after opening the buy UI.
+ 354:./Application/Src/application.c ****     key_packet.key_value = 0;
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 14
+
+
+ 355:./Application/Src/application.c ****     update_packet_and_send();
+ 356:./Application/Src/application.c **** }
+ 357:./Application/Src/application.c **** 
+ 358:./Application/Src/application.c **** void mouse_control(uint16_t x, uint16_t y, bool click){
+ 359:./Application/Src/application.c ****     // packet update for mouse
+ 360:./Application/Src/application.c ****     key_packet.key_value = 0;
+ 361:./Application/Src/application.c ****     key_packet.x_position = x;
+ 362:./Application/Src/application.c ****     key_packet.y_position = y;
+ 363:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
+ 364:./Application/Src/application.c ****     key_packet.mouse_right = 0;
+ 365:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 366:./Application/Src/application.c ****     update_packet_and_send();
+ 367:./Application/Src/application.c ****     // after send add delay
+ 368:./Application/Src/application.c ****     wait_ms(PACKET_SEND_DELAY);
+ 369:./Application/Src/application.c **** }
+ 370:./Application/Src/application.c **** 
+ 371:./Application/Src/application.c **** // example buy examples:
+ 372:./Application/Src/application.c **** // #define PA5_BUY_BIG 8
+ 373:./Application/Src/application.c **** // #define PA4_BUY_BIG 10
+ 374:./Application/Src/application.c **** // #define PA3_BUY_BIG 12
+ 375:./Application/Src/application.c **** // #define PA5_SMALL_BIG 80 
+ 376:./Application/Src/application.c **** // #define PA4_SMALL_BIG 100
+ 377:./Application/Src/application.c **** // #define PA3_SMALL_BIG 120
+ 378:./Application/Src/application.c **** 
+ 379:./Application/Src/application.c **** // define all coordinates here:
+ 380:./Application/Src/application.c **** // 1: (1405,860); 2:(1490,860); 5:(1475,860); 10:(1665,860)
+ 381:./Application/Src/application.c **** // -1: (1150,860); -2: (1070,860); -5: (980,860); -10: (895,860)
+ 382:./Application/Src/application.c **** // 10: (1405,860); 20:(1490,860); 50:(1475,860); 100:(1665,860)
+ 383:./Application/Src/application.c **** // -10: (1150,860); -20: (1070,860); -50: (980,860); -100: (895,860)
+ 384:./Application/Src/application.c **** 
+ 385:./Application/Src/application.c **** // steps to buy bullets:
+ 386:./Application/Src/application.c **** // press O for small bullet, I for big bullets (done)
+ 387:./Application/Src/application.c **** // move mouse to target position (this depends on calculation)
+ 388:./Application/Src/application.c **** // left click once (move to position -> press -> unpress)
+ 389:./Application/Src/application.c **** // press buy button (click buy button)
+ 390:./Application/Src/application.c **** // press confirm
+ 391:./Application/Src/application.c **** // press O for small bullet quit and I for big bullet quit
+ 392:./Application/Src/application.c **** 
+ 393:./Application/Src/application.c **** void move_click_mouse(int key){
+ 394:./Application/Src/application.c ****     // uint16_t x = 0;
+ 395:./Application/Src/application.c ****     // uint16_t y = 0;
+ 396:./Application/Src/application.c **** 
+ 397:./Application/Src/application.c ****     // switch (key)
+ 398:./Application/Src/application.c ****     // {
+ 399:./Application/Src/application.c ****     //     case 0:
+ 400:./Application/Src/application.c ****     //         if (is_small_bullet){
+ 401:./Application/Src/application.c ****     //             x = Keys[0].small_bullet_x_pos;
+ 402:./Application/Src/application.c ****     //             y = Keys[0].small_bullet_y_pos;
+ 403:./Application/Src/application.c ****     //         } else {
+ 404:./Application/Src/application.c ****     //             x = Keys[0].big_bullet_x_pos;
+ 405:./Application/Src/application.c ****     //             y = Keys[0].big_bullet_y_pos;
+ 406:./Application/Src/application.c ****     //         }
+ 407:./Application/Src/application.c ****     //         break;
+ 408:./Application/Src/application.c ****         
+ 409:./Application/Src/application.c ****     //     case 1:
+ 410:./Application/Src/application.c ****     //         if (is_small_bullet){
+ 411:./Application/Src/application.c ****     //             x = Keys[1].small_bullet_x_pos;
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 15
+
+
+ 412:./Application/Src/application.c ****     //             y = Keys[1].small_bullet_y_pos;
+ 413:./Application/Src/application.c ****     //         } else {
+ 414:./Application/Src/application.c ****     //             x = Keys[1].big_bullet_x_pos;
+ 415:./Application/Src/application.c ****     //             y = Keys[1].big_bullet_y_pos;
+ 416:./Application/Src/application.c ****     //         }
+ 417:./Application/Src/application.c ****     //         break;
+ 418:./Application/Src/application.c **** 
+ 419:./Application/Src/application.c ****     //     case 2:
+ 420:./Application/Src/application.c ****     //         if (is_small_bullet){
+ 421:./Application/Src/application.c ****     //             x = Keys[2].small_bullet_x_pos;
+ 422:./Application/Src/application.c ****     //             y = Keys[2].small_bullet_y_pos;
+ 423:./Application/Src/application.c ****     //         } else {
+ 424:./Application/Src/application.c ****     //             x = Keys[2].big_bullet_x_pos;
+ 425:./Application/Src/application.c ****     //             y = Keys[2].big_bullet_y_pos;
+ 426:./Application/Src/application.c ****     //         }
+ 427:./Application/Src/application.c ****     //         break;
+ 428:./Application/Src/application.c ****         
+ 429:./Application/Src/application.c ****     //     default:
+ 430:./Application/Src/application.c ****     //         break;
+ 431:./Application/Src/application.c ****     // }
+ 432:./Application/Src/application.c **** 
+ 433:./Application/Src/application.c ****     // if (x == 0 && y == 0){
+ 434:./Application/Src/application.c ****     //     // Position not filled yet. Do not click the top-left corner by accident.
+ 435:./Application/Src/application.c ****     //     return;
+ 436:./Application/Src/application.c ****     // }
+ 437:./Application/Src/application.c **** 
+ 438:./Application/Src/application.c ****     // mouse_control(x, y, false);
+ 439:./Application/Src/application.c ****     // mouse_control(x, y, true);
+ 440:./Application/Src/application.c ****     // mouse_control(x, y, false);
+ 441:./Application/Src/application.c ****     
+ 442:./Application/Src/application.c ****     uint32_t amount = 0;
+ 443:./Application/Src/application.c **** 
+ 444:./Application/Src/application.c ****     // start inot logic:
+ 445:./Application/Src/application.c ****     switch (key)
+ 446:./Application/Src/application.c ****     {
+ 447:./Application/Src/application.c ****     case 0: // PA3
+ 448:./Application/Src/application.c ****         amount = is_small_bullet ? PA3_BUY_SMALL : PA3_BUY_BIG;
+ 449:./Application/Src/application.c ****         break;
+ 450:./Application/Src/application.c ****     
+ 451:./Application/Src/application.c ****     case 1:
+ 452:./Application/Src/application.c ****         amount = is_small_bullet ? PA4_BUY_SMALL : PA4_BUY_BIG;
+ 453:./Application/Src/application.c ****         break;
+ 454:./Application/Src/application.c **** 
+ 455:./Application/Src/application.c ****     case 2:
+ 456:./Application/Src/application.c ****         amount = is_small_bullet ? PA5_BUY_SMALL : PA5_BUY_BIG;
+ 457:./Application/Src/application.c ****         break;
+ 458:./Application/Src/application.c ****         
+ 459:./Application/Src/application.c ****     default:
+ 460:./Application/Src/application.c ****         break;
+ 461:./Application/Src/application.c ****     }
+ 462:./Application/Src/application.c **** 
+ 463:./Application/Src/application.c ****     get_key_pattern(amount);
+ 464:./Application/Src/application.c **** 
+ 465:./Application/Src/application.c **** }
+ 466:./Application/Src/application.c **** 
+ 467:./Application/Src/application.c **** void click_buy_bullets(){
+ 468:./Application/Src/application.c **** 
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 16
+
+
+ 469:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
+ 470:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, true);
+ 471:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
+ 472:./Application/Src/application.c **** 
+ 473:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
+ 474:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, true);
+ 475:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
+ 476:./Application/Src/application.c ****     
+ 477:./Application/Src/application.c ****     // also quit the page
+ 478:./Application/Src/application.c ****     call_buy_UI(); // click the corresponding key again to close UI
+ 479:./Application/Src/application.c **** }
+ 480:./Application/Src/application.c **** 
+ 481:./Application/Src/application.c **** static void update_packet_and_send(void){
+ 399              		.loc 1 481 41 is_stmt 1 view -0
+ 400              		.cfi_startproc
+ 401              		@ args = 0, pretend = 0, frame = 0
+ 402              		@ frame_needed = 0, uses_anonymous_args = 0
+ 403 0000 70B5     		push	{r4, r5, r6, lr}
+ 404              	.LCFI4:
+ 405              		.cfi_def_cfa_offset 16
+ 406              		.cfi_offset 4, -16
+ 407              		.cfi_offset 5, -12
+ 408              		.cfi_offset 6, -8
+ 409              		.cfi_offset 14, -4
+ 482:./Application/Src/application.c ****     memcpy(frame_body_tail.data, &key_packet, sizeof(key_packet));
+ 410              		.loc 1 482 5 view .LVU98
+ 411 0002 184C     		ldr	r4, .L23
+ 412 0004 184B     		ldr	r3, .L23+4
+ 413 0006 03CB     		ldmia	r3!, {r0, r1}
+ 414 0008 C4F80200 		str	r0, [r4, #2]	@ unaligned
+ 415 000c C4F80610 		str	r1, [r4, #6]	@ unaligned
+ 483:./Application/Src/application.c **** 
+ 484:./Application/Src/application.c ****     frame_header.crc8 = Get_CRC8_Check_Sum((uint8_t *)&frame_header,
+ 416              		.loc 1 484 5 view .LVU99
+ 417              		.loc 1 484 25 is_stmt 0 view .LVU100
+ 418 0010 164E     		ldr	r6, .L23+8
+ 419 0012 FF22     		movs	r2, #255
+ 420 0014 0421     		movs	r1, #4
+ 421 0016 3046     		mov	r0, r6
+ 422 0018 FFF7FEFF 		bl	Get_CRC8_Check_Sum
+ 423              	.LVL14:
+ 424              		.loc 1 484 23 discriminator 1 view .LVU101
+ 425 001c 3071     		strb	r0, [r6, #4]
+ 485:./Application/Src/application.c ****                                            sizeof(frame_header) - sizeof(frame_header.crc8),
+ 486:./Application/Src/application.c ****                                            CRC8_INIT);
+ 487:./Application/Src/application.c **** 
+ 488:./Application/Src/application.c ****     referee_packet.fht = frame_header;
+ 426              		.loc 1 488 5 is_stmt 1 view .LVU102
+ 427              		.loc 1 488 24 is_stmt 0 view .LVU103
+ 428 001e 144D     		ldr	r5, .L23+12
+ 429 0020 96E80300 		ldm	r6, {r0, r1}
+ 430 0024 2860     		str	r0, [r5]
+ 431 0026 2971     		strb	r1, [r5, #4]
+ 489:./Application/Src/application.c ****     referee_packet.fbt = frame_body_tail;
+ 432              		.loc 1 489 5 is_stmt 1 view .LVU104
+ 433              		.loc 1 489 24 is_stmt 0 view .LVU105
+ 434 0028 2346     		mov	r3, r4
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 17
+
+
+ 435 002a 07CB     		ldmia	r3!, {r0, r1, r2}
+ 436 002c C5F80500 		str	r0, [r5, #5]	@ unaligned
+ 437 0030 C5F80910 		str	r1, [r5, #9]	@ unaligned
+ 438 0034 C5F80D20 		str	r2, [r5, #13]	@ unaligned
+ 490:./Application/Src/application.c ****     referee_packet.fbt.frame_tail = Get_CRC16_Check_Sum((uint8_t *)&referee_packet,
+ 439              		.loc 1 490 5 is_stmt 1 view .LVU106
+ 440              		.loc 1 490 37 is_stmt 0 view .LVU107
+ 441 0038 4FF6FF72 		movw	r2, #65535
+ 442 003c 0F21     		movs	r1, #15
+ 443 003e 2846     		mov	r0, r5
+ 444 0040 FFF7FEFF 		bl	Get_CRC16_Check_Sum
+ 445              	.LVL15:
+ 446              		.loc 1 490 35 discriminator 1 view .LVU108
+ 447 0044 A5F80F00 		strh	r0, [r5, #15]	@ unaligned
+ 491:./Application/Src/application.c ****                                                         sizeof(referee_packet) - sizeof(referee_pac
+ 492:./Application/Src/application.c ****                                                         CRC16_INIT);
+ 493:./Application/Src/application.c **** 
+ 494:./Application/Src/application.c ****     if (HAL_UART_Transmit_DMA(&huart3, (uint8_t *)&referee_packet, sizeof(referee_packet)) == HAL_O
+ 448              		.loc 1 494 5 is_stmt 1 view .LVU109
+ 449              		.loc 1 494 9 is_stmt 0 view .LVU110
+ 450 0048 1122     		movs	r2, #17
+ 451 004a 2946     		mov	r1, r5
+ 452 004c 0948     		ldr	r0, .L23+16
+ 453 004e FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 454              	.LVL16:
+ 455              		.loc 1 494 8 discriminator 1 view .LVU111
+ 456 0052 00B1     		cbz	r0, .L22
+ 457              	.L19:
+ 495:./Application/Src/application.c ****         wait_ms(PACKET_SEND_DELAY);
+ 496:./Application/Src/application.c ****         frame_header.seq++;
+ 497:./Application/Src/application.c ****     }
+ 498:./Application/Src/application.c **** }
+ 458              		.loc 1 498 1 view .LVU112
+ 459 0054 70BD     		pop	{r4, r5, r6, pc}
+ 460              	.L22:
+ 495:./Application/Src/application.c ****         wait_ms(PACKET_SEND_DELAY);
+ 461              		.loc 1 495 9 is_stmt 1 view .LVU113
+ 462 0056 2220     		movs	r0, #34
+ 463 0058 FFF7FEFF 		bl	wait_ms
+ 464              	.LVL17:
+ 496:./Application/Src/application.c ****     }
+ 465              		.loc 1 496 9 view .LVU114
+ 496:./Application/Src/application.c ****     }
+ 466              		.loc 1 496 21 is_stmt 0 view .LVU115
+ 467 005c F378     		ldrb	r3, [r6, #3]	@ zero_extendqisi2
+ 496:./Application/Src/application.c ****     }
+ 468              		.loc 1 496 25 view .LVU116
+ 469 005e 0133     		adds	r3, r3, #1
+ 470 0060 F370     		strb	r3, [r6, #3]
+ 471              		.loc 1 498 1 view .LVU117
+ 472 0062 F7E7     		b	.L19
+ 473              	.L24:
+ 474              		.align	2
+ 475              	.L23:
+ 476 0064 00000000 		.word	frame_body_tail
+ 477 0068 00000000 		.word	key_packet
+ 478 006c 00000000 		.word	frame_header
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 18
+
+
+ 479 0070 00000000 		.word	referee_packet
+ 480 0074 00000000 		.word	huart3
+ 481              		.cfi_endproc
+ 482              	.LFE76:
+ 484              		.section	.text.loop_scan_keys,"ax",%progbits
+ 485              		.align	1
+ 486              		.global	loop_scan_keys
+ 487              		.syntax unified
+ 488              		.thumb
+ 489              		.thumb_func
+ 491              	loop_scan_keys:
+ 492              	.LFB71:
+ 300:./Application/Src/application.c ****     static uint32_t key_fall_block_until = 0;
+ 493              		.loc 1 300 22 is_stmt 1 view -0
+ 494              		.cfi_startproc
+ 495              		@ args = 0, pretend = 0, frame = 0
+ 496              		@ frame_needed = 0, uses_anonymous_args = 0
+ 497 0000 38B5     		push	{r3, r4, r5, lr}
+ 498              	.LCFI5:
+ 499              		.cfi_def_cfa_offset 16
+ 500              		.cfi_offset 3, -16
+ 501              		.cfi_offset 4, -12
+ 502              		.cfi_offset 5, -8
+ 503              		.cfi_offset 14, -4
+ 301:./Application/Src/application.c ****     uint32_t now = HAL_GetTick();
+ 504              		.loc 1 301 5 view .LVU119
+ 302:./Application/Src/application.c **** 
+ 505              		.loc 1 302 5 view .LVU120
+ 302:./Application/Src/application.c **** 
+ 506              		.loc 1 302 20 is_stmt 0 view .LVU121
+ 507 0002 FFF7FEFF 		bl	HAL_GetTick
+ 508              	.LVL18:
+ 509 0006 0446     		mov	r4, r0
+ 510              	.LVL19:
+ 305:./Application/Src/application.c **** 
+ 511              		.loc 1 305 5 is_stmt 1 view .LVU122
+ 305:./Application/Src/application.c **** 
+ 512              		.loc 1 305 29 is_stmt 0 view .LVU123
+ 513 0008 4021     		movs	r1, #64
+ 514 000a 2948     		ldr	r0, .L36
+ 515              	.LVL20:
+ 305:./Application/Src/application.c **** 
+ 516              		.loc 1 305 29 view .LVU124
+ 517 000c FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 518              	.LVL21:
+ 305:./Application/Src/application.c **** 
+ 519              		.loc 1 305 23 discriminator 1 view .LVU125
+ 520 0010 0038     		subs	r0, r0, #0
+ 521 0012 18BF     		it	ne
+ 522 0014 0120     		movne	r0, #1
+ 305:./Application/Src/application.c **** 
+ 523              		.loc 1 305 21 discriminator 1 view .LVU126
+ 524 0016 274B     		ldr	r3, .L36+4
+ 525 0018 1870     		strb	r0, [r3]
+ 307:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
+ 526              		.loc 1 307 5 is_stmt 1 view .LVU127
+ 307:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 19
+
+
+ 527              		.loc 1 307 23 is_stmt 0 view .LVU128
+ 528 001a 274B     		ldr	r3, .L36+8
+ 529 001c 1B68     		ldr	r3, [r3]
+ 530 001e E41A     		subs	r4, r4, r3
+ 531              	.LVL22:
+ 307:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
+ 532              		.loc 1 307 8 view .LVU129
+ 533 0020 002C     		cmp	r4, #0
+ 534 0022 01DB     		blt	.L35
+ 535              	.LBB2:
+ 313:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
+ 536              		.loc 1 313 14 view .LVU130
+ 537 0024 0024     		movs	r4, #0
+ 538 0026 0DE0     		b	.L26
+ 539              	.L35:
+ 540              	.LBE2:
+ 308:./Application/Src/application.c ****         return;
+ 541              		.loc 1 308 9 is_stmt 1 view .LVU131
+ 542 0028 244B     		ldr	r3, .L36+12
+ 543 002a 0022     		movs	r2, #0
+ 544 002c 1A80     		strh	r2, [r3]	@ movhi
+ 545 002e 9A70     		strb	r2, [r3, #2]
+ 309:./Application/Src/application.c ****     }
+ 546              		.loc 1 309 9 view .LVU132
+ 547              	.L25:
+ 337:./Application/Src/application.c **** 
+ 548              		.loc 1 337 1 is_stmt 0 view .LVU133
+ 549 0030 38BD     		pop	{r3, r4, r5, pc}
+ 550              	.LVL23:
+ 551              	.L28:
+ 552              	.LBB5:
+ 553              	.LBB3:
+ 328:./Application/Src/application.c ****         }
+ 554              		.loc 1 328 13 is_stmt 1 view .LVU134
+ 328:./Application/Src/application.c ****         }
+ 555              		.loc 1 328 33 is_stmt 0 view .LVU135
+ 556 0032 234A     		ldr	r2, .L36+16
+ 557 0034 0021     		movs	r1, #0
+ 558 0036 1155     		strb	r1, [r2, r4]
+ 559              	.L29:
+ 331:./Application/Src/application.c ****             Keys_pressed[index] = true;
+ 560              		.loc 1 331 9 is_stmt 1 view .LVU136
+ 331:./Application/Src/application.c ****             Keys_pressed[index] = true;
+ 561              		.loc 1 331 12 is_stmt 0 view .LVU137
+ 562 0038 002B     		cmp	r3, #0
+ 563 003a 35D0     		beq	.L30
+ 332:./Application/Src/application.c ****         } else {
+ 564              		.loc 1 332 13 is_stmt 1 view .LVU138
+ 332:./Application/Src/application.c ****         } else {
+ 565              		.loc 1 332 33 is_stmt 0 view .LVU139
+ 566 003c 1F4B     		ldr	r3, .L36+12
+ 567              	.LVL24:
+ 332:./Application/Src/application.c ****         } else {
+ 568              		.loc 1 332 33 view .LVU140
+ 569 003e 0122     		movs	r2, #1
+ 570 0040 1A55     		strb	r2, [r3, r4]
+ 571              	.L31:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 20
+
+
+ 332:./Application/Src/application.c ****         } else {
+ 572              		.loc 1 332 33 view .LVU141
+ 573              	.LBE3:
+ 313:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
+ 574              		.loc 1 313 50 is_stmt 1 discriminator 2 view .LVU142
+ 575 0042 0134     		adds	r4, r4, #1
+ 576              	.LVL25:
+ 577              	.L26:
+ 313:./Application/Src/application.c ****         bool is_pressed = !HAL_GPIO_ReadPin(GPIOA, (uint16_t)(1U << (index + 3)));
+ 578              		.loc 1 313 31 discriminator 1 view .LVU143
+ 579 0044 022C     		cmp	r4, #2
+ 580 0046 F3DC     		bgt	.L25
+ 581              	.LBB4:
+ 314:./Application/Src/application.c **** 
+ 582              		.loc 1 314 9 view .LVU144
+ 314:./Application/Src/application.c **** 
+ 583              		.loc 1 314 76 is_stmt 0 view .LVU145
+ 584 0048 E31C     		adds	r3, r4, #3
+ 314:./Application/Src/application.c **** 
+ 585              		.loc 1 314 66 view .LVU146
+ 586 004a 0125     		movs	r5, #1
+ 587 004c 9D40     		lsls	r5, r5, r3
+ 314:./Application/Src/application.c **** 
+ 588              		.loc 1 314 28 view .LVU147
+ 589 004e ADB2     		uxth	r5, r5
+ 590 0050 2946     		mov	r1, r5
+ 591 0052 1748     		ldr	r0, .L36
+ 592 0054 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 593              	.LVL26:
+ 314:./Application/Src/application.c **** 
+ 594              		.loc 1 314 14 discriminator 1 view .LVU148
+ 595 0058 0028     		cmp	r0, #0
+ 596 005a 0CBF     		ite	eq
+ 597 005c 0123     		moveq	r3, #1
+ 598 005e 0023     		movne	r3, #0
+ 599              	.LVL27:
+ 316:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
+ 600              		.loc 1 316 9 is_stmt 1 view .LVU149
+ 316:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
+ 601              		.loc 1 316 12 is_stmt 0 view .LVU150
+ 602 0060 E7D1     		bne	.L28
+ 316:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
+ 603              		.loc 1 316 40 discriminator 1 view .LVU151
+ 604 0062 164A     		ldr	r2, .L36+12
+ 605 0064 125D     		ldrb	r2, [r2, r4]	@ zero_extendqisi2
+ 316:./Application/Src/application.c ****             wait_ms(DEBOUNCE_DELAY);
+ 606              		.loc 1 316 24 discriminator 1 view .LVU152
+ 607 0066 002A     		cmp	r2, #0
+ 608 0068 E3D1     		bne	.L28
+ 317:./Application/Src/application.c ****             // after delay, if still pressed -> true else false
+ 609              		.loc 1 317 13 is_stmt 1 view .LVU153
+ 610 006a 1920     		movs	r0, #25
+ 611 006c FFF7FEFF 		bl	wait_ms
+ 612              	.LVL28:
+ 319:./Application/Src/application.c ****             if (is_pressed && !long_pressed[index]){
+ 613              		.loc 1 319 13 view .LVU154
+ 319:./Application/Src/application.c ****             if (is_pressed && !long_pressed[index]){
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 21
+
+
+ 614              		.loc 1 319 27 is_stmt 0 view .LVU155
+ 615 0070 2946     		mov	r1, r5
+ 616 0072 0F48     		ldr	r0, .L36
+ 617 0074 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 618              	.LVL29:
+ 319:./Application/Src/application.c ****             if (is_pressed && !long_pressed[index]){
+ 619              		.loc 1 319 24 discriminator 1 view .LVU156
+ 620 0078 0028     		cmp	r0, #0
+ 621 007a 0CBF     		ite	eq
+ 622 007c 0123     		moveq	r3, #1
+ 623 007e 0023     		movne	r3, #0
+ 624              	.LVL30:
+ 320:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
+ 625              		.loc 1 320 13 is_stmt 1 view .LVU157
+ 320:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
+ 626              		.loc 1 320 16 is_stmt 0 view .LVU158
+ 627 0080 DAD1     		bne	.L29
+ 320:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
+ 628              		.loc 1 320 44 discriminator 1 view .LVU159
+ 629 0082 0F4A     		ldr	r2, .L36+16
+ 630 0084 125D     		ldrb	r2, [r2, r4]	@ zero_extendqisi2
+ 320:./Application/Src/application.c ****                 key_fall_block_until = HAL_GetTick() + KEY_FALL_BLOCK_MS;
+ 631              		.loc 1 320 28 discriminator 1 view .LVU160
+ 632 0086 002A     		cmp	r2, #0
+ 633 0088 D6D1     		bne	.L29
+ 321:./Application/Src/application.c ****                 key_need_handle = index;
+ 634              		.loc 1 321 17 is_stmt 1 view .LVU161
+ 321:./Application/Src/application.c ****                 key_need_handle = index;
+ 635              		.loc 1 321 40 is_stmt 0 view .LVU162
+ 636 008a FFF7FEFF 		bl	HAL_GetTick
+ 637              	.LVL31:
+ 321:./Application/Src/application.c ****                 key_need_handle = index;
+ 638              		.loc 1 321 54 discriminator 1 view .LVU163
+ 639 008e C830     		adds	r0, r0, #200
+ 321:./Application/Src/application.c ****                 key_need_handle = index;
+ 640              		.loc 1 321 38 discriminator 1 view .LVU164
+ 641 0090 094A     		ldr	r2, .L36+8
+ 642 0092 1060     		str	r0, [r2]
+ 322:./Application/Src/application.c ****                 long_pressed[index] = 1;
+ 643              		.loc 1 322 17 is_stmt 1 view .LVU165
+ 322:./Application/Src/application.c ****                 long_pressed[index] = 1;
+ 644              		.loc 1 322 33 is_stmt 0 view .LVU166
+ 645 0094 0B4B     		ldr	r3, .L36+20
+ 646 0096 1C60     		str	r4, [r3]
+ 323:./Application/Src/application.c ****                 memset(Keys_pressed, 0, sizeof(Keys_pressed));
+ 647              		.loc 1 323 17 is_stmt 1 view .LVU167
+ 323:./Application/Src/application.c ****                 memset(Keys_pressed, 0, sizeof(Keys_pressed));
+ 648              		.loc 1 323 37 is_stmt 0 view .LVU168
+ 649 0098 094B     		ldr	r3, .L36+16
+ 650 009a 0122     		movs	r2, #1
+ 651 009c 1A55     		strb	r2, [r3, r4]
+ 324:./Application/Src/application.c ****                 return;
+ 652              		.loc 1 324 17 is_stmt 1 view .LVU169
+ 653 009e 074B     		ldr	r3, .L36+12
+ 654 00a0 0022     		movs	r2, #0
+ 655 00a2 1A80     		strh	r2, [r3]	@ movhi
+ 656 00a4 9A70     		strb	r2, [r3, #2]
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 22
+
+
+ 325:./Application/Src/application.c ****             }
+ 657              		.loc 1 325 17 view .LVU170
+ 658 00a6 C3E7     		b	.L25
+ 659              	.LVL32:
+ 660              	.L30:
+ 334:./Application/Src/application.c ****         }
+ 661              		.loc 1 334 13 view .LVU171
+ 334:./Application/Src/application.c ****         }
+ 662              		.loc 1 334 33 is_stmt 0 view .LVU172
+ 663 00a8 044B     		ldr	r3, .L36+12
+ 664              	.LVL33:
+ 334:./Application/Src/application.c ****         }
+ 665              		.loc 1 334 33 view .LVU173
+ 666 00aa 0022     		movs	r2, #0
+ 667 00ac 1A55     		strb	r2, [r3, r4]
+ 668 00ae C8E7     		b	.L31
+ 669              	.L37:
+ 670              		.align	2
+ 671              	.L36:
+ 672 00b0 00080140 		.word	1073809408
+ 673 00b4 00000000 		.word	is_small_bullet
+ 674 00b8 00000000 		.word	key_fall_block_until.0
+ 675 00bc 00000000 		.word	Keys_pressed
+ 676 00c0 00000000 		.word	long_pressed
+ 677 00c4 00000000 		.word	key_need_handle
+ 678              	.LBE4:
+ 679              	.LBE5:
+ 680              		.cfi_endproc
+ 681              	.LFE71:
+ 683              		.section	.text.call_buy_UI,"ax",%progbits
+ 684              		.align	1
+ 685              		.global	call_buy_UI
+ 686              		.syntax unified
+ 687              		.thumb
+ 688              		.thumb_func
+ 690              	call_buy_UI:
+ 691              	.LFB72:
+ 339:./Application/Src/application.c ****     if (is_small_bullet){
+ 692              		.loc 1 339 19 is_stmt 1 view -0
+ 693              		.cfi_startproc
+ 694              		@ args = 0, pretend = 0, frame = 0
+ 695              		@ frame_needed = 0, uses_anonymous_args = 0
+ 696 0000 38B5     		push	{r3, r4, r5, lr}
+ 697              	.LCFI6:
+ 698              		.cfi_def_cfa_offset 16
+ 699              		.cfi_offset 3, -16
+ 700              		.cfi_offset 4, -12
+ 701              		.cfi_offset 5, -8
+ 702              		.cfi_offset 14, -4
+ 340:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
+ 703              		.loc 1 340 5 view .LVU175
+ 340:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
+ 704              		.loc 1 340 9 is_stmt 0 view .LVU176
+ 705 0002 114B     		ldr	r3, .L42
+ 706 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 340:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
+ 707              		.loc 1 340 8 view .LVU177
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 23
+
+
+ 708 0006 DBB1     		cbz	r3, .L39
+ 341:./Application/Src/application.c ****     } else { // big bullet 
+ 709              		.loc 1 341 9 is_stmt 1 view .LVU178
+ 341:./Application/Src/application.c ****     } else { // big bullet 
+ 710              		.loc 1 341 30 is_stmt 0 view .LVU179
+ 711 0008 104B     		ldr	r3, .L42+4
+ 712 000a 4F22     		movs	r2, #79
+ 713 000c 1A80     		strh	r2, [r3]	@ movhi
+ 714              	.L40:
+ 346:./Application/Src/application.c ****     key_packet.y_position = 0;
+ 715              		.loc 1 346 5 is_stmt 1 view .LVU180
+ 346:./Application/Src/application.c ****     key_packet.y_position = 0;
+ 716              		.loc 1 346 27 is_stmt 0 view .LVU181
+ 717 000e 0F4C     		ldr	r4, .L42+4
+ 718 0010 6388     		ldrh	r3, [r4, #2]
+ 719 0012 6FF30B03 		bfc	r3, #0, #12
+ 720 0016 6380     		strh	r3, [r4, #2]	@ movhi
+ 347:./Application/Src/application.c ****     key_packet.mouse_left = 0;
+ 721              		.loc 1 347 5 is_stmt 1 view .LVU182
+ 347:./Application/Src/application.c ****     key_packet.mouse_left = 0;
+ 722              		.loc 1 347 27 is_stmt 0 view .LVU183
+ 723 0018 A388     		ldrh	r3, [r4, #4]
+ 724 001a 6FF30B03 		bfc	r3, #0, #12
+ 725 001e A380     		strh	r3, [r4, #4]	@ movhi
+ 348:./Application/Src/application.c ****     key_packet.mouse_right = 0;
+ 726              		.loc 1 348 5 is_stmt 1 view .LVU184
+ 348:./Application/Src/application.c ****     key_packet.mouse_right = 0;
+ 727              		.loc 1 348 27 is_stmt 0 view .LVU185
+ 728 0020 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
+ 729 0022 23F0F003 		bic	r3, r3, #240
+ 730 0026 E370     		strb	r3, [r4, #3]
+ 349:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 731              		.loc 1 349 5 is_stmt 1 view .LVU186
+ 349:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 732              		.loc 1 349 28 is_stmt 0 view .LVU187
+ 733 0028 6379     		ldrb	r3, [r4, #5]	@ zero_extendqisi2
+ 734 002a 23F0F003 		bic	r3, r3, #240
+ 735 002e 6371     		strb	r3, [r4, #5]
+ 350:./Application/Src/application.c ****     update_packet_and_send();
+ 736              		.loc 1 350 5 is_stmt 1 view .LVU188
+ 350:./Application/Src/application.c ****     update_packet_and_send();
+ 737              		.loc 1 350 25 is_stmt 0 view .LVU189
+ 738 0030 0025     		movs	r5, #0
+ 739 0032 E580     		strh	r5, [r4, #6]	@ movhi
+ 351:./Application/Src/application.c **** 
+ 740              		.loc 1 351 5 is_stmt 1 view .LVU190
+ 741 0034 FFF7FEFF 		bl	update_packet_and_send
+ 742              	.LVL34:
+ 354:./Application/Src/application.c ****     update_packet_and_send();
+ 743              		.loc 1 354 5 view .LVU191
+ 354:./Application/Src/application.c ****     update_packet_and_send();
+ 744              		.loc 1 354 26 is_stmt 0 view .LVU192
+ 745 0038 2580     		strh	r5, [r4]	@ movhi
+ 355:./Application/Src/application.c **** }
+ 746              		.loc 1 355 5 is_stmt 1 view .LVU193
+ 747 003a FFF7FEFF 		bl	update_packet_and_send
+ 748              	.LVL35:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 24
+
+
+ 356:./Application/Src/application.c **** 
+ 749              		.loc 1 356 1 is_stmt 0 view .LVU194
+ 750 003e 38BD     		pop	{r3, r4, r5, pc}
+ 751              	.L39:
+ 343:./Application/Src/application.c ****     }
+ 752              		.loc 1 343 9 is_stmt 1 view .LVU195
+ 343:./Application/Src/application.c ****     }
+ 753              		.loc 1 343 30 is_stmt 0 view .LVU196
+ 754 0040 024B     		ldr	r3, .L42+4
+ 755 0042 4922     		movs	r2, #73
+ 756 0044 1A80     		strh	r2, [r3]	@ movhi
+ 757 0046 E2E7     		b	.L40
+ 758              	.L43:
+ 759              		.align	2
+ 760              	.L42:
+ 761 0048 00000000 		.word	is_small_bullet
+ 762 004c 00000000 		.word	key_packet
+ 763              		.cfi_endproc
+ 764              	.LFE72:
+ 766              		.section	.text.mouse_control,"ax",%progbits
+ 767              		.align	1
+ 768              		.global	mouse_control
+ 769              		.syntax unified
+ 770              		.thumb
+ 771              		.thumb_func
+ 773              	mouse_control:
+ 774              	.LVL36:
+ 775              	.LFB73:
+ 358:./Application/Src/application.c ****     // packet update for mouse
+ 776              		.loc 1 358 55 is_stmt 1 view -0
+ 777              		.cfi_startproc
+ 778              		@ args = 0, pretend = 0, frame = 0
+ 779              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358:./Application/Src/application.c ****     // packet update for mouse
+ 780              		.loc 1 358 55 is_stmt 0 view .LVU198
+ 781 0000 08B5     		push	{r3, lr}
+ 782              	.LCFI7:
+ 783              		.cfi_def_cfa_offset 8
+ 784              		.cfi_offset 3, -8
+ 785              		.cfi_offset 14, -4
+ 360:./Application/Src/application.c ****     key_packet.x_position = x;
+ 786              		.loc 1 360 5 is_stmt 1 view .LVU199
+ 360:./Application/Src/application.c ****     key_packet.x_position = x;
+ 787              		.loc 1 360 26 is_stmt 0 view .LVU200
+ 788 0002 0F4B     		ldr	r3, .L46
+ 789 0004 4FF0000C 		mov	ip, #0
+ 790 0008 A3F800C0 		strh	ip, [r3]	@ movhi
+ 361:./Application/Src/application.c ****     key_packet.y_position = y;
+ 791              		.loc 1 361 5 is_stmt 1 view .LVU201
+ 361:./Application/Src/application.c ****     key_packet.y_position = y;
+ 792              		.loc 1 361 27 is_stmt 0 view .LVU202
+ 793 000c B3F802E0 		ldrh	lr, [r3, #2]
+ 794 0010 60F30B0E 		bfi	lr, r0, #0, #12
+ 795 0014 A3F802E0 		strh	lr, [r3, #2]	@ movhi
+ 362:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
+ 796              		.loc 1 362 5 is_stmt 1 view .LVU203
+ 362:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 25
+
+
+ 797              		.loc 1 362 27 is_stmt 0 view .LVU204
+ 798 0018 9888     		ldrh	r0, [r3, #4]
+ 799              	.LVL37:
+ 362:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
+ 800              		.loc 1 362 27 view .LVU205
+ 801 001a 61F30B00 		bfi	r0, r1, #0, #12
+ 802              	.LVL38:
+ 362:./Application/Src/application.c ****     key_packet.mouse_left = click ? 1 : 0;
+ 803              		.loc 1 362 27 view .LVU206
+ 804 001e 9880     		strh	r0, [r3, #4]	@ movhi
+ 363:./Application/Src/application.c ****     key_packet.mouse_right = 0;
+ 805              		.loc 1 363 5 is_stmt 1 view .LVU207
+ 363:./Application/Src/application.c ****     key_packet.mouse_right = 0;
+ 806              		.loc 1 363 27 is_stmt 0 view .LVU208
+ 807 0020 D978     		ldrb	r1, [r3, #3]	@ zero_extendqisi2
+ 808 0022 62F30711 		bfi	r1, r2, #4, #4
+ 809 0026 D970     		strb	r1, [r3, #3]
+ 364:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 810              		.loc 1 364 5 is_stmt 1 view .LVU209
+ 364:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 811              		.loc 1 364 28 is_stmt 0 view .LVU210
+ 812 0028 5A79     		ldrb	r2, [r3, #5]	@ zero_extendqisi2
+ 813              	.LVL39:
+ 364:./Application/Src/application.c ****     key_packet.reserved = 0;
+ 814              		.loc 1 364 28 view .LVU211
+ 815 002a 22F0F002 		bic	r2, r2, #240
+ 816 002e 5A71     		strb	r2, [r3, #5]
+ 365:./Application/Src/application.c ****     update_packet_and_send();
+ 817              		.loc 1 365 5 is_stmt 1 view .LVU212
+ 365:./Application/Src/application.c ****     update_packet_and_send();
+ 818              		.loc 1 365 25 is_stmt 0 view .LVU213
+ 819 0030 A3F806C0 		strh	ip, [r3, #6]	@ movhi
+ 366:./Application/Src/application.c ****     // after send add delay
+ 820              		.loc 1 366 5 is_stmt 1 view .LVU214
+ 821 0034 FFF7FEFF 		bl	update_packet_and_send
+ 822              	.LVL40:
+ 368:./Application/Src/application.c **** }
+ 823              		.loc 1 368 5 view .LVU215
+ 824 0038 2220     		movs	r0, #34
+ 825 003a FFF7FEFF 		bl	wait_ms
+ 826              	.LVL41:
+ 369:./Application/Src/application.c **** 
+ 827              		.loc 1 369 1 is_stmt 0 view .LVU216
+ 828 003e 08BD     		pop	{r3, pc}
+ 829              	.L47:
+ 830              		.align	2
+ 831              	.L46:
+ 832 0040 00000000 		.word	key_packet
+ 833              		.cfi_endproc
+ 834              	.LFE73:
+ 836              		.section	.text.get_key_pattern,"ax",%progbits
+ 837              		.align	1
+ 838              		.global	get_key_pattern
+ 839              		.syntax unified
+ 840              		.thumb
+ 841              		.thumb_func
+ 843              	get_key_pattern:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 26
+
+
+ 844              	.LVL42:
+ 845              	.LFB66:
+ 139:./Application/Src/application.c ****     // static const uint16_t button_x[6] = {
+ 846              		.loc 1 139 1 is_stmt 1 view -0
+ 847              		.cfi_startproc
+ 848              		@ args = 0, pretend = 0, frame = 24
+ 849              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139:./Application/Src/application.c ****     // static const uint16_t button_x[6] = {
+ 850              		.loc 1 139 1 is_stmt 0 view .LVU218
+ 851 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 852              	.LCFI8:
+ 853              		.cfi_def_cfa_offset 20
+ 854              		.cfi_offset 4, -20
+ 855              		.cfi_offset 5, -16
+ 856              		.cfi_offset 6, -12
+ 857              		.cfi_offset 7, -8
+ 858              		.cfi_offset 14, -4
+ 859 0002 87B0     		sub	sp, sp, #28
+ 860              	.LCFI9:
+ 861              		.cfi_def_cfa_offset 48
+ 148:./Application/Src/application.c ****         1095,   // -2，原 1070
+ 862              		.loc 1 148 5 is_stmt 1 view .LVU219
+ 161:./Application/Src/application.c ****         5,  // +10
+ 863              		.loc 1 161 5 view .LVU220
+ 170:./Application/Src/application.c ****     uint32_t unit_amount;
+ 864              		.loc 1 170 5 view .LVU221
+ 170:./Application/Src/application.c ****     uint32_t unit_amount;
+ 865              		.loc 1 170 14 is_stmt 0 view .LVU222
+ 866 0004 0023     		movs	r3, #0
+ 867 0006 0093     		str	r3, [sp]
+ 868 0008 0193     		str	r3, [sp, #4]
+ 869 000a 0293     		str	r3, [sp, #8]
+ 870 000c 0393     		str	r3, [sp, #12]
+ 871 000e 0493     		str	r3, [sp, #16]
+ 872 0010 0593     		str	r3, [sp, #20]
+ 171:./Application/Src/application.c ****     uint32_t remainder;
+ 873              		.loc 1 171 5 is_stmt 1 view .LVU223
+ 172:./Application/Src/application.c **** 
+ 874              		.loc 1 172 5 view .LVU224
+ 178:./Application/Src/application.c ****         if ((amount % 10U) != 0U) {
+ 875              		.loc 1 178 5 view .LVU225
+ 178:./Application/Src/application.c ****         if ((amount % 10U) != 0U) {
+ 876              		.loc 1 178 9 is_stmt 0 view .LVU226
+ 877 0012 424B     		ldr	r3, .L75
+ 878 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 178:./Application/Src/application.c ****         if ((amount % 10U) != 0U) {
+ 879              		.loc 1 178 8 view .LVU227
+ 880 0016 63B1     		cbz	r3, .L49
+ 179:./Application/Src/application.c ****             return false;
+ 881              		.loc 1 179 9 is_stmt 1 view .LVU228
+ 179:./Application/Src/application.c ****             return false;
+ 882              		.loc 1 179 21 is_stmt 0 view .LVU229
+ 883 0018 414B     		ldr	r3, .L75+4
+ 884 001a A3FB0023 		umull	r2, r3, r3, r0
+ 885 001e DB08     		lsrs	r3, r3, #3
+ 886 0020 03EB8303 		add	r3, r3, r3, lsl #2
+ 179:./Application/Src/application.c ****             return false;
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 27
+
+
+ 887              		.loc 1 179 12 view .LVU230
+ 888 0024 B0EB430F 		cmp	r0, r3, lsl #1
+ 889 0028 75D1     		bne	.L68
+ 182:./Application/Src/application.c ****     } else {
+ 890              		.loc 1 182 9 is_stmt 1 view .LVU231
+ 182:./Application/Src/application.c ****     } else {
+ 891              		.loc 1 182 21 is_stmt 0 view .LVU232
+ 892 002a 3D4B     		ldr	r3, .L75+4
+ 893 002c A3FB0003 		umull	r0, r3, r3, r0
+ 894              	.LVL43:
+ 182:./Application/Src/application.c ****     } else {
+ 895              		.loc 1 182 21 view .LVU233
+ 896 0030 D808     		lsrs	r0, r3, #3
+ 897              	.L49:
+ 898              	.LVL44:
+ 187:./Application/Src/application.c ****     remainder = unit_amount % 10U;
+ 899              		.loc 1 187 5 is_stmt 1 view .LVU234
+ 187:./Application/Src/application.c ****     remainder = unit_amount % 10U;
+ 900              		.loc 1 187 24 is_stmt 0 view .LVU235
+ 901 0032 3B4B     		ldr	r3, .L75+4
+ 902 0034 A3FB0023 		umull	r2, r3, r3, r0
+ 903 0038 DB08     		lsrs	r3, r3, #3
+ 187:./Application/Src/application.c ****     remainder = unit_amount % 10U;
+ 904              		.loc 1 187 10 view .LVU236
+ 905 003a 0593     		str	r3, [sp, #20]
+ 188:./Application/Src/application.c **** 
+ 906              		.loc 1 188 5 is_stmt 1 view .LVU237
+ 188:./Application/Src/application.c **** 
+ 907              		.loc 1 188 15 is_stmt 0 view .LVU238
+ 908 003c 03EB8302 		add	r2, r3, r3, lsl #2
+ 909 0040 A0EB4200 		sub	r0, r0, r2, lsl #1
+ 910              	.LVL45:
+ 190:./Application/Src/application.c ****         case 0:
+ 911              		.loc 1 190 5 is_stmt 1 view .LVU239
+ 912 0044 0528     		cmp	r0, #5
+ 913 0046 33D0     		beq	.L51
+ 914 0048 15D8     		bhi	.L52
+ 915 004a 0228     		cmp	r0, #2
+ 916 004c 29D0     		beq	.L53
+ 917 004e 08D8     		bhi	.L54
+ 918 0050 18B1     		cbz	r0, .L55
+ 919 0052 0128     		cmp	r0, #1
+ 920 0054 03D1     		bne	.L70
+ 195:./Application/Src/application.c ****             break;
+ 921              		.loc 1 195 13 view .LVU240
+ 195:./Application/Src/application.c ****             break;
+ 922              		.loc 1 195 17 is_stmt 0 view .LVU241
+ 923 0056 0123     		movs	r3, #1
+ 924 0058 0393     		str	r3, [sp, #12]
+ 196:./Application/Src/application.c **** 
+ 925              		.loc 1 196 13 is_stmt 1 view .LVU242
+ 926              	.L55:
+ 927              	.LBB6:
+ 928              	.LBB7:
+ 929              	.LBB8:
+ 237:./Application/Src/application.c **** 
+ 930              		.loc 1 237 23 is_stmt 0 view .LVU243
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 28
+
+
+ 931 005a 0027     		movs	r7, #0
+ 932 005c 52E0     		b	.L66
+ 933              	.L70:
+ 934              	.LBE8:
+ 935              	.LBE7:
+ 936              	.LBE6:
+ 190:./Application/Src/application.c ****         case 0:
+ 937              		.loc 1 190 5 view .LVU244
+ 938 005e 0020     		movs	r0, #0
+ 939              	.LVL46:
+ 190:./Application/Src/application.c ****         case 0:
+ 940              		.loc 1 190 5 view .LVU245
+ 941 0060 57E0     		b	.L50
+ 942              	.LVL47:
+ 943              	.L54:
+ 190:./Application/Src/application.c ****         case 0:
+ 944              		.loc 1 190 5 view .LVU246
+ 945 0062 0328     		cmp	r0, #3
+ 946 0064 20D0     		beq	.L57
+ 947 0066 0428     		cmp	r0, #4
+ 948 0068 03D1     		bne	.L71
+ 207:./Application/Src/application.c ****             break;
+ 949              		.loc 1 207 13 is_stmt 1 view .LVU247
+ 207:./Application/Src/application.c ****             break;
+ 950              		.loc 1 207 17 is_stmt 0 view .LVU248
+ 951 006a 0123     		movs	r3, #1
+ 952 006c 0293     		str	r3, [sp, #8]
+ 207:./Application/Src/application.c ****             break;
+ 953              		.loc 1 207 21 is_stmt 1 view .LVU249
+ 207:./Application/Src/application.c ****             break;
+ 954              		.loc 1 207 25 is_stmt 0 view .LVU250
+ 955 006e 0193     		str	r3, [sp, #4]
+ 208:./Application/Src/application.c **** 
+ 956              		.loc 1 208 13 is_stmt 1 view .LVU251
+ 957 0070 F3E7     		b	.L55
+ 958              	.L71:
+ 190:./Application/Src/application.c ****         case 0:
+ 959              		.loc 1 190 5 is_stmt 0 view .LVU252
+ 960 0072 0020     		movs	r0, #0
+ 961              	.LVL48:
+ 190:./Application/Src/application.c ****         case 0:
+ 962              		.loc 1 190 5 view .LVU253
+ 963 0074 4DE0     		b	.L50
+ 964              	.LVL49:
+ 965              	.L52:
+ 190:./Application/Src/application.c ****         case 0:
+ 966              		.loc 1 190 5 view .LVU254
+ 967 0076 0828     		cmp	r0, #8
+ 968 0078 21D0     		beq	.L59
+ 969 007a 09D8     		bhi	.L60
+ 970 007c 0628     		cmp	r0, #6
+ 971 007e 1AD0     		beq	.L61
+ 972 0080 0728     		cmp	r0, #7
+ 973 0082 03D1     		bne	.L72
+ 219:./Application/Src/application.c ****             break;
+ 974              		.loc 1 219 13 is_stmt 1 view .LVU255
+ 219:./Application/Src/application.c ****             break;
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 29
+
+
+ 975              		.loc 1 219 17 is_stmt 0 view .LVU256
+ 976 0084 0123     		movs	r3, #1
+ 977 0086 0293     		str	r3, [sp, #8]
+ 219:./Application/Src/application.c ****             break;
+ 978              		.loc 1 219 21 is_stmt 1 view .LVU257
+ 219:./Application/Src/application.c ****             break;
+ 979              		.loc 1 219 25 is_stmt 0 view .LVU258
+ 980 0088 0493     		str	r3, [sp, #16]
+ 220:./Application/Src/application.c **** 
+ 981              		.loc 1 220 13 is_stmt 1 view .LVU259
+ 982 008a E6E7     		b	.L55
+ 983              	.L72:
+ 190:./Application/Src/application.c ****         case 0:
+ 984              		.loc 1 190 5 is_stmt 0 view .LVU260
+ 985 008c 0020     		movs	r0, #0
+ 986              	.LVL50:
+ 190:./Application/Src/application.c ****         case 0:
+ 987              		.loc 1 190 5 view .LVU261
+ 988 008e 40E0     		b	.L50
+ 989              	.LVL51:
+ 990              	.L60:
+ 190:./Application/Src/application.c ****         case 0:
+ 991              		.loc 1 190 5 view .LVU262
+ 992 0090 0928     		cmp	r0, #9
+ 993 0092 04D1     		bne	.L73
+ 227:./Application/Src/application.c ****             break;
+ 994              		.loc 1 227 13 is_stmt 1 view .LVU263
+ 227:./Application/Src/application.c ****             break;
+ 995              		.loc 1 227 17 is_stmt 0 view .LVU264
+ 996 0094 0133     		adds	r3, r3, #1
+ 997 0096 0593     		str	r3, [sp, #20]
+ 227:./Application/Src/application.c ****             break;
+ 998              		.loc 1 227 21 is_stmt 1 view .LVU265
+ 227:./Application/Src/application.c ****             break;
+ 999              		.loc 1 227 25 is_stmt 0 view .LVU266
+ 1000 0098 0123     		movs	r3, #1
+ 1001 009a 0193     		str	r3, [sp, #4]
+ 228:./Application/Src/application.c **** 
+ 1002              		.loc 1 228 13 is_stmt 1 view .LVU267
+ 1003 009c DDE7     		b	.L55
+ 1004              	.L73:
+ 190:./Application/Src/application.c ****         case 0:
+ 1005              		.loc 1 190 5 is_stmt 0 view .LVU268
+ 1006 009e 0020     		movs	r0, #0
+ 1007              	.LVL52:
+ 190:./Application/Src/application.c ****         case 0:
+ 1008              		.loc 1 190 5 view .LVU269
+ 1009 00a0 37E0     		b	.L50
+ 1010              	.LVL53:
+ 1011              	.L53:
+ 199:./Application/Src/application.c ****             break;
+ 1012              		.loc 1 199 13 is_stmt 1 view .LVU270
+ 199:./Application/Src/application.c ****             break;
+ 1013              		.loc 1 199 17 is_stmt 0 view .LVU271
+ 1014 00a2 0123     		movs	r3, #1
+ 1015 00a4 0493     		str	r3, [sp, #16]
+ 200:./Application/Src/application.c **** 
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 30
+
+
+ 1016              		.loc 1 200 13 is_stmt 1 view .LVU272
+ 1017 00a6 D8E7     		b	.L55
+ 1018              	.L57:
+ 203:./Application/Src/application.c ****             break;
+ 1019              		.loc 1 203 13 view .LVU273
+ 203:./Application/Src/application.c ****             break;
+ 1020              		.loc 1 203 17 is_stmt 0 view .LVU274
+ 1021 00a8 0123     		movs	r3, #1
+ 1022 00aa 0293     		str	r3, [sp, #8]
+ 203:./Application/Src/application.c ****             break;
+ 1023              		.loc 1 203 21 is_stmt 1 view .LVU275
+ 203:./Application/Src/application.c ****             break;
+ 1024              		.loc 1 203 25 is_stmt 0 view .LVU276
+ 1025 00ac 0093     		str	r3, [sp]
+ 204:./Application/Src/application.c **** 
+ 1026              		.loc 1 204 13 is_stmt 1 view .LVU277
+ 1027 00ae D4E7     		b	.L55
+ 1028              	.L51:
+ 211:./Application/Src/application.c ****             break;
+ 1029              		.loc 1 211 13 view .LVU278
+ 211:./Application/Src/application.c ****             break;
+ 1030              		.loc 1 211 17 is_stmt 0 view .LVU279
+ 1031 00b0 0123     		movs	r3, #1
+ 1032 00b2 0293     		str	r3, [sp, #8]
+ 212:./Application/Src/application.c **** 
+ 1033              		.loc 1 212 13 is_stmt 1 view .LVU280
+ 1034 00b4 D1E7     		b	.L55
+ 1035              	.L61:
+ 215:./Application/Src/application.c ****             break;
+ 1036              		.loc 1 215 13 view .LVU281
+ 215:./Application/Src/application.c ****             break;
+ 1037              		.loc 1 215 17 is_stmt 0 view .LVU282
+ 1038 00b6 0123     		movs	r3, #1
+ 1039 00b8 0293     		str	r3, [sp, #8]
+ 215:./Application/Src/application.c ****             break;
+ 1040              		.loc 1 215 21 is_stmt 1 view .LVU283
+ 215:./Application/Src/application.c ****             break;
+ 1041              		.loc 1 215 25 is_stmt 0 view .LVU284
+ 1042 00ba 0393     		str	r3, [sp, #12]
+ 216:./Application/Src/application.c **** 
+ 1043              		.loc 1 216 13 is_stmt 1 view .LVU285
+ 1044 00bc CDE7     		b	.L55
+ 1045              	.L59:
+ 223:./Application/Src/application.c ****             break;
+ 1046              		.loc 1 223 13 view .LVU286
+ 223:./Application/Src/application.c ****             break;
+ 1047              		.loc 1 223 17 is_stmt 0 view .LVU287
+ 1048 00be 0133     		adds	r3, r3, #1
+ 1049 00c0 0593     		str	r3, [sp, #20]
+ 223:./Application/Src/application.c ****             break;
+ 1050              		.loc 1 223 21 is_stmt 1 view .LVU288
+ 223:./Application/Src/application.c ****             break;
+ 1051              		.loc 1 223 25 is_stmt 0 view .LVU289
+ 1052 00c2 0123     		movs	r3, #1
+ 1053 00c4 0093     		str	r3, [sp]
+ 224:./Application/Src/application.c **** 
+ 1054              		.loc 1 224 13 is_stmt 1 view .LVU290
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 31
+
+
+ 1055 00c6 C8E7     		b	.L55
+ 1056              	.LVL54:
+ 1057              	.L65:
+ 1058              	.LBB13:
+ 1059              	.LBB11:
+ 1060              	.LBB9:
+ 239:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, true);
+ 1061              		.loc 1 239 13 view .LVU291
+ 239:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, true);
+ 1062              		.loc 1 239 35 is_stmt 0 view .LVU292
+ 1063 00c8 164B     		ldr	r3, .L75+8
+ 1064 00ca 33F81640 		ldrh	r4, [r3, r6, lsl #1]
+ 239:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, true);
+ 1065              		.loc 1 239 13 view .LVU293
+ 1066 00ce 0022     		movs	r2, #0
+ 1067 00d0 4FF45771 		mov	r1, #860
+ 1068 00d4 2046     		mov	r0, r4
+ 1069 00d6 FFF7FEFF 		bl	mouse_control
+ 1070              	.LVL55:
+ 240:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, false);
+ 1071              		.loc 1 240 13 is_stmt 1 view .LVU294
+ 1072 00da 0122     		movs	r2, #1
+ 1073 00dc 4FF45771 		mov	r1, #860
+ 1074 00e0 2046     		mov	r0, r4
+ 1075 00e2 FFF7FEFF 		bl	mouse_control
+ 1076              	.LVL56:
+ 241:./Application/Src/application.c ****         }
+ 1077              		.loc 1 241 13 view .LVU295
+ 1078 00e6 0022     		movs	r2, #0
+ 1079 00e8 4FF45771 		mov	r1, #860
+ 1080 00ec 2046     		mov	r0, r4
+ 1081 00ee FFF7FEFF 		bl	mouse_control
+ 1082              	.LVL57:
+ 237:./Application/Src/application.c **** 
+ 1083              		.loc 1 237 57 discriminator 3 view .LVU296
+ 1084 00f2 0135     		adds	r5, r5, #1
+ 1085              	.LVL58:
+ 1086              	.L64:
+ 237:./Application/Src/application.c **** 
+ 1087              		.loc 1 237 40 discriminator 1 view .LVU297
+ 237:./Application/Src/application.c **** 
+ 1088              		.loc 1 237 43 is_stmt 0 discriminator 1 view .LVU298
+ 1089 00f4 06AB     		add	r3, sp, #24
+ 1090 00f6 03EB8603 		add	r3, r3, r6, lsl #2
+ 1091 00fa 53F8183C 		ldr	r3, [r3, #-24]
+ 237:./Application/Src/application.c **** 
+ 1092              		.loc 1 237 40 discriminator 1 view .LVU299
+ 1093 00fe AB42     		cmp	r3, r5
+ 1094 0100 E2D8     		bhi	.L65
+ 237:./Application/Src/application.c **** 
+ 1095              		.loc 1 237 40 discriminator 1 view .LVU300
+ 1096              	.LBE9:
+ 1097              	.LBE11:
+ 234:./Application/Src/application.c ****         uint32_t index = press_order[order];
+ 1098              		.loc 1 234 47 is_stmt 1 discriminator 2 view .LVU301
+ 1099 0102 0137     		adds	r7, r7, #1
+ 1100              	.LVL59:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 32
+
+
+ 1101              	.L66:
+ 234:./Application/Src/application.c ****         uint32_t index = press_order[order];
+ 1102              		.loc 1 234 36 discriminator 1 view .LVU302
+ 1103 0104 052F     		cmp	r7, #5
+ 1104 0106 03D8     		bhi	.L74
+ 1105              	.LBB12:
+ 235:./Application/Src/application.c **** 
+ 1106              		.loc 1 235 9 view .LVU303
+ 235:./Application/Src/application.c **** 
+ 1107              		.loc 1 235 37 is_stmt 0 view .LVU304
+ 1108 0108 074B     		ldr	r3, .L75+12
+ 1109 010a DE5D     		ldrb	r6, [r3, r7]	@ zero_extendqisi2
+ 1110              	.LVL60:
+ 237:./Application/Src/application.c **** 
+ 1111              		.loc 1 237 9 is_stmt 1 view .LVU305
+ 1112              	.LBB10:
+ 237:./Application/Src/application.c **** 
+ 1113              		.loc 1 237 14 view .LVU306
+ 237:./Application/Src/application.c **** 
+ 1114              		.loc 1 237 23 is_stmt 0 view .LVU307
+ 1115 010c 0025     		movs	r5, #0
+ 237:./Application/Src/application.c **** 
+ 1116              		.loc 1 237 9 view .LVU308
+ 1117 010e F1E7     		b	.L64
+ 1118              	.LVL61:
+ 1119              	.L74:
+ 237:./Application/Src/application.c **** 
+ 1120              		.loc 1 237 9 view .LVU309
+ 1121              	.LBE10:
+ 1122              	.LBE12:
+ 1123              	.LBE13:
+ 245:./Application/Src/application.c **** }
+ 1124              		.loc 1 245 12 view .LVU310
+ 1125 0110 0120     		movs	r0, #1
+ 1126              	.LVL62:
+ 1127              	.L50:
+ 246:./Application/Src/application.c **** 
+ 1128              		.loc 1 246 1 view .LVU311
+ 1129 0112 07B0     		add	sp, sp, #28
+ 1130              	.LCFI10:
+ 1131              		.cfi_remember_state
+ 1132              		.cfi_def_cfa_offset 20
+ 1133              		@ sp needed
+ 1134 0114 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1135              	.LVL63:
+ 1136              	.L68:
+ 1137              	.LCFI11:
+ 1138              		.cfi_restore_state
+ 180:./Application/Src/application.c ****         }
+ 1139              		.loc 1 180 20 view .LVU312
+ 1140 0116 0020     		movs	r0, #0
+ 1141              	.LVL64:
+ 180:./Application/Src/application.c ****         }
+ 1142              		.loc 1 180 20 view .LVU313
+ 1143 0118 FBE7     		b	.L50
+ 1144              	.L76:
+ 1145 011a 00BF     		.align	2
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 33
+
+
+ 1146              	.L75:
+ 1147 011c 00000000 		.word	is_small_bullet
+ 1148 0120 CDCCCCCC 		.word	-858993459
+ 1149 0124 00000000 		.word	button_x.1
+ 1150 0128 00000000 		.word	press_order.2
+ 1151              		.cfi_endproc
+ 1152              	.LFE66:
+ 1154              		.section	.text.move_click_mouse,"ax",%progbits
+ 1155              		.align	1
+ 1156              		.global	move_click_mouse
+ 1157              		.syntax unified
+ 1158              		.thumb
+ 1159              		.thumb_func
+ 1161              	move_click_mouse:
+ 1162              	.LVL65:
+ 1163              	.LFB74:
+ 393:./Application/Src/application.c ****     // uint16_t x = 0;
+ 1164              		.loc 1 393 31 is_stmt 1 view -0
+ 1165              		.cfi_startproc
+ 1166              		@ args = 0, pretend = 0, frame = 0
+ 1167              		@ frame_needed = 0, uses_anonymous_args = 0
+ 393:./Application/Src/application.c ****     // uint16_t x = 0;
+ 1168              		.loc 1 393 31 is_stmt 0 view .LVU315
+ 1169 0000 08B5     		push	{r3, lr}
+ 1170              	.LCFI12:
+ 1171              		.cfi_def_cfa_offset 8
+ 1172              		.cfi_offset 3, -8
+ 1173              		.cfi_offset 14, -4
+ 442:./Application/Src/application.c **** 
+ 1174              		.loc 1 442 5 is_stmt 1 view .LVU316
+ 1175              	.LVL66:
+ 445:./Application/Src/application.c ****     {
+ 1176              		.loc 1 445 5 view .LVU317
+ 1177 0002 0128     		cmp	r0, #1
+ 1178 0004 07D0     		beq	.L78
+ 1179 0006 0228     		cmp	r0, #2
+ 1180 0008 0AD0     		beq	.L79
+ 1181 000a 70B9     		cbnz	r0, .L81
+ 448:./Application/Src/application.c ****         break;
+ 1182              		.loc 1 448 9 view .LVU318
+ 448:./Application/Src/application.c ****         break;
+ 1183              		.loc 1 448 34 is_stmt 0 view .LVU319
+ 1184 000c 0C4B     		ldr	r3, .L86
+ 1185 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 448:./Application/Src/application.c ****         break;
+ 1186              		.loc 1 448 50 view .LVU320
+ 1187 0010 7BB1     		cbz	r3, .L82
+ 448:./Application/Src/application.c ****         break;
+ 1188              		.loc 1 448 16 discriminator 1 view .LVU321
+ 1189 0012 7820     		movs	r0, #120
+ 1190              	.LVL67:
+ 448:./Application/Src/application.c ****         break;
+ 1191              		.loc 1 448 16 discriminator 1 view .LVU322
+ 1192 0014 0AE0     		b	.L80
+ 1193              	.LVL68:
+ 1194              	.L78:
+ 452:./Application/Src/application.c ****         break;
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 34
+
+
+ 1195              		.loc 1 452 9 is_stmt 1 view .LVU323
+ 452:./Application/Src/application.c ****         break;
+ 1196              		.loc 1 452 34 is_stmt 0 view .LVU324
+ 1197 0016 0A4B     		ldr	r3, .L86
+ 1198 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 452:./Application/Src/application.c ****         break;
+ 1199              		.loc 1 452 50 view .LVU325
+ 1200 001a 63B1     		cbz	r3, .L83
+ 452:./Application/Src/application.c ****         break;
+ 1201              		.loc 1 452 16 discriminator 1 view .LVU326
+ 1202 001c 6420     		movs	r0, #100
+ 1203              	.LVL69:
+ 452:./Application/Src/application.c ****         break;
+ 1204              		.loc 1 452 16 discriminator 1 view .LVU327
+ 1205 001e 05E0     		b	.L80
+ 1206              	.LVL70:
+ 1207              	.L79:
+ 456:./Application/Src/application.c ****         break;
+ 1208              		.loc 1 456 9 is_stmt 1 view .LVU328
+ 456:./Application/Src/application.c ****         break;
+ 1209              		.loc 1 456 34 is_stmt 0 view .LVU329
+ 1210 0020 074B     		ldr	r3, .L86
+ 1211 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 456:./Application/Src/application.c ****         break;
+ 1212              		.loc 1 456 50 view .LVU330
+ 1213 0024 4BB1     		cbz	r3, .L84
+ 456:./Application/Src/application.c ****         break;
+ 1214              		.loc 1 456 16 discriminator 1 view .LVU331
+ 1215 0026 5020     		movs	r0, #80
+ 1216              	.LVL71:
+ 456:./Application/Src/application.c ****         break;
+ 1217              		.loc 1 456 16 discriminator 1 view .LVU332
+ 1218 0028 00E0     		b	.L80
+ 1219              	.LVL72:
+ 1220              	.L81:
+ 445:./Application/Src/application.c ****     {
+ 1221              		.loc 1 445 5 view .LVU333
+ 1222 002a 0020     		movs	r0, #0
+ 1223              	.LVL73:
+ 1224              	.L80:
+ 463:./Application/Src/application.c **** 
+ 1225              		.loc 1 463 5 is_stmt 1 view .LVU334
+ 1226 002c FFF7FEFF 		bl	get_key_pattern
+ 1227              	.LVL74:
+ 465:./Application/Src/application.c **** 
+ 1228              		.loc 1 465 1 is_stmt 0 view .LVU335
+ 1229 0030 08BD     		pop	{r3, pc}
+ 1230              	.LVL75:
+ 1231              	.L82:
+ 448:./Application/Src/application.c ****         break;
+ 1232              		.loc 1 448 16 discriminator 2 view .LVU336
+ 1233 0032 0C20     		movs	r0, #12
+ 1234              	.LVL76:
+ 448:./Application/Src/application.c ****         break;
+ 1235              		.loc 1 448 16 discriminator 2 view .LVU337
+ 1236 0034 FAE7     		b	.L80
+ 1237              	.LVL77:
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 35
+
+
+ 1238              	.L83:
+ 452:./Application/Src/application.c ****         break;
+ 1239              		.loc 1 452 16 discriminator 2 view .LVU338
+ 1240 0036 0A20     		movs	r0, #10
+ 1241              	.LVL78:
+ 452:./Application/Src/application.c ****         break;
+ 1242              		.loc 1 452 16 discriminator 2 view .LVU339
+ 1243 0038 F8E7     		b	.L80
+ 1244              	.LVL79:
+ 1245              	.L84:
+ 456:./Application/Src/application.c ****         break;
+ 1246              		.loc 1 456 16 discriminator 2 view .LVU340
+ 1247 003a 0820     		movs	r0, #8
+ 1248              	.LVL80:
+ 456:./Application/Src/application.c ****         break;
+ 1249              		.loc 1 456 16 discriminator 2 view .LVU341
+ 1250 003c F6E7     		b	.L80
+ 1251              	.L87:
+ 1252 003e 00BF     		.align	2
+ 1253              	.L86:
+ 1254 0040 00000000 		.word	is_small_bullet
+ 1255              		.cfi_endproc
+ 1256              	.LFE74:
+ 1258              		.section	.text.click_buy_bullets,"ax",%progbits
+ 1259              		.align	1
+ 1260              		.global	click_buy_bullets
+ 1261              		.syntax unified
+ 1262              		.thumb
+ 1263              		.thumb_func
+ 1265              	click_buy_bullets:
+ 1266              	.LFB75:
+ 467:./Application/Src/application.c **** 
+ 1267              		.loc 1 467 25 is_stmt 1 view -0
+ 1268              		.cfi_startproc
+ 1269              		@ args = 0, pretend = 0, frame = 0
+ 1270              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1271 0000 08B5     		push	{r3, lr}
+ 1272              	.LCFI13:
+ 1273              		.cfi_def_cfa_offset 8
+ 1274              		.cfi_offset 3, -8
+ 1275              		.cfi_offset 14, -4
+ 469:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, true);
+ 1276              		.loc 1 469 5 view .LVU343
+ 1277 0002 0022     		movs	r2, #0
+ 1278 0004 40F2DE31 		movw	r1, #990
+ 1279 0008 40F2FB40 		movw	r0, #1275
+ 1280 000c FFF7FEFF 		bl	mouse_control
+ 1281              	.LVL81:
+ 470:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
+ 1282              		.loc 1 470 5 view .LVU344
+ 1283 0010 0122     		movs	r2, #1
+ 1284 0012 40F2DE31 		movw	r1, #990
+ 1285 0016 40F2FB40 		movw	r0, #1275
+ 1286 001a FFF7FEFF 		bl	mouse_control
+ 1287              	.LVL82:
+ 471:./Application/Src/application.c **** 
+ 1288              		.loc 1 471 5 view .LVU345
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 36
+
+
+ 1289 001e 0022     		movs	r2, #0
+ 1290 0020 40F2DE31 		movw	r1, #990
+ 1291 0024 40F2FB40 		movw	r0, #1275
+ 1292 0028 FFF7FEFF 		bl	mouse_control
+ 1293              	.LVL83:
+ 473:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, true);
+ 1294              		.loc 1 473 5 view .LVU346
+ 1295 002c 0022     		movs	r2, #0
+ 1296 002e 40F26131 		movw	r1, #865
+ 1297 0032 40F2A640 		movw	r0, #1190
+ 1298 0036 FFF7FEFF 		bl	mouse_control
+ 1299              	.LVL84:
+ 474:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
+ 1300              		.loc 1 474 5 view .LVU347
+ 1301 003a 0122     		movs	r2, #1
+ 1302 003c 40F26131 		movw	r1, #865
+ 1303 0040 40F2A640 		movw	r0, #1190
+ 1304 0044 FFF7FEFF 		bl	mouse_control
+ 1305              	.LVL85:
+ 475:./Application/Src/application.c ****     
+ 1306              		.loc 1 475 5 view .LVU348
+ 1307 0048 0022     		movs	r2, #0
+ 1308 004a 40F26131 		movw	r1, #865
+ 1309 004e 40F2A640 		movw	r0, #1190
+ 1310 0052 FFF7FEFF 		bl	mouse_control
+ 1311              	.LVL86:
+ 478:./Application/Src/application.c **** }
+ 1312              		.loc 1 478 5 view .LVU349
+ 1313 0056 FFF7FEFF 		bl	call_buy_UI
+ 1314              	.LVL87:
+ 479:./Application/Src/application.c **** 
+ 1315              		.loc 1 479 1 is_stmt 0 view .LVU350
+ 1316 005a 08BD     		pop	{r3, pc}
+ 1317              		.cfi_endproc
+ 1318              	.LFE75:
+ 1320              		.section	.bss.key_fall_block_until.0,"aw",%nobits
+ 1321              		.align	2
+ 1324              	key_fall_block_until.0:
+ 1325 0000 00000000 		.space	4
+ 1326              		.section	.rodata.button_x.1,"a"
+ 1327              		.align	2
+ 1330              	button_x.1:
+ 1331 0000 4704     		.short	1095
+ 1332 0002 9204     		.short	1170
+ 1333 0004 0906     		.short	1545
+ 1334 0006 7305     		.short	1395
+ 1335 0008 BE05     		.short	1470
+ 1336 000a 5406     		.short	1620
+ 1337              		.section	.rodata.press_order.2,"a"
+ 1338              		.align	2
+ 1341              	press_order.2:
+ 1342 0000 05020403 		.ascii	"\005\002\004\003\001\000"
+ 1342      0100
+ 1343              		.section	.bss.phase,"aw",%nobits
+ 1344              		.align	2
+ 1347              	phase:
+ 1348 0000 00000000 		.space	4
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 37
+
+
+ 1349              		.global	long_pressed
+ 1350              		.section	.bss.long_pressed,"aw",%nobits
+ 1351              		.align	2
+ 1354              	long_pressed:
+ 1355 0000 000000   		.space	3
+ 1356              		.global	key_need_handle
+ 1357              		.section	.data.key_need_handle,"aw"
+ 1358              		.align	2
+ 1361              	key_need_handle:
+ 1362 0000 FFFFFFFF 		.word	-1
+ 1363              		.global	is_small_bullet
+ 1364              		.section	.bss.is_small_bullet,"aw",%nobits
+ 1367              	is_small_bullet:
+ 1368 0000 00       		.space	1
+ 1369              		.global	ms_counter
+ 1370              		.section	.bss.ms_counter,"aw",%nobits
+ 1371              		.align	2
+ 1374              	ms_counter:
+ 1375 0000 00000000 		.space	4
+ 1376              		.global	referee_packet
+ 1377              		.section	.bss.referee_packet,"aw",%nobits
+ 1378              		.align	2
+ 1381              	referee_packet:
+ 1382 0000 00000000 		.space	17
+ 1382      00000000 
+ 1382      00000000 
+ 1382      00000000 
+ 1382      00
+ 1383              		.global	frame_body_tail
+ 1384              		.section	.bss.frame_body_tail,"aw",%nobits
+ 1385              		.align	2
+ 1388              	frame_body_tail:
+ 1389 0000 00000000 		.space	12
+ 1389      00000000 
+ 1389      00000000 
+ 1390              		.global	frame_header
+ 1391              		.section	.bss.frame_header,"aw",%nobits
+ 1392              		.align	2
+ 1395              	frame_header:
+ 1396 0000 00000000 		.space	5
+ 1396      00
+ 1397              		.global	key_packet
+ 1398              		.section	.bss.key_packet,"aw",%nobits
+ 1399              		.align	2
+ 1402              	key_packet:
+ 1403 0000 00000000 		.space	8
+ 1403      00000000 
+ 1404              		.global	vofa
+ 1405              		.section	.bss.vofa,"aw",%nobits
+ 1406              		.align	2
+ 1409              	vofa:
+ 1410 0000 00000000 		.space	24
+ 1410      00000000 
+ 1410      00000000 
+ 1410      00000000 
+ 1410      00000000 
+ 1411              		.global	Keys_pressed
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 38
+
+
+ 1412              		.section	.bss.Keys_pressed,"aw",%nobits
+ 1413              		.align	2
+ 1416              	Keys_pressed:
+ 1417 0000 000000   		.space	3
+ 1418              		.global	Keys
+ 1419              		.section	.bss.Keys,"aw",%nobits
+ 1420              		.align	2
+ 1423              	Keys:
+ 1424 0000 00000000 		.space	60
+ 1424      00000000 
+ 1424      00000000 
+ 1424      00000000 
+ 1424      00000000 
+ 1425              		.text
+ 1426              	.Letext0:
+ 1427              		.file 2 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/machine/_default_types.h"
+ 1428              		.file 3 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/sys/_stdint.h"
+ 1429              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 1430              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1431              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 1432              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 1433              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 1434              		.file 9 "Core/Inc/usart.h"
+ 1435              		.file 10 "Application/Inc/application.h"
+ 1436              		.file 11 "Application/Inc/utils.h"
+ 1437              		.file 12 "C:/thirdpartyLibs/arm-gnu-toolchain-15.2/arm-none-eabi/include/string.h"
+ 1438              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 1439              		.file 14 "Application/Inc/ws2812.h"
+ 1440              		.file 15 "<built-in>"
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 39
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 application.c
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:19     .text.init_keys:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:25     .text.init_keys:00000000 init_keys
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:89     .text.init_keys:0000003c $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1118   .bss.Keys:00000000 Keys
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1111   .bss.Keys_pressed:00000000 Keys_pressed
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:95     .text.init_vofa:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:101    .text.init_vofa:00000000 init_vofa
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:129    .text.init_vofa:00000014 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1104   .bss.vofa:00000000 vofa
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:134    .text.init_packet:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:140    .text.init_packet:00000000 init_packet
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:230    .text.init_packet:00000078 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1097   .bss.key_packet:00000000 key_packet
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1090   .bss.frame_header:00000000 frame_header
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1083   .bss.frame_body_tail:00000000 frame_body_tail
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1076   .bss.referee_packet:00000000 referee_packet
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:238    .text.loop_report:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:244    .text.loop_report:00000000 loop_report
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:305    .text.loop_report:00000040 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1056   .data.key_need_handle:00000000 key_need_handle
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1062   .bss.is_small_bullet:00000000 is_small_bullet
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1069   .bss.ms_counter:00000000 ms_counter
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:316    .text.wait_ms:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:322    .text.wait_ms:00000000 wait_ms
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:363    .text.update_packet_and_send:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:368    .text.update_packet_and_send:00000000 update_packet_and_send
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:447    .text.update_packet_and_send:00000064 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:456    .text.loop_scan_keys:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:462    .text.loop_scan_keys:00000000 loop_scan_keys
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:643    .text.loop_scan_keys:000000b0 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1044   .bss.key_fall_block_until.0:00000000 key_fall_block_until.0
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1049   .bss.long_pressed:00000000 long_pressed
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:655    .text.call_buy_UI:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:661    .text.call_buy_UI:00000000 call_buy_UI
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:732    .text.call_buy_UI:00000048 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:738    .text.mouse_control:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:744    .text.mouse_control:00000000 mouse_control
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:803    .text.mouse_control:00000040 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:808    .text.move_click_mouse:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:814    .text.move_click_mouse:00000000 move_click_mouse
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:976    .text.move_click_mouse:00000078 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:982    .text.click_buy_bullets:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:988    .text.click_buy_bullets:00000000 click_buy_bullets
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1041   .bss.key_fall_block_until.0:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1050   .bss.long_pressed:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1053   .data.key_need_handle:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1063   .bss.is_small_bullet:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1066   .bss.ms_counter:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1073   .bss.referee_packet:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1080   .bss.frame_body_tail:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1087   .bss.frame_header:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1094   .bss.key_packet:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1101   .bss.vofa:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1108   .bss.Keys_pressed:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s:1115   .bss.Keys:00000000 $d
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccdE3bOb.s 			page 29
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:19     .text.init_keys:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:25     .text.init_keys:00000000 init_keys
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:99     .text.init_keys:0000004c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1423   .bss.Keys:00000000 Keys
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1416   .bss.Keys_pressed:00000000 Keys_pressed
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:105    .text.init_vofa:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:111    .text.init_vofa:00000000 init_vofa
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:139    .text.init_vofa:00000014 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1409   .bss.vofa:00000000 vofa
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:144    .text.init_packet:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:150    .text.init_packet:00000000 init_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:240    .text.init_packet:00000078 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1402   .bss.key_packet:00000000 key_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1395   .bss.frame_header:00000000 frame_header
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1388   .bss.frame_body_tail:00000000 frame_body_tail
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1381   .bss.referee_packet:00000000 referee_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:248    .text.loop_report:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:254    .text.loop_report:00000000 loop_report
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:332    .text.loop_report:00000060 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1361   .data.key_need_handle:00000000 key_need_handle
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1367   .bss.is_small_bullet:00000000 is_small_bullet
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1374   .bss.ms_counter:00000000 ms_counter
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1347   .bss.phase:00000000 phase
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:345    .text.wait_ms:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:351    .text.wait_ms:00000000 wait_ms
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:392    .text.update_packet_and_send:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:397    .text.update_packet_and_send:00000000 update_packet_and_send
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:476    .text.update_packet_and_send:00000064 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:485    .text.loop_scan_keys:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:491    .text.loop_scan_keys:00000000 loop_scan_keys
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:672    .text.loop_scan_keys:000000b0 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1324   .bss.key_fall_block_until.0:00000000 key_fall_block_until.0
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1354   .bss.long_pressed:00000000 long_pressed
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:684    .text.call_buy_UI:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:690    .text.call_buy_UI:00000000 call_buy_UI
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:761    .text.call_buy_UI:00000048 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:767    .text.mouse_control:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:773    .text.mouse_control:00000000 mouse_control
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:832    .text.mouse_control:00000040 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:837    .text.get_key_pattern:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:843    .text.get_key_pattern:00000000 get_key_pattern
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1147   .text.get_key_pattern:0000011c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1330   .rodata.button_x.1:00000000 button_x.1
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1341   .rodata.press_order.2:00000000 press_order.2
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1155   .text.move_click_mouse:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1161   .text.move_click_mouse:00000000 move_click_mouse
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1254   .text.move_click_mouse:00000040 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1259   .text.click_buy_bullets:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1265   .text.click_buy_bullets:00000000 click_buy_bullets
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1321   .bss.key_fall_block_until.0:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1327   .rodata.button_x.1:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1338   .rodata.press_order.2:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1344   .bss.phase:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1351   .bss.long_pressed:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1358   .data.key_need_handle:00000000 $d
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s 			page 40
 
 
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1368   .bss.is_small_bullet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1371   .bss.ms_counter:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1378   .bss.referee_packet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1385   .bss.frame_body_tail:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1392   .bss.frame_header:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1399   .bss.key_packet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1406   .bss.vofa:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1413   .bss.Keys_pressed:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccnvO2Fe.s:1420   .bss.Keys:00000000 $d
 
 UNDEFINED SYMBOLS
 memset
@@ -1667,6 +2330,8 @@ Get_CRC16_Check_Sum
 __aeabi_i2f
 __aeabi_ui2f
 HAL_UART_Transmit_DMA
+ws2812_rgbwave
+ws2812_refresh
 huart1
 HAL_GetTick
 huart3
