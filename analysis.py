@@ -88,6 +88,8 @@ else:
     _user32.MapVirtualKeyW.restype = ctypes.c_uint
     _user32.SendInput.argtypes = (ctypes.c_uint, ctypes.POINTER(_Input), ctypes.c_int)
     _user32.SendInput.restype = ctypes.c_uint
+    _user32.GetAsyncKeyState.argtypes = (ctypes.c_int,)
+    _user32.GetAsyncKeyState.restype = ctypes.c_short
 
 
 def send_scan_code(vk, key_up):
@@ -119,6 +121,35 @@ SIMULATION_HALF_CYCLE_TICKS = 15
 SIMULATION_CURSOR_X = 960
 SIMULATION_CURSOR_Y = 379
 
+# RoboMaster simulator purchase UI coordinates for a 1920 x 1080 display.
+EMULATOR_AMOUNT_BUTTON_X = {
+    -2: 1095,
+    -1: 1170,
+    1: 1395,
+    2: 1470,
+    5: 1545,
+    10: 1620,
+}
+EMULATOR_AMOUNT_BUTTON_Y = 860
+EMULATOR_BUY_BUTTON = (1275, 990)
+EMULATOR_CONFIRM_BUTTON = (1190, 865)
+EMULATOR_HOTKEY_POLL_MS = 20
+EMULATOR_KEY_HOLD_SECONDS = 0.06
+EMULATOR_MENU_WAIT_SECONDS = 0.18
+EMULATOR_MOUSE_HOLD_SECONDS = 0.04
+EMULATOR_MOUSE_WAIT_SECONDS = 0.05
+EMULATOR_MAX_AMOUNT_CLICKS = 1000
+
+# Support both the number row and the numeric keypad (with Num Lock enabled).
+EMULATOR_HOTKEYS = {
+    0x38: "8",
+    0x39: "9",
+    0x30: "0",
+    0x68: "8",  # VK_NUMPAD8
+    0x69: "9",  # VK_NUMPAD9
+    0x60: "0",  # VK_NUMPAD0
+}
+
 
 def crc8(data, init=CRC8_INIT):
     crc = init
@@ -148,6 +179,46 @@ def crc16(data, init=CRC16_INIT):
 
 def hex_bytes(data):
     return " ".join(f"{value:02X}" for value in data)
+
+
+def emulator_amount_clicks(amount, is_small_bullet):
+    """Return amount adjustment buttons needed by the simulator purchase UI."""
+    if amount <= 0:
+        raise ValueError("弹丸数量必须是正整数")
+
+    if is_small_bullet:
+        if amount % 10:
+            raise ValueError("小弹丸数量必须是 10 的倍数")
+        unit_amount = amount // 10
+    else:
+        unit_amount = amount
+
+    counts = {-2: 0, -1: 0, 1: 0, 2: 0, 5: 0, 10: unit_amount // 10}
+    remainder = unit_amount % 10
+    remainder_buttons = {
+        0: (),
+        1: (1,),
+        2: (2,),
+        3: (5, -2),
+        4: (5, -1),
+        5: (5,),
+        6: (5, 1),
+        7: (5, 2),
+        8: (10, -2),
+        9: (10, -1),
+    }
+    for button in remainder_buttons[remainder]:
+        counts[button] += 1
+
+    result = []
+    for button in (10, 5, 2, 1, -1, -2):
+        result.extend([button] * counts[button])
+
+    if len(result) > EMULATOR_MAX_AMOUNT_CLICKS:
+        raise ValueError(
+            f"数量过大，需要点击 {len(result)} 次（上限 {EMULATOR_MAX_AMOUNT_CLICKS} 次）"
+        )
+    return result
 
 
 def key_name(value):
@@ -476,15 +547,32 @@ class AnalyzerApp(tk.Tk):
         self.simulator_after_id = None
         self.simulator_tick = 0
         self.simulator_seq = 0
+        self.emulator_purchase_running = False
+        self.emulator_purchase_cancel_event = None
+        self.emulator_hotkey_down = {vk: False for vk in EMULATOR_HOTKEYS}
 
         self.port_var = tk.StringVar()
         self.baud_var = tk.StringVar(value="115200")
         self.status_var = tk.StringVar(value="Idle")
         self.pc_control_var = tk.BooleanVar(value=False)
+        self.emulator_enabled_var = tk.BooleanVar(value=False)
+        self.emulator_bullet_var = tk.StringVar(value="big")
+        self.emulator_big_amount_vars = {
+            "8": tk.StringVar(value="8"),
+            "9": tk.StringVar(value="10"),
+            "0": tk.StringVar(value="12"),
+        }
+        self.emulator_small_amount_vars = {
+            "8": tk.StringVar(value="80"),
+            "9": tk.StringVar(value="100"),
+            "0": tk.StringVar(value="120"),
+        }
+        self.emulator_status_var = tk.StringVar(value="热键未启用")
 
         self._build_ui()
         self.refresh_ports()
         self.after(40, self.poll_events)
+        self.after(EMULATOR_HOTKEY_POLL_MS, self.poll_emulator_hotkeys)
 
         if serial is None:
             messagebox.showerror(
@@ -536,6 +624,101 @@ class AnalyzerApp(tk.Tk):
             self.release_button.configure(state=tk.DISABLED)
 
         ttk.Label(controls, textvariable=self.status_var).pack(side=tk.RIGHT)
+
+        emulator_frame = ttk.Labelframe(
+            self,
+            text="模拟器弹丸购买（坐标适配 1920 × 1080）",
+            padding=(8, 6),
+        )
+        emulator_frame.pack(fill=tk.X, padx=8, pady=(0, 8))
+        emulator_frame.columnconfigure(5, weight=1)
+
+        self.emulator_enable_button = ttk.Checkbutton(
+            emulator_frame,
+            text="启用全局热键 8 / 9 / 0",
+            variable=self.emulator_enabled_var,
+            command=self.toggle_emulator_hotkeys,
+        )
+        self.emulator_enable_button.grid(row=0, column=0, columnspan=2, sticky=tk.W)
+
+        ttk.Label(emulator_frame, text="当前弹种：").grid(
+            row=0, column=2, padx=(18, 2), sticky=tk.E
+        )
+        ttk.Radiobutton(
+            emulator_frame,
+            text="大弹丸",
+            value="big",
+            variable=self.emulator_bullet_var,
+            command=self.update_emulator_bullet_indicator,
+        ).grid(row=0, column=3, sticky=tk.W)
+        ttk.Radiobutton(
+            emulator_frame,
+            text="小弹丸",
+            value="small",
+            variable=self.emulator_bullet_var,
+            command=self.update_emulator_bullet_indicator,
+        ).grid(row=0, column=4, sticky=tk.W)
+
+        self.emulator_bullet_indicator = tk.Label(
+            emulator_frame,
+            padx=10,
+            pady=2,
+            font=("Microsoft YaHei UI", 9, "bold"),
+        )
+        self.emulator_bullet_indicator.grid(row=0, column=5, padx=(12, 8), sticky=tk.W)
+
+        self.emulator_stop_button = ttk.Button(
+            emulator_frame,
+            text="停止当前购买",
+            command=self.cancel_emulator_purchase,
+            state=tk.DISABLED,
+        )
+        self.emulator_stop_button.grid(row=0, column=6, sticky=tk.E)
+
+        self.emulator_amount_entries = []
+        self.emulator_trigger_buttons = []
+        for column, hotkey in enumerate(("8", "9", "0")):
+            key_frame = ttk.Frame(emulator_frame)
+            key_frame.grid(row=1, column=column * 2, columnspan=2, padx=(0, 20), pady=(7, 0), sticky=tk.W)
+            trigger_button = ttk.Button(
+                key_frame,
+                text=f"{hotkey} 键",
+                width=5,
+                command=lambda key=hotkey: self.start_emulator_purchase(key),
+            )
+            trigger_button.pack(side=tk.LEFT)
+            self.emulator_trigger_buttons.append(trigger_button)
+            ttk.Label(key_frame, text="  大:").pack(side=tk.LEFT)
+            big_entry = ttk.Entry(
+                key_frame,
+                textvariable=self.emulator_big_amount_vars[hotkey],
+                width=7,
+                justify=tk.CENTER,
+            )
+            big_entry.pack(side=tk.LEFT)
+            ttk.Label(key_frame, text="  小:").pack(side=tk.LEFT)
+            small_entry = ttk.Entry(
+                key_frame,
+                textvariable=self.emulator_small_amount_vars[hotkey],
+                width=7,
+                justify=tk.CENTER,
+            )
+            small_entry.pack(side=tk.LEFT)
+            self.emulator_amount_entries.extend((big_entry, small_entry))
+
+        ttk.Label(
+            emulator_frame,
+            textvariable=self.emulator_status_var,
+            foreground="#2457a6",
+        ).grid(row=2, column=0, columnspan=7, pady=(7, 0), sticky=tk.W)
+
+        if not self.input_controller.available:
+            self.emulator_enable_button.configure(state=tk.DISABLED)
+            for button in self.emulator_trigger_buttons:
+                button.configure(state=tk.DISABLED)
+            self.emulator_status_var.set("需要 Windows 和 pyautogui")
+
+        self.update_emulator_bullet_indicator()
 
         panes = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
         panes.pack(fill=tk.BOTH, expand=True, padx=8, pady=(0, 8))
@@ -633,6 +816,174 @@ class AnalyzerApp(tk.Tk):
         self.pc_control_var.set(False)
         self.status_var.set("PC inputs released")
 
+    def update_emulator_bullet_indicator(self):
+        if self.emulator_bullet_var.get() == "small":
+            self.emulator_bullet_indicator.configure(
+                text="当前：小弹丸（O 键菜单）",
+                background="#dff3e4",
+                foreground="#126b2e",
+            )
+        else:
+            self.emulator_bullet_indicator.configure(
+                text="当前：大弹丸（I 键菜单）",
+                background="#fff0d4",
+                foreground="#8a4b00",
+            )
+
+    def toggle_emulator_hotkeys(self):
+        if self.emulator_enabled_var.get():
+            if not self.input_controller.available:
+                self.emulator_enabled_var.set(False)
+                messagebox.showerror(
+                    "模拟器输入不可用",
+                    "此功能需要 Windows 和 pyautogui。安装命令：python -m pip install pyautogui",
+                )
+                return
+            self.emulator_status_var.set("已启用；切到模拟器后按 8 / 9 / 0")
+        else:
+            self.cancel_emulator_purchase()
+            self.emulator_status_var.set("热键未启用")
+
+    def cancel_emulator_purchase(self):
+        if self.emulator_purchase_cancel_event is not None:
+            self.emulator_purchase_cancel_event.set()
+        if self.emulator_purchase_running:
+            self.emulator_status_var.set("正在停止购买操作...")
+
+    def poll_emulator_hotkeys(self):
+        if _user32 is None:
+            return
+
+        try:
+            focused_widget = self.focus_get()
+            editing_amount = focused_widget in self.emulator_amount_entries
+
+            for vk, hotkey in EMULATOR_HOTKEYS.items():
+                is_down = bool(_user32.GetAsyncKeyState(vk) & 0x8000)
+                pressed = is_down and not self.emulator_hotkey_down[vk]
+                self.emulator_hotkey_down[vk] = is_down
+
+                if pressed and self.emulator_enabled_var.get() and not editing_amount:
+                    self.start_emulator_purchase(hotkey)
+        finally:
+            self.after(EMULATOR_HOTKEY_POLL_MS, self.poll_emulator_hotkeys)
+
+    def start_emulator_purchase(self, hotkey):
+        if not self.input_controller.available:
+            self.emulator_status_var.set("模拟器输入不可用：需要 Windows 和 pyautogui")
+            return
+
+        if self.emulator_purchase_running:
+            self.emulator_status_var.set("已有购买操作正在执行，本次按键已忽略")
+            return
+
+        is_small = self.emulator_bullet_var.get() == "small"
+        amount_vars = self.emulator_small_amount_vars if is_small else self.emulator_big_amount_vars
+        try:
+            amount = int(amount_vars[hotkey].get().strip())
+            amount_buttons = emulator_amount_clicks(amount, is_small)
+        except (KeyError, ValueError) as exc:
+            self.emulator_status_var.set(f"{hotkey} 键配置错误：{exc}")
+            return
+
+        bullet_name = "小弹丸" if is_small else "大弹丸"
+        cancel_event = threading.Event()
+        self.emulator_purchase_cancel_event = cancel_event
+        self.emulator_purchase_running = True
+        self.emulator_stop_button.configure(state=tk.NORMAL)
+        for button in self.emulator_trigger_buttons:
+            button.configure(state=tk.DISABLED)
+        self.emulator_status_var.set(f"正在购买 {amount} 个{bullet_name}（{hotkey} 键）...")
+
+        # The macro needs exclusive cursor control. Release any state held by
+        # serial-frame injection before the worker starts moving the mouse.
+        self.input_controller.release_all()
+        threading.Thread(
+            target=self.run_emulator_purchase,
+            args=(hotkey, amount, is_small, amount_buttons, cancel_event),
+            daemon=True,
+        ).start()
+
+    @staticmethod
+    def wait_for_emulator_action(cancel_event, seconds):
+        return not cancel_event.wait(seconds)
+
+    def tap_emulator_key(self, vk, cancel_event):
+        if cancel_event.is_set():
+            return False
+
+        send_scan_code(vk, key_up=False)
+        try:
+            if not self.wait_for_emulator_action(cancel_event, EMULATOR_KEY_HOLD_SECONDS):
+                return False
+        finally:
+            send_scan_code(vk, key_up=True)
+        return True
+
+    def click_emulator_position(self, x, y, cancel_event):
+        if cancel_event.is_set():
+            return False
+
+        pyautogui.moveTo(x, y, duration=0)
+        if cancel_event.is_set():
+            return False
+
+        pyautogui.mouseDown(button="left")
+        try:
+            if not self.wait_for_emulator_action(cancel_event, EMULATOR_MOUSE_HOLD_SECONDS):
+                return False
+        finally:
+            pyautogui.mouseUp(button="left")
+
+        return self.wait_for_emulator_action(cancel_event, EMULATOR_MOUSE_WAIT_SECONDS)
+
+    def run_emulator_purchase(self, hotkey, amount, is_small, amount_buttons, cancel_event):
+        bullet_name = "小弹丸" if is_small else "大弹丸"
+        menu_vk = ord("O") if is_small else ord("I")
+        result = None
+        try:
+            if not self.tap_emulator_key(menu_vk, cancel_event):
+                result = "购买操作已取消"
+                return
+            if not self.wait_for_emulator_action(cancel_event, EMULATOR_MENU_WAIT_SECONDS):
+                result = "购买操作已取消"
+                return
+
+            for button in amount_buttons:
+                if not self.click_emulator_position(
+                    EMULATOR_AMOUNT_BUTTON_X[button],
+                    EMULATOR_AMOUNT_BUTTON_Y,
+                    cancel_event,
+                ):
+                    result = "购买操作已取消"
+                    return
+
+            if not self.click_emulator_position(*EMULATOR_BUY_BUTTON, cancel_event):
+                result = "购买操作已取消"
+                return
+            if not self.wait_for_emulator_action(cancel_event, EMULATOR_MENU_WAIT_SECONDS):
+                result = "购买操作已取消"
+                return
+            if not self.click_emulator_position(*EMULATOR_CONFIRM_BUTTON, cancel_event):
+                result = "购买操作已取消"
+                return
+            if not self.wait_for_emulator_action(cancel_event, EMULATOR_MENU_WAIT_SECONDS):
+                result = "购买操作已取消"
+                return
+            if not self.tap_emulator_key(menu_vk, cancel_event):
+                result = "购买操作已取消"
+                return
+
+            result = f"完成：已执行购买 {amount} 个{bullet_name}（{hotkey} 键）"
+        except Exception as exc:
+            try:
+                pyautogui.mouseUp(button="left")
+            except Exception:
+                pass
+            result = f"模拟器购买失败：{exc}"
+        finally:
+            self.events.put(("emulator_purchase_done", result or "购买操作已取消"))
+
     def clear_views(self):
         self.raw_text.delete("1.0", tk.END)
         self.parsed_text.delete("1.0", tk.END)
@@ -720,6 +1071,13 @@ class AnalyzerApp(tk.Tk):
                     self.start_button.configure(text="Start", state=tk.NORMAL)
                     if self.status_var.get() == "Stopping...":
                         self.status_var.set("Closed")
+                elif kind == "emulator_purchase_done":
+                    self.emulator_purchase_running = False
+                    self.emulator_purchase_cancel_event = None
+                    self.emulator_stop_button.configure(state=tk.DISABLED)
+                    for button in self.emulator_trigger_buttons:
+                        button.configure(state=tk.NORMAL)
+                    self.emulator_status_var.set(payload)
         except queue.Empty:
             pass
 
@@ -762,6 +1120,9 @@ class AnalyzerApp(tk.Tk):
         if info["cmd_id"] != 0x0306:
             return None
 
+        if self.emulator_purchase_running:
+            return "simulator purchase active; controller frame skipped"
+
         controller = decode_controller_payload(info["payload"])
         if controller is None:
             return None
@@ -779,6 +1140,7 @@ class AnalyzerApp(tk.Tk):
             widget.delete("1.0", f"{line_count - max_lines}.0")
 
     def destroy(self):
+        self.cancel_emulator_purchase()
         self.stop_simulator()
         self.input_controller.release_all()
         if self.worker:

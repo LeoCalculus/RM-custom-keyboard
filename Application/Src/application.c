@@ -34,9 +34,15 @@ volatile int key_need_handle = -1; // no key need to ne handled when it is -1
 #define PA4_BUY_SMALL 100
 #define PA3_BUY_SMALL 120
 
+#define BREATH_MIN    10
+#define BREATH_MAX    25
+#define BREATH_SPEED  40
+
 static void update_packet_and_send(void);
 volatile bool long_pressed[3];
-static volatile int phase = 0;
+static volatile int phase = 10;
+static volatile int count_direction = 1; // 1 for up, -1 for decrease
+static volatile uint8_t breath_tick = 0;
 
 // big : 8 10 12
 // small: 80 100 120
@@ -285,8 +291,31 @@ void loop_report(){
     vofa.val[3] = (float)Keys_pressed[0];
     HAL_UART_Transmit_DMA(&huart1, (void*)&vofa, sizeof(vofa));
     ms_counter++;
-    phase++;
-    ws2812_rgbwave(phase/10);
+    // phase++;
+    // ws2812_rgbwave(phase/10);
+    
+    if (++breath_tick >= BREATH_SPEED) {
+        breath_tick = 0;
+
+        phase += count_direction;
+
+        if (phase >= BREATH_MAX) {
+            phase = BREATH_MAX;
+            count_direction = -1;
+        } else if (phase <= BREATH_MIN) {
+            phase = BREATH_MIN;
+            count_direction = 1;
+        }
+    }
+
+    uint8_t brightness = phase;
+
+    if (is_small_bullet) {
+        ws2812_pure(0, brightness, 0); // small bullet for green 
+    } else { 
+        ws2812_pure(brightness, brightness, brightness);
+    }
+
     ws2812_refresh();
 }
 

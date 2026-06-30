@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
   30:Core/Src/main.c **** /* USER CODE END Includes */
   31:Core/Src/main.c **** 
   32:Core/Src/main.c **** /* Private typedef -----------------------------------------------------------*/
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 2
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 2
 
 
   33:Core/Src/main.c **** /* USER CODE BEGIN PTD */
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
   87:Core/Src/main.c ****   /* USER CODE BEGIN SysInit */
   88:Core/Src/main.c **** 
   89:Core/Src/main.c ****   /* USER CODE END SysInit */
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 3
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 3
 
 
   90:Core/Src/main.c **** 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  144:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
  145:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
  146:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL10;
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 4
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 4
 
 
  147:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
   12:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
   13:Drivers/CMSIS/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
   14:Drivers/CMSIS/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 5
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 5
 
 
   15:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
   69:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   70:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
   71:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 6
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 6
 
 
   72:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  126:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
  127:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
  128:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 7
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 7
 
 
  129:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
   74 0002 90B0     		sub	sp, sp, #64
   75              	.LCFI1:
   76              		.cfi_def_cfa_offset 72
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 8
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 8
 
 
  134:Core/Src/main.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  146:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
  115              		.loc 1 146 3 is_stmt 1 view .LVU24
  146:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 9
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 9
 
 
  116              		.loc 1 146 32 is_stmt 0 view .LVU25
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  153 005e 10B0     		add	sp, sp, #64
  154              	.LCFI2:
  155              		.cfi_remember_state
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 10
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 10
 
 
  156              		.cfi_def_cfa_offset 8
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  204 0012 FFF7FEFF 		bl	MX_USART1_UART_Init
  205              	.LVL9:
   95:Core/Src/main.c ****   MX_SPI2_Init();
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 11
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 11
 
 
  206              		.loc 1 95 3 view .LVU51
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  247              	.LVL19:
  116:Core/Src/main.c ****       // also need to click OK:
  248              		.loc 1 116 7 view .LVU65
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 12
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 12
 
 
  249 004e 064C     		ldr	r4, .L13+4
@@ -702,18 +702,18 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 1
  285              		.file 17 "Core/Inc/gpio.h"
  286              		.file 18 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
  287              		.file 19 "<built-in>"
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s 			page 13
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:19     .text.Error_Handler:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:25     .text.Error_Handler:00000000 Error_Handler
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:57     .text.SystemClock_Config:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:63     .text.SystemClock_Config:00000000 SystemClock_Config
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:173    .text.main:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:179    .text.main:00000000 main
-C:\Users\Xuleo\AppData\Local\Temp\ccjNlfzd.s:264    .text.main:00000064 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:19     .text.Error_Handler:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:25     .text.Error_Handler:00000000 Error_Handler
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:57     .text.SystemClock_Config:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:63     .text.SystemClock_Config:00000000 SystemClock_Config
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:173    .text.main:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:179    .text.main:00000000 main
+C:\Users\Xuleo\AppData\Local\Temp\ccvWhbab.s:264    .text.main:00000064 $d
 
 UNDEFINED SYMBOLS
 memset
