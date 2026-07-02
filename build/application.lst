@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -44,10 +44,10 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
   16:./Application/Src/application.c **** #define SMALL_BULLET_KEY 'O'
   17:./Application/Src/application.c **** #define BIG_BULLET_KEY 'I'
   18:./Application/Src/application.c **** 
-  19:./Application/Src/application.c **** #define BUY_BUTTON_X 1275
-  20:./Application/Src/application.c **** #define BUY_BUTTON_Y 930
-  21:./Application/Src/application.c **** #define CONFIRM_BUTTON_X 1191
-  22:./Application/Src/application.c **** #define CONFIRM_BUTTON_Y 785
+  19:./Application/Src/application.c **** #define BUY_BUTTON_X 1280
+  20:./Application/Src/application.c **** #define BUY_BUTTON_Y 912
+  21:./Application/Src/application.c **** #define CONFIRM_BUTTON_X 1206
+  22:./Application/Src/application.c **** #define CONFIRM_BUTTON_Y 768
   23:./Application/Src/application.c **** 
   24:./Application/Src/application.c **** // #define BUY_BUTTON_X 960
   25:./Application/Src/application.c **** // #define BUY_BUTTON_Y 379
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
   30:./Application/Src/application.c **** #define PA5_BUY_BIG 5
   31:./Application/Src/application.c **** #define PA4_BUY_BIG 10
   32:./Application/Src/application.c **** #define PA3_BUY_BIG 15
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 2
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 2
 
 
   33:./Application/Src/application.c **** #define PA5_BUY_SMALL 50 
@@ -85,7 +85,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
   54:./Application/Src/application.c **** // #define BUY_NEG_ONE_X 1150
   55:./Application/Src/application.c **** // #define BUY_Y 860
   56:./Application/Src/application.c **** 
-  57:./Application/Src/application.c **** #define BUY_Y 777
+  57:./Application/Src/application.c **** #define BUY_Y 781
   58:./Application/Src/application.c **** 
   59:./Application/Src/application.c **** void init_keys(){
   27              		.loc 1 59 17 view -0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
   51 0018 2360     		str	r3, [r4]
   63:./Application/Src/application.c ****     Keys[1].key = 4; // PA4
   52              		.loc 1 63 5 is_stmt 1 view .LVU5
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 3
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 3
 
 
   53              		.loc 1 63 17 is_stmt 0 view .LVU6
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
   77:./Application/Src/application.c **** }
   94              		.loc 1 77 1 view .LVU29
   95 004a 10BD     		pop	{r4, pc}
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 4
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 4
 
 
   96              	.L4:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  117:./Application/Src/application.c **** //             if(i<=1){
  118:./Application/Src/application.c **** //                 mouse_control(BUY_NEG_ONE_X - (1-i)*90, BUY_Y, true);
  119:./Application/Src/application.c **** //                 temp = BUY_NEG_ONE_X - (1-i)*90;
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 5
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 5
 
 
  120:./Application/Src/application.c **** //             }
@@ -276,12 +276,12 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  152:./Application/Src/application.c ****     //     1665,  // +10
  153:./Application/Src/application.c ****     // };
  154:./Application/Src/application.c ****     static const uint16_t button_x[6] = {
- 155:./Application/Src/application.c ****         1070,   // -2，原 1070
- 156:./Application/Src/application.c ****         1151,   // -1，原 1150
- 157:./Application/Src/application.c ****         1545,  // +5，原 1475
- 158:./Application/Src/application.c ****         1400,  // +1，原 1405
- 159:./Application/Src/application.c ****         1494,  // +2，原 1490
- 160:./Application/Src/application.c ****         1664,  // +10，原 1665
+ 155:./Application/Src/application.c ****         1093,   // -2，原 1070
+ 156:./Application/Src/application.c ****         1170,   // -1，原 1150
+ 157:./Application/Src/application.c ****         1544,  // +5，原 1475
+ 158:./Application/Src/application.c ****         1390,  // +1，原 1405
+ 159:./Application/Src/application.c ****         1467,  // +2，原 1490
+ 160:./Application/Src/application.c ****         1621,  // +10，原 1665
  161:./Application/Src/application.c ****     };
  162:./Application/Src/application.c **** 
  163:./Application/Src/application.c ****     /*
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  174:./Application/Src/application.c ****     };
  175:./Application/Src/application.c **** 
  176:./Application/Src/application.c ****     uint32_t a[6] = {0};
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 6
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 6
 
 
  177:./Application/Src/application.c ****     uint32_t unit_amount;
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  231:./Application/Src/application.c **** 
  232:./Application/Src/application.c ****         case 9:
  233:./Application/Src/application.c ****             a[5]++; a[1]++;      // +10 -1
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 7
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 7
 
 
  234:./Application/Src/application.c ****             break;
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  141              	.LFE67:
  143              		.section	.text.init_packet,"ax",%progbits
  144              		.align	1
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 8
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 8
 
 
  145              		.global	init_packet
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  270:./Application/Src/application.c ****     frame_header.data_length = sizeof(key_packet_t); // 8 bytes
  190              		.loc 1 270 5 is_stmt 1 view .LVU47
  191              		.loc 1 270 30 is_stmt 0 view .LVU48
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 9
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 9
 
 
  192 0028 0822     		movs	r2, #8
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  282:./Application/Src/application.c ****                                                         sizeof(referee_packet) - sizeof(referee_pac
  283:./Application/Src/application.c ****                                                         CRC16_INIT);
  284:./Application/Src/application.c **** }
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 10
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 10
 
 
  235              		.loc 1 284 1 view .LVU63
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  285 001a 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
  286 001c FFF7FEFF 		bl	__aeabi_ui2f
  287              	.LVL5:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 11
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 11
 
 
  288              		.loc 1 290 17 view .LVU73
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  332 005c 1A60     		str	r2, [r3]
  301:./Application/Src/application.c **** 
  302:./Application/Src/application.c ****         if (phase >= BREATH_MAX) {
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 12
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 12
 
 
  333              		.loc 1 302 9 is_stmt 1 view .LVU87
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  370              	.LVL10:
  320:./Application/Src/application.c **** }
  371              		.loc 1 320 1 is_stmt 0 view .LVU101
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 13
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 13
 
 
  372 008a 10BD     		pop	{r4, pc}
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  418              		.section	.text.wait_ms,"ax",%progbits
  419              		.align	1
  420              		.global	wait_ms
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 14
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 14
 
 
  421              		.syntax unified
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  472              	.LFB76:
  327:./Application/Src/application.c **** 
  328:./Application/Src/application.c **** // scan for keys that is triggered:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 15
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 15
 
 
  329:./Application/Src/application.c **** void loop_scan_keys(){
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  383:./Application/Src/application.c ****     key_packet.key_value = 0;
  384:./Application/Src/application.c ****     // release was handled in mouse packet sending
  385:./Application/Src/application.c ****     if (need_reset)
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 16
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 16
 
 
  386:./Application/Src/application.c ****         update_packet_and_send(); 
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  440:./Application/Src/application.c ****         
  441:./Application/Src/application.c ****     //     case 1:
  442:./Application/Src/application.c ****     //         if (is_small_bullet){
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 17
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 17
 
 
  443:./Application/Src/application.c ****     //             x = Keys[1].small_bullet_x_pos;
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  497:./Application/Src/application.c **** }
  498:./Application/Src/application.c **** 
  499:./Application/Src/application.c **** void click_buy_bullets(){
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 18
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 18
 
 
  500:./Application/Src/application.c **** 
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  521:./Application/Src/application.c ****     referee_packet.fbt = frame_body_tail;
  506              		.loc 1 521 5 is_stmt 1 view .LVU130
  507              		.loc 1 521 24 is_stmt 0 view .LVU131
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 19
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 19
 
 
  508 0028 2346     		mov	r3, r4
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  549              	.L27:
  550 0064 00000000 		.word	frame_body_tail
  551 0068 00000000 		.word	key_packet
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 20
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 20
 
 
  552 006c 00000000 		.word	frame_header
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  599 0018 1870     		strb	r0, [r3]
  336:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
  600              		.loc 1 336 5 is_stmt 1 view .LVU153
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 21
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 21
 
 
  336:./Application/Src/application.c ****         memset(Keys_pressed, 0, sizeof(Keys_pressed)); // block all negedge if last negedge was det
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  642              		.loc 1 361 33 view .LVU166
  643 003e 0122     		movs	r2, #1
  644 0040 1A55     		strb	r2, [r3, r4]
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 22
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 22
 
 
  645              	.L35:
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  686              	.LVL32:
  348:./Application/Src/application.c ****             if (is_pressed && !long_pressed[index]){
  687              		.loc 1 348 13 view .LVU180
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 23
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 23
 
 
  348:./Application/Src/application.c ****             if (is_pressed && !long_pressed[index]){
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  727 009e 074B     		ldr	r3, .L40+12
  728 00a0 0022     		movs	r2, #0
  729 00a2 1A80     		strh	r2, [r3]	@ movhi
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 24
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 24
 
 
  730 00a4 9A70     		strb	r2, [r3, #2]
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  369:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
  780              		.loc 1 369 5 is_stmt 1 view .LVU202
  369:./Application/Src/application.c ****         key_packet.key_value = SMALL_BULLET_KEY;
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 25
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 25
 
 
  781              		.loc 1 369 9 is_stmt 0 view .LVU203
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  820              		.loc 1 383 5 view .LVU218
  383:./Application/Src/application.c ****     // release was handled in mouse packet sending
  821              		.loc 1 383 26 is_stmt 0 view .LVU219
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 26
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 26
 
 
  822 003a 2580     		strh	r5, [r4]	@ movhi
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  869              		.cfi_def_cfa_offset 8
  870              		.cfi_offset 3, -8
  871              		.cfi_offset 14, -4
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 27
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 27
 
 
  392:./Application/Src/application.c ****     key_packet.x_position = x;
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  909              		.loc 1 400 5 view .LVU245
  910 0038 1C20     		movs	r0, #28
  911 003a FFF7FEFF 		bl	wait_ms
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 28
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 28
 
 
  912              	.LVL48:
@@ -1658,7 +1658,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  945 0002 87B0     		sub	sp, sp, #28
  946              	.LCFI9:
  947              		.cfi_def_cfa_offset 48
- 154:./Application/Src/application.c ****         1070,   // -2，原 1070
+ 154:./Application/Src/application.c ****         1093,   // -2，原 1070
  948              		.loc 1 154 5 is_stmt 1 view .LVU249
  167:./Application/Src/application.c ****         5,  // +10
  949              		.loc 1 167 5 view .LVU250
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  178:./Application/Src/application.c **** 
  960              		.loc 1 178 5 view .LVU254
  184:./Application/Src/application.c ****         if ((amount % 10U) != 0U) {
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 29
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 29
 
 
  961              		.loc 1 184 5 view .LVU255
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1001 004a 0228     		cmp	r0, #2
  1002 004c 29D0     		beq	.L59
  1003 004e 08D8     		bhi	.L60
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 30
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 30
 
 
  1004 0050 18B1     		cbz	r0, .L61
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1045              		.loc 1 196 5 is_stmt 0 view .LVU282
  1046 0072 0020     		movs	r0, #0
  1047              	.LVL55:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 31
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 31
 
 
  196:./Application/Src/application.c ****         case 0:
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  234:./Application/Src/application.c **** 
  1088              		.loc 1 234 13 is_stmt 1 view .LVU297
  1089 009c DDE7     		b	.L61
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 32
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 32
 
 
  1090              	.L79:
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1127              		.loc 1 221 25 is_stmt 0 view .LVU314
  1128 00ba 0393     		str	r3, [sp, #12]
  222:./Application/Src/application.c **** 
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 33
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 33
 
 
  1129              		.loc 1 222 13 is_stmt 1 view .LVU315
@@ -1953,21 +1953,21 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  245:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, true);
  1151              		.loc 1 245 13 view .LVU323
  1152 00ce 0022     		movs	r2, #0
- 1153 00d0 40F20931 		movw	r1, #777
+ 1153 00d0 40F20D31 		movw	r1, #781
  1154 00d4 2046     		mov	r0, r4
  1155 00d6 FFF7FEFF 		bl	mouse_control
  1156              	.LVL62:
  246:./Application/Src/application.c ****             mouse_control(button_x[index], BUY_Y, false);
  1157              		.loc 1 246 13 is_stmt 1 view .LVU324
  1158 00da 0122     		movs	r2, #1
- 1159 00dc 40F20931 		movw	r1, #777
+ 1159 00dc 40F20D31 		movw	r1, #781
  1160 00e0 2046     		mov	r0, r4
  1161 00e2 FFF7FEFF 		bl	mouse_control
  1162              	.LVL63:
  247:./Application/Src/application.c ****         }
  1163              		.loc 1 247 13 view .LVU325
  1164 00e6 0022     		movs	r2, #0
- 1165 00e8 40F20931 		movw	r1, #777
+ 1165 00e8 40F20D31 		movw	r1, #781
  1166 00ec 2046     		mov	r0, r4
  1167 00ee FFF7FEFF 		bl	mouse_control
  1168              	.LVL64:
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1172              	.L70:
  243:./Application/Src/application.c **** 
  1173              		.loc 1 243 40 discriminator 1 view .LVU327
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 34
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 34
 
 
  243:./Application/Src/application.c **** 
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1214              		.loc 1 252 1 view .LVU341
  1215 0112 07B0     		add	sp, sp, #28
  1216              	.LCFI10:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 35
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 35
 
 
  1217              		.cfi_remember_state
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1267 000a 70B9     		cbnz	r0, .L87
  480:./Application/Src/application.c ****         break;
  1268              		.loc 1 480 9 view .LVU348
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 36
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 36
 
 
  480:./Application/Src/application.c ****         break;
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1308 002a 0020     		movs	r0, #0
  1309              	.LVL80:
  1310              	.L86:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 37
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 37
 
 
  495:./Application/Src/application.c **** 
@@ -2218,50 +2218,50 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1358              	.LCFI13:
  1359              		.cfi_def_cfa_offset 8
  1360              		.cfi_offset 3, -8
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 38
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 38
 
 
  1361              		.cfi_offset 14, -4
  501:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, true);
  1362              		.loc 1 501 5 view .LVU373
  1363 0002 0022     		movs	r2, #0
- 1364 0004 40F2A231 		movw	r1, #930
- 1365 0008 40F2FB40 		movw	r0, #1275
+ 1364 0004 4FF46471 		mov	r1, #912
+ 1365 0008 4FF4A060 		mov	r0, #1280
  1366 000c FFF7FEFF 		bl	mouse_control
  1367              	.LVL88:
  502:./Application/Src/application.c ****     mouse_control(BUY_BUTTON_X, BUY_BUTTON_Y, false);
  1368              		.loc 1 502 5 view .LVU374
  1369 0010 0122     		movs	r2, #1
- 1370 0012 40F2A231 		movw	r1, #930
- 1371 0016 40F2FB40 		movw	r0, #1275
+ 1370 0012 4FF46471 		mov	r1, #912
+ 1371 0016 4FF4A060 		mov	r0, #1280
  1372 001a FFF7FEFF 		bl	mouse_control
  1373              	.LVL89:
  503:./Application/Src/application.c **** 
  1374              		.loc 1 503 5 view .LVU375
  1375 001e 0022     		movs	r2, #0
- 1376 0020 40F2A231 		movw	r1, #930
- 1377 0024 40F2FB40 		movw	r0, #1275
+ 1376 0020 4FF46471 		mov	r1, #912
+ 1377 0024 4FF4A060 		mov	r0, #1280
  1378 0028 FFF7FEFF 		bl	mouse_control
  1379              	.LVL90:
  505:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, true);
  1380              		.loc 1 505 5 view .LVU376
  1381 002c 0022     		movs	r2, #0
- 1382 002e 40F21131 		movw	r1, #785
- 1383 0032 40F2A740 		movw	r0, #1191
+ 1382 002e 4FF44071 		mov	r1, #768
+ 1383 0032 40F2B640 		movw	r0, #1206
  1384 0036 FFF7FEFF 		bl	mouse_control
  1385              	.LVL91:
  506:./Application/Src/application.c ****     mouse_control(CONFIRM_BUTTON_X, CONFIRM_BUTTON_Y, false);
  1386              		.loc 1 506 5 view .LVU377
  1387 003a 0122     		movs	r2, #1
- 1388 003c 40F21131 		movw	r1, #785
- 1389 0040 40F2A740 		movw	r0, #1191
+ 1388 003c 4FF44071 		mov	r1, #768
+ 1389 0040 40F2B640 		movw	r0, #1206
  1390 0044 FFF7FEFF 		bl	mouse_control
  1391              	.LVL92:
  507:./Application/Src/application.c ****     
  1392              		.loc 1 507 5 view .LVU378
  1393 0048 0022     		movs	r2, #0
- 1394 004a 40F21131 		movw	r1, #785
- 1395 004e 40F2A740 		movw	r0, #1191
+ 1394 004a 4FF44071 		mov	r1, #768
+ 1395 004e 40F2B640 		movw	r0, #1206
  1396 0052 FFF7FEFF 		bl	mouse_control
  1397              	.LVL93:
  510:./Application/Src/application.c **** }
@@ -2278,18 +2278,18 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1408              		.align	2
  1411              	key_fall_block_until.0:
  1412 0000 00000000 		.space	4
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 39
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 39
 
 
  1413              		.section	.rodata.button_x.1,"a"
  1414              		.align	2
  1417              	button_x.1:
- 1418 0000 2E04     		.short	1070
- 1419 0002 7F04     		.short	1151
- 1420 0004 0906     		.short	1545
- 1421 0006 7805     		.short	1400
- 1422 0008 D605     		.short	1494
- 1423 000a 8006     		.short	1664
+ 1418 0000 4504     		.short	1093
+ 1419 0002 9204     		.short	1170
+ 1420 0004 0806     		.short	1544
+ 1421 0006 6E05     		.short	1390
+ 1422 0008 BB05     		.short	1467
+ 1423 000a 5506     		.short	1621
  1424              		.section	.rodata.press_order.2,"a"
  1425              		.align	2
  1428              	press_order.2:
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1482              		.section	.bss.frame_body_tail,"aw",%nobits
  1483              		.align	2
  1486              	frame_body_tail:
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 40
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 40
 
 
  1487 0000 00000000 		.space	12
@@ -2395,82 +2395,82 @@ ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 1
  1536              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
  1537              		.file 14 "Application/Inc/ws2812.h"
  1538              		.file 15 "<built-in>"
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 41
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 41
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 application.c
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:19     .text.init_keys:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:25     .text.init_keys:00000000 init_keys
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:99     .text.init_keys:0000004c $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1521   .bss.Keys:00000000 Keys
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1514   .bss.Keys_pressed:00000000 Keys_pressed
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:105    .text.init_vofa:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:111    .text.init_vofa:00000000 init_vofa
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:139    .text.init_vofa:00000014 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1507   .bss.vofa:00000000 vofa
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:144    .text.init_packet:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:150    .text.init_packet:00000000 init_packet
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:240    .text.init_packet:00000078 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1500   .bss.key_packet:00000000 key_packet
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1493   .bss.frame_header:00000000 frame_header
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1486   .bss.frame_body_tail:00000000 frame_body_tail
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1479   .bss.referee_packet:00000000 referee_packet
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:248    .text.loop_report:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:254    .text.loop_report:00000000 loop_report
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:405    .text.loop_report:000000ac $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1459   .data.key_need_handle:00000000 key_need_handle
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1465   .bss.is_small_bullet:00000000 is_small_bullet
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1472   .bss.ms_counter:00000000 ms_counter
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1433   .bss.breath_tick:00000000 breath_tick
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1439   .data.count_direction:00000000 count_direction
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1445   .data.phase:00000000 phase
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:419    .text.wait_ms:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:425    .text.wait_ms:00000000 wait_ms
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:466    .text.update_packet_and_send:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:471    .text.update_packet_and_send:00000000 update_packet_and_send
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:550    .text.update_packet_and_send:00000064 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:559    .text.loop_scan_keys:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:565    .text.loop_scan_keys:00000000 loop_scan_keys
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:746    .text.loop_scan_keys:000000b0 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1411   .bss.key_fall_block_until.0:00000000 key_fall_block_until.0
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1452   .bss.long_pressed:00000000 long_pressed
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:758    .text.call_buy_UI:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:764    .text.call_buy_UI:00000000 call_buy_UI
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:847    .text.call_buy_UI:00000050 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:853    .text.mouse_control:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:859    .text.mouse_control:00000000 mouse_control
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:918    .text.mouse_control:00000040 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:923    .text.get_key_pattern:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:929    .text.get_key_pattern:00000000 get_key_pattern
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1233   .text.get_key_pattern:0000011c $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1417   .rodata.button_x.1:00000000 button_x.1
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1428   .rodata.press_order.2:00000000 press_order.2
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1241   .text.move_click_mouse:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1247   .text.move_click_mouse:00000000 move_click_mouse
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1340   .text.move_click_mouse:00000040 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1345   .text.click_buy_bullets:00000000 $t
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1351   .text.click_buy_bullets:00000000 click_buy_bullets
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1408   .bss.key_fall_block_until.0:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1414   .rodata.button_x.1:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1425   .rodata.press_order.2:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1434   .bss.breath_tick:00000000 $d
-ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s 			page 42
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:19     .text.init_keys:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:25     .text.init_keys:00000000 init_keys
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:99     .text.init_keys:0000004c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1521   .bss.Keys:00000000 Keys
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1514   .bss.Keys_pressed:00000000 Keys_pressed
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:105    .text.init_vofa:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:111    .text.init_vofa:00000000 init_vofa
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:139    .text.init_vofa:00000014 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1507   .bss.vofa:00000000 vofa
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:144    .text.init_packet:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:150    .text.init_packet:00000000 init_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:240    .text.init_packet:00000078 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1500   .bss.key_packet:00000000 key_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1493   .bss.frame_header:00000000 frame_header
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1486   .bss.frame_body_tail:00000000 frame_body_tail
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1479   .bss.referee_packet:00000000 referee_packet
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:248    .text.loop_report:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:254    .text.loop_report:00000000 loop_report
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:405    .text.loop_report:000000ac $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1459   .data.key_need_handle:00000000 key_need_handle
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1465   .bss.is_small_bullet:00000000 is_small_bullet
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1472   .bss.ms_counter:00000000 ms_counter
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1433   .bss.breath_tick:00000000 breath_tick
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1439   .data.count_direction:00000000 count_direction
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1445   .data.phase:00000000 phase
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:419    .text.wait_ms:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:425    .text.wait_ms:00000000 wait_ms
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:466    .text.update_packet_and_send:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:471    .text.update_packet_and_send:00000000 update_packet_and_send
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:550    .text.update_packet_and_send:00000064 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:559    .text.loop_scan_keys:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:565    .text.loop_scan_keys:00000000 loop_scan_keys
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:746    .text.loop_scan_keys:000000b0 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1411   .bss.key_fall_block_until.0:00000000 key_fall_block_until.0
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1452   .bss.long_pressed:00000000 long_pressed
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:758    .text.call_buy_UI:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:764    .text.call_buy_UI:00000000 call_buy_UI
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:847    .text.call_buy_UI:00000050 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:853    .text.mouse_control:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:859    .text.mouse_control:00000000 mouse_control
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:918    .text.mouse_control:00000040 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:923    .text.get_key_pattern:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:929    .text.get_key_pattern:00000000 get_key_pattern
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1233   .text.get_key_pattern:0000011c $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1417   .rodata.button_x.1:00000000 button_x.1
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1428   .rodata.press_order.2:00000000 press_order.2
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1241   .text.move_click_mouse:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1247   .text.move_click_mouse:00000000 move_click_mouse
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1340   .text.move_click_mouse:00000040 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1345   .text.click_buy_bullets:00000000 $t
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1351   .text.click_buy_bullets:00000000 click_buy_bullets
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1408   .bss.key_fall_block_until.0:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1414   .rodata.button_x.1:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1425   .rodata.press_order.2:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1434   .bss.breath_tick:00000000 $d
+ARM GAS  C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s 			page 42
 
 
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1436   .data.count_direction:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1442   .data.phase:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1449   .bss.long_pressed:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1456   .data.key_need_handle:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1466   .bss.is_small_bullet:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1469   .bss.ms_counter:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1476   .bss.referee_packet:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1483   .bss.frame_body_tail:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1490   .bss.frame_header:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1497   .bss.key_packet:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1504   .bss.vofa:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1511   .bss.Keys_pressed:00000000 $d
-C:\Users\Xuleo\AppData\Local\Temp\ccljub4u.s:1518   .bss.Keys:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1436   .data.count_direction:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1442   .data.phase:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1449   .bss.long_pressed:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1456   .data.key_need_handle:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1466   .bss.is_small_bullet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1469   .bss.ms_counter:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1476   .bss.referee_packet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1483   .bss.frame_body_tail:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1490   .bss.frame_header:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1497   .bss.key_packet:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1504   .bss.vofa:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1511   .bss.Keys_pressed:00000000 $d
+C:\Users\Xuleo\AppData\Local\Temp\ccf7c151.s:1518   .bss.Keys:00000000 $d
 
 UNDEFINED SYMBOLS
 memset

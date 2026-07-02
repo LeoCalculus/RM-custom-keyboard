@@ -16,10 +16,10 @@ volatile int key_need_handle = -1; // no key need to ne handled when it is -1
 #define SMALL_BULLET_KEY 'O'
 #define BIG_BULLET_KEY 'I'
 
-#define BUY_BUTTON_X 1275
-#define BUY_BUTTON_Y 930
-#define CONFIRM_BUTTON_X 1191
-#define CONFIRM_BUTTON_Y 785
+#define BUY_BUTTON_X 1280
+#define BUY_BUTTON_Y 912
+#define CONFIRM_BUTTON_X 1206
+#define CONFIRM_BUTTON_Y 768
 
 // #define BUY_BUTTON_X 960
 // #define BUY_BUTTON_Y 379
@@ -54,7 +54,7 @@ static volatile uint8_t breath_tick = 0;
 // #define BUY_NEG_ONE_X 1150
 // #define BUY_Y 860
 
-#define BUY_Y 777
+#define BUY_Y 781
 
 void init_keys(){
     memset(Keys, 0, sizeof(Keys));
@@ -152,12 +152,12 @@ bool get_key_pattern(uint32_t amount)
     //     1665,  // +10
     // };
     static const uint16_t button_x[6] = {
-        1070,   // -2，原 1070
-        1151,   // -1，原 1150
-        1545,  // +5，原 1475
-        1400,  // +1，原 1405
-        1494,  // +2，原 1490
-        1664,  // +10，原 1665
+        1093,   // -2，原 1070
+        1170,   // -1，原 1150
+        1544,  // +5，原 1475
+        1390,  // +1，原 1405
+        1467,  // +2，原 1490
+        1621,  // +10，原 1665
     };
 
     /*
